@@ -1652,10 +1652,8 @@ button {
 }
 
 .home-hero {
-  display: grid;
-  gap: 1.25rem;
+  display: block;
   margin-bottom: 1.25rem;
-  align-items: start;
 }
 
 .home-cats-rail {
@@ -1713,29 +1711,40 @@ button {
 
 .home-carousel {
   position: relative;
+  width: 100%;
   min-height: 0;
+}
+
+button.home-slide {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .home-slide {
   position: relative;
   overflow: hidden;
   width: 100%;
-  min-height: 360px;
-  padding: 2.5rem 3rem 3.5rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  min-height: 300px;
+  padding: 2.25rem 2.5rem 3rem;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background:
-    radial-gradient(ellipse 80% 50% at 90% 10%, rgba(99, 102, 241, 0.22), transparent 50%),
-    radial-gradient(ellipse 60% 70% at 10% 90%, rgba(14, 165, 233, 0.18), transparent 50%),
-    linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0c4a6e 100%);
+    radial-gradient(ellipse 70% 60% at 85% 20%, rgba(232, 137, 28, 0.35), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 10% 90%, rgba(15, 118, 110, 0.28), transparent 50%),
+    linear-gradient(125deg, #1a1410 0%, #2a1f14 45%, #0f2e2a 100%);
   color: #fff;
   display: grid;
-  grid-template-columns: 1.2fr 0.85fr;
-  gap: 3rem;
+  grid-template-columns: 1.35fr 0.9fr;
+  gap: 2rem;
   align-items: center;
   text-align: left;
   box-shadow:
-    0 24px 60px -16px rgba(15, 23, 42, 0.35),
+    0 24px 60px -16px rgba(26, 20, 16, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -2727,21 +2736,20 @@ button {
 
 @media (min-width: 960px) {
   .home-hero {
-    grid-template-columns: 200px minmax(0, 1fr) 240px;
-    align-items: stretch;
-    gap: 1.25rem;
+    display: block;
   }
 
   .home-carousel {
-    min-height: 320px;
+    min-height: 300px;
   }
 
+  /* 旧三栏侧轨已废弃，避免把主轮播挤成竖条 */
   .home-cats-rail {
-    display: grid;
+    display: none !important;
   }
 
   .home-slide {
-    min-height: 320px;
+    min-height: 300px;
   }
 
   .home-mid {

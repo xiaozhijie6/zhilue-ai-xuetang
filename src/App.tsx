@@ -1012,41 +1012,47 @@ export default function App() {
           </div>
 
           <section className="home-hero" aria-label="本周精选">
-            {heroCourse && (
-              <button type="button" className="home-slide home-slide--warm" onClick={() => openCourse(heroCourse.id)}>
-                <div className="home-slide__glow" />
-                <div className="home-slide__copy">
-                  <p className="home-slide__eye">{heroSlide.eyebrow}</p>
-                  <h2>{heroSlide.title}</h2>
-                  <p>{heroSlide.subtitle}</p>
-                  <div className="home-slide__meta">
-                    <span>{heroCourse.lessons.length} 讲</span>
-                    <span>{heroCourse.level}</span>
-                    <span>{heroCourse.students.toLocaleString()} 人学过</span>
-                  </div>
-                  <span className="home-slide__cta">{heroSlide.cta}</span>
-                </div>
-                <div className="home-slide__visual">
-                  <CourseCover
-                    id={heroCourse.id}
-                    category={heroCourse.category}
-                    teacher={heroCourse.teacher}
-                    level={heroCourse.level}
-                    hot={heroCourse.hot}
-                  />
-                </div>
-              </button>
-            )}
-            <div className="home-carousel__dots">
-              {HERO_SLIDES.map((s, i) => (
+            <div className="home-carousel">
+              {heroCourse && (
                 <button
-                  key={s.courseId}
                   type="button"
-                  className={i === heroIndex ? 'is-on' : ''}
-                  aria-label={`幻灯片 ${i + 1}`}
-                  onClick={() => setHeroIndex(i)}
-                />
-              ))}
+                  className="home-slide home-slide--warm"
+                  onClick={() => openCourse(heroCourse.id)}
+                >
+                  <div className="home-slide__glow" />
+                  <div className="home-slide__copy">
+                    <p className="home-slide__eye">{heroSlide.eyebrow}</p>
+                    <h2>{heroSlide.title}</h2>
+                    <p>{heroSlide.subtitle}</p>
+                    <div className="home-slide__meta">
+                      <span>{heroCourse.lessons.length} 讲</span>
+                      <span>{heroCourse.level}</span>
+                      <span>{heroCourse.students.toLocaleString()} 人学过</span>
+                    </div>
+                    <span className="home-slide__cta">{heroSlide.cta}</span>
+                  </div>
+                  <div className="home-slide__visual">
+                    <CourseCover
+                      id={heroCourse.id}
+                      category={heroCourse.category}
+                      teacher={heroCourse.teacher}
+                      level={heroCourse.level}
+                      hot={heroCourse.hot}
+                    />
+                  </div>
+                </button>
+              )}
+              <div className="home-carousel__dots">
+                {HERO_SLIDES.map((s, i) => (
+                  <button
+                    key={s.courseId}
+                    type="button"
+                    className={i === heroIndex ? 'is-on' : ''}
+                    aria-label={`幻灯片 ${i + 1}`}
+                    onClick={() => setHeroIndex(i)}
+                  />
+                ))}
+              </div>
             </div>
           </section>
 
