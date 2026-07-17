@@ -842,6 +842,29 @@ export default function App() {
             </aside>
           </section>
 
+          <section className="home-spotlight" aria-label="精选速达">
+            {FEATURED_IDS.slice(0, 4).map((id) => {
+              const item = getItem(id)
+              if (!item) return null
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  className="home-spotlight__card"
+                  onClick={() => openCourse(id)}
+                >
+                  <CourseIcon id={item.id} category={item.category} size={42} />
+                  <span>
+                    <strong>{item.title}</strong>
+                    <em>
+                      {item.level} · {item.students.toLocaleString()} 人在学
+                    </em>
+                  </span>
+                </button>
+              )
+            })}
+          </section>
+
           <section className="home-mid">
             <div className="home-free">
               <div className="home-block-head">
