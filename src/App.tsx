@@ -20,6 +20,7 @@ import {
 } from './data/home'
 import { AmbientBackground } from './components/AmbientBackground'
 import { AiIcon, CourseIcon } from './components/AiIcon'
+import { CourseCover } from './components/CourseCover'
 import './index.css'
 
 const PHONE_KEY = 'zhilue_phone'
@@ -162,7 +163,16 @@ function CourseRow({
   return (
     <article className="gk-row">
       <button type="button" className="gk-row__main" onClick={onOpen}>
-        <CourseIcon id={item.id} category={item.category} size={72} className="gk-row__icon" />
+        <div className="gk-row__cover-wrap">
+          <CourseCover
+            id={item.id}
+            category={item.category}
+            teacher={item.teacher}
+            level={item.level}
+            hot={item.hot}
+            compact
+          />
+        </div>
         <div className="gk-row__body">
           <div className="gk-row__tags">
             {item.hot && <i className="tag tag--hot">热门</i>}
@@ -731,7 +741,32 @@ export default function App() {
       {/* COURSES */}
       {tab === 'courses' && (
         <main className="gk-main home">
-          <section className="home-stage" aria-label="精选课程">
+          <div className="home-promo">
+            <strong>本周上新</strong>
+            <span>Cursor · Claude Code · MCP · API 工程手册持续更新</span>
+            <button type="button" onClick={() => openCourse('mcp-intro')}>
+              免费领 MCP 入门 →
+            </button>
+          </div>
+
+          <section className="home-market" aria-label="首页货架">
+            <aside className="home-cats-rail">
+              {CAT_NAV.map((nav) => (
+                <button
+                  key={nav.category}
+                  type="button"
+                  className={category === nav.category ? 'is-on' : ''}
+                  onClick={() => openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })}
+                >
+                  <AiIcon icon={nav.icon} size={26} />
+                  <span>
+                    <strong>{nav.title}</strong>
+                    <em>{nav.keywords}</em>
+                  </span>
+                </button>
+              ))}
+            </aside>
+
             <div className="home-carousel">
               {heroCourse && (
                 <button
@@ -748,15 +783,19 @@ export default function App() {
                       <span>{heroCourse.lessons.length} 讲</span>
                       <span>{heroCourse.level}</span>
                       <span>{heroCourse.students.toLocaleString()} 人学过</span>
+                      <span>{heroCourse.teacher.replace(/^知略\s*[·•]\s*/, '')}</span>
                     </div>
                     <span className="home-slide__cta">{heroSlide.cta}</span>
                   </div>
-                  <CourseIcon
-                    id={heroCourse.id}
-                    category={heroCourse.category}
-                    size={120}
-                    className="home-slide__icon"
-                  />
+                  <div className="home-slide__visual">
+                    <CourseCover
+                      id={heroCourse.id}
+                      category={heroCourse.category}
+                      teacher={heroCourse.teacher}
+                      level={heroCourse.level}
+                      hot={heroCourse.hot}
+                    />
+                  </div>
                 </button>
               )}
               <div className="home-carousel__dots">
@@ -774,12 +813,16 @@ export default function App() {
 
             <aside className="home-aside">
               <div className="home-gift">
-                <p className="home-gift__label">{phone ? '学习中心' : '手机号登录'}</p>
-                <h3>{phone ? `你好，${maskPhone(phone)}` : '登录后同步进度'}</h3>
-                <p>{phone ? '继续上次课程，勾选课时即可留存' : '验证码登录 · 演示码 123456'}</p>
+                <div className="home-gift__badge">新人礼</div>
+                <h3>{phone ? `你好，${maskPhone(phone)}` : '登录解锁学习进度'}</h3>
+                <ul>
+                  <li>免费速览工具课</li>
+                  <li>勾选课时自动留存</li>
+                  <li>术语词典随时查</li>
+                </ul>
                 {phone ? (
                   <button type="button" className="btn btn--accent" onClick={() => setTab('learn')}>
-                    继续学习
+                    进入学习中心
                   </button>
                 ) : (
                   <button type="button" className="btn btn--accent" onClick={() => setLoginOpen(true)}>
@@ -790,11 +833,7 @@ export default function App() {
               <div className="home-paths-mini">
                 <p className="home-paths-mini__label">按目标学</p>
                 {LEARNING_PATHS.slice(0, 4).map((path) => (
-                  <button
-                    key={path.id}
-                    type="button"
-                    onClick={() => setTab('paths')}
-                  >
+                  <button key={path.id} type="button" onClick={() => setTab('paths')}>
                     <strong>{path.title.replace('路线', '')}</strong>
                     <em>{path.count} 门</em>
                   </button>
@@ -803,64 +842,65 @@ export default function App() {
             </aside>
           </section>
 
-          <nav className="home-cats-bar" aria-label="主题分类">
-            <button
-              type="button"
-              className={category === '全部' ? 'is-on' : ''}
-              onClick={() => openCatalog({ category: '全部' })}
-            >
-              <span className="home-cats-bar__dot" />
-              <strong>全部</strong>
-            </button>
-            {CAT_NAV.map((nav) => (
-              <button
-                key={nav.category}
-                type="button"
-                className={category === nav.category ? 'is-on' : ''}
-                onClick={() => openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })}
-              >
-                <AiIcon icon={nav.icon} size={32} />
-                <span>
-                  <strong>{nav.title}</strong>
-                  <em>{nav.keywords}</em>
-                </span>
-              </button>
-            ))}
-          </nav>
-
-          <section className="home-free">
-            <div className="home-block-head">
-              <div>
-                <h2>热门入口</h2>
-                <p className="home-block-desc">点图标直接进课，适合先摸工具再系统学</p>
-              </div>
-              <button type="button" onClick={() => openCatalog()}>
-                展开完整目录 →
-              </button>
-            </div>
-            <div className="home-free__grid">
-              {FREE_TILES.map((tile) => (
-                <button
-                  key={tile.id}
-                  type="button"
-                  className="home-free__card"
-                  onClick={() => openCourse(tile.courseId)}
-                >
-                  <AiIcon icon={tile.icon} size={44} />
-                  <span>
-                    <strong>{tile.title}</strong>
-                    <em>{tile.desc}</em>
-                  </span>
+          <section className="home-mid">
+            <div className="home-free">
+              <div className="home-block-head">
+                <div>
+                  <h2>免费开学</h2>
+                  <p className="home-block-desc">先上手再系统学，零门槛进门</p>
+                </div>
+                <button type="button" onClick={() => openCatalog()}>
+                  全部课程 →
                 </button>
-              ))}
+              </div>
+              <div className="home-free__grid">
+                {FREE_TILES.map((tile) => (
+                  <button
+                    key={tile.id}
+                    type="button"
+                    className="home-free__card"
+                    onClick={() => openCourse(tile.courseId)}
+                  >
+                    <AiIcon icon={tile.icon} size={48} />
+                    <span>
+                      <strong>{tile.title}</strong>
+                      <em>{tile.desc}</em>
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
+            <aside className="home-tribe">
+              <div className="home-block-head">
+                <h2>大家在聊</h2>
+                <span>实时</span>
+              </div>
+              <ul>
+                {COMMUNITY_TOPICS.map((t) => (
+                  <li key={t.text}>
+                    <i>{t.tag}</i>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        openCatalog({
+                          category: '全部',
+                          query: t.text.replace(/[？?].*$/, '').slice(0, 8),
+                        })
+                      }
+                    >
+                      {t.text}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </aside>
           </section>
 
           <section className="home-rec">
             <div className="home-block-head">
               <div>
                 <h2>为你推荐</h2>
-                <p className="home-block-desc">按兴趣切换，少翻页多对比</p>
+                <p className="home-block-desc">热门主讲课，点开就能看大纲</p>
               </div>
             </div>
             <div className="home-rec__tabs">
@@ -883,13 +923,16 @@ export default function App() {
                   className="home-card"
                   onClick={() => openCourse(item.id)}
                 >
-                  <div className="home-card__cover">
-                    <em>{item.level}</em>
-                    <CourseIcon id={item.id} category={item.category} size={72} />
-                  </div>
+                  <CourseCover
+                    id={item.id}
+                    category={item.category}
+                    teacher={item.teacher}
+                    level={item.level}
+                    hot={item.hot}
+                  />
                   <strong>{item.title}</strong>
                   <span>
-                    {item.category} · {item.students.toLocaleString()} 人
+                    {item.students.toLocaleString()} 人学过 · {item.lessons.length} 讲
                   </span>
                 </button>
               ))}
@@ -983,29 +1026,6 @@ export default function App() {
             )}
           </section>
 
-          <section className="home-tribe home-tribe--footer">
-            <div className="home-block-head">
-              <h2>大家在问</h2>
-              <span>点话题可搜相关课</span>
-            </div>
-            <div className="home-tribe__chips">
-              {COMMUNITY_TOPICS.map((t) => (
-                <button
-                  key={t.text}
-                  type="button"
-                  onClick={() =>
-                    openCatalog({
-                      category: '全部',
-                      query: t.text.replace(/[？?].*$/, '').slice(0, 8),
-                    })
-                  }
-                >
-                  <i>{t.tag}</i>
-                  {t.text}
-                </button>
-              ))}
-            </div>
-          </section>
         </main>
       )}
 

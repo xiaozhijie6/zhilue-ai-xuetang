@@ -20,7 +20,7 @@ export type IconKey =
   | 'model'
   | 'default'
 
-const BG: Record<IconKey, string> = {
+export const ICON_BG: Record<IconKey, string> = {
   cursor: '#1a1a1a',
   claude: '#d97757',
   openai: '#10a37f',
@@ -216,7 +216,7 @@ export function AiIcon({
   return (
     <span
       className={`ai-icon ${className ?? ''}`}
-      style={{ width: size, height: size, background: BG[icon] }}
+      style={{ width: size, height: size, background: ICON_BG[icon] }}
       aria-hidden={label ? undefined : true}
       aria-label={label}
       role={label ? 'img' : undefined}
