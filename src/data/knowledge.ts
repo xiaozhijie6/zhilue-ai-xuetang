@@ -1,6 +1,6 @@
 /** 知略内容库：AI 工具 / API / MCP / 认知 / 落地 */
 
-export type Level = '入门' | '进阶' | '实战' | '企业'
+export type Level = '新手' | '熟练' | '老手'
 
 export type Lesson = {
   id: string
@@ -12,6 +12,8 @@ export type Lesson = {
 export type KnowledgeItem = {
   id: string
   title: string
+  hook: string
+  outcome: string
   category: string
   level: Level
   format: string
@@ -26,6 +28,7 @@ export type KnowledgeItem = {
   source?: '自有资料' | '平台课包'
   hot?: boolean
   new?: boolean
+  trackStep?: number
 }
 
 export const CATEGORIES = [
@@ -43,7 +46,7 @@ export const CATEGORIES = [
   '行业场景',
 ] as const
 
-export const LEVELS: Array<Level | '全部'> = ['全部', '入门', '进阶', '实战', '企业']
+export const LEVELS: Array<Level | '全部'> = ['全部', '新手', '熟练', '老手']
 
 function L(id: string, rows: Array<[string, number, Lesson['type']]>): Lesson[] {
   return rows.map(([title, mins, type], i) => ({
@@ -55,19 +58,44 @@ function L(id: string, rows: Array<[string, number, Lesson['type']]>): Lesson[] 
 }
 
 function course(
-  partial: Omit<KnowledgeItem, 'lessons' | 'outline' | 'highlights' | 'format' | 'audience' | 'duration' | 'teacher' | 'students'> &
-    Partial<Pick<KnowledgeItem, 'format' | 'audience' | 'duration' | 'teacher' | 'students' | 'highlights' | 'outline' | 'lessons' | 'hot' | 'new' | 'source'>>,
+  partial: Omit<
+    KnowledgeItem,
+    'lessons' | 'outline' | 'highlights' | 'format' | 'audience' | 'duration' | 'teacher' | 'students' | 'hook' | 'outcome'
+  > &
+    Partial<
+      Pick<
+        KnowledgeItem,
+        | 'format'
+        | 'audience'
+        | 'duration'
+        | 'teacher'
+        | 'students'
+        | 'highlights'
+        | 'outline'
+        | 'lessons'
+        | 'hot'
+        | 'new'
+        | 'source'
+        | 'trackStep'
+        | 'hook'
+        | 'outcome'
+      >
+    >,
   lessonRows: Array<[string, number, Lesson['type']]>,
 ): KnowledgeItem {
   const lessons = partial.lessons ?? L(partial.id, lessonRows)
+  const hook = partial.hook ?? partial.title
+  const outcome = partial.outcome ?? `学完能独立掌握「${partial.title}」的核心方法并立刻上手`
   return {
     format: '专栏 · 图文/视频',
     audience: 'AI 学习者',
     duration: `${Math.max(1, Math.round(lessons.reduce((n, l) => n + l.mins, 0) / 60))} 小时`,
     teacher: '知略 AI 教研组',
     students: 1200 + (partial.id.length * 137) % 8000,
-    highlights: ['系统讲解', '可实操', '可勾选进度'],
+    highlights: ['结果可验证', '可实操', '可勾选进度'],
     outline: lessonRows.slice(0, 4).map(([t]) => t),
+    hook,
+    outcome,
     ...partial,
     lessons,
   }
@@ -79,12 +107,15 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'cursor',
       title: 'Cursor 完全指南：从安装到 Agent 编程',
+      hook: '不会写代码也能用 Cursor 改项目：新手 3 天上手',
+      outcome: '能独立用 Cursor 完成多文件改码、Rules 配置与 Agent 任务拆解',
       category: 'AI编程工具',
-      level: '实战',
+      level: '熟练',
       desc: 'Composer、Chat、Rules、多文件改仓与企业落地注意事项。',
       source: '自有资料',
       hot: true,
       teacher: '知略 · 工具实验室',
+      trackStep: 3,
     },
     [
       ['安装、账号与模型选择', 18, '视频'],
@@ -104,8 +135,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'cursor-rules',
       title: 'Cursor Rules 深度：.mdc 与团队规范落地',
+      hook: '一套 Rules 让 AI 编程助手不再乱改你的项目',
+      outcome: '写出可执行的 .mdc Rules，团队共享后 Agent 稳定守规矩',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: 'Rules 语法、层级、与 System Prompt 分工，让 Agent 稳定守规矩。',
       source: '自有资料',
       new: true,
@@ -124,8 +157,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'claude-code',
       title: 'Claude Code：终端里的编程 Agent',
+      hook: '终端里有个编程 Agent：修 Bug 不用来回切窗口',
+      outcome: '能在 CLI 里完成仓库级改码，并设好权限与安全边界',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: 'CLI Agent 安装、权限、仓库级任务与安全边界。',
       source: '自有资料',
       hot: true,
@@ -141,8 +176,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'codex',
       title: 'OpenAI Codex / 代码代理入门',
+      hook: '别再对着空白文件发呆：AI 帮你写第一版代码',
+      outcome: '会用 Codex 做生成、解释、重构与简单任务编排',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '代码生成、解释、重构与任务编排基础。',
       source: '自有资料',
     },
@@ -156,8 +193,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'copilot',
       title: 'GitHub Copilot 企业用法与最佳实践',
+      hook: '写代码像有人随时补全：Copilot 企业级用法一次搞懂',
+      outcome: '补全、Chat、PR 总结全流程跑通，企业隐私策略配到位',
       category: 'AI编程工具',
-      level: '实战',
+      level: '熟练',
       desc: '补全、Chat、PR 总结、企业策略与隐私设置。',
       hot: true,
     },
@@ -172,8 +211,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'windsurf',
       title: 'Windsurf（Codeium）级联编程实战',
+      hook: 'Cascade 多步改码：比单轮对话省一半来回',
+      outcome: '会用 Windsurf Cascade 跑多步任务，并和 Cursor 做对选型',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: 'Cascade Agent、工作流与和 Cursor 的差异选型。',
       new: true,
     },
@@ -187,8 +228,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'trae',
       title: 'Trae IDE：国产 AI 编程助手速通',
+      hook: '国产 AI IDE 中文场景：安装当天就能改项目',
+      outcome: 'Trae 安装配置完成，日常改码流程跑通',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '安装、中文场景、常见工作流与适用人群。',
       new: true,
     },
@@ -202,8 +245,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'continue-dev',
       title: 'Continue.dev：开源 IDE 助手配置',
+      hook: 'VS Code 接自有模型：不绑单一厂商也能 AI 编程',
+      outcome: 'Continue 接 OpenAI 兼容接口，本地/云端模型自由切换',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: 'VS Code / JetBrains 接入自有模型与本地模型。',
     },
     [
@@ -216,8 +261,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'aider',
       title: 'Aider：Git 友好的命令行结对编程',
+      hook: '命令行结对编程：改完自动 commit，Git 历史清清楚楚',
+      outcome: '用 Aider 对话改码并生成规范 commit，控制模型成本',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: '基于 Git 的改码、提交信息与多文件协作。',
     },
     [
@@ -230,8 +277,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'cline-roo',
       title: 'Cline / Roo Code：VS Code Agent 插件',
+      hook: 'VS Code 里跑自治 Agent：浏览器+终端工具一条链搞定',
+      outcome: 'Cline/Roo 插件装好后能跑自治任务，权限分级不踩雷',
       category: 'AI编程工具',
-      level: '实战',
+      level: '熟练',
       desc: '浏览器工具、终端工具、自治任务与审批模式。',
       new: true,
     },
@@ -245,8 +294,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'jetbrains-ai',
       title: 'JetBrains AI Assistant 指南',
+      hook: 'Idea 里也能 AI 补全：不用换编辑器就提效',
+      outcome: 'JetBrains AI 开通后补全、解释、测试生成日常可用',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: 'Idea / WebStorm 等 IDE 内 AI 补全与重构。',
     },
     [
@@ -259,8 +310,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'amazon-q',
       title: 'Amazon Q / CodeWhisperer 速览',
+      hook: 'AWS 生态写代码：补全+安全扫描一次到位',
+      outcome: 'Amazon Q 安装关联 AWS，补全与安全提示用起来',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: 'AWS 生态下的代码助手与安全扫描能力。',
     },
     [
@@ -272,8 +325,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'cody',
       title: 'Sourcegraph Cody：代码库级问答',
+      hook: '大仓库别瞎搜：对着整个代码库直接问 AI',
+      outcome: 'Cody 连上大仓库后能做代码库级问答与搜索',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: '大仓库上下文、代码搜索与企业部署形态。',
     },
     [
@@ -286,8 +341,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'v0-lovable-bolt',
       title: 'v0 / Lovable / Bolt：AI 生成前端应用',
+      hook: '7 天从提示词到可部署前端：不用手写页面骨架',
+      outcome: '用 v0/Lovable/Bolt 从需求生成可部署前端并二次开发',
       category: 'AI编程工具',
-      level: '实战',
+      level: '熟练',
       desc: '从提示词到可部署前端的生成式产品工作流。',
       hot: true,
     },
@@ -301,8 +358,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'replit-agent',
       title: 'Replit Agent：云端从零搭应用',
+      hook: '云端从零搭应用：没有本地环境也能出原型',
+      outcome: 'Replit Agent 创建、迭代、部署全栈原型一条链跑通',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '云 IDE + Agent 生成全栈原型的路径与限制。',
     },
     [
@@ -314,8 +373,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'gemini-cli',
       title: 'Gemini CLI 与多模态编程辅助',
+      hook: 'CLI 里读图读文档：多模态辅助改代码',
+      outcome: 'Gemini CLI 装好后能读文档/图片驱动改码协作',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '安装、读图读文档、与代码仓库协作。',
       source: '自有资料',
     },
@@ -329,8 +390,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'kimi-code',
       title: 'Kimi Code：长上下文编程协作',
+      hook: '长文档大仓库一次读完：不用手动复制粘贴',
+      outcome: 'Kimi Code 长上下文技巧掌握，大仓阅读编码提效',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '熟练',
       desc: '长文档、大仓库阅读与编码。',
       source: '自有资料',
     },
@@ -343,8 +406,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'vscode-ai',
       title: 'VS Code AI 扩展全家桶',
+      hook: 'VS Code + AI 扩展怎么组合：一张清单省踩坑',
+      outcome: '选对扩展组合，设置同步，日常 AI 编程流程跑通',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: 'VS Code 底座 + 主流 AI 扩展如何组合。',
       source: '自有资料',
     },
@@ -358,8 +423,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'ccswitch',
       title: 'CCSwitch：多模型 / 多账号切换',
+      hook: '多模型多账号一键切换：别再反复登出登录',
+      outcome: 'CCSwitch 管理多模型账号，切换成本降到秒级',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '降低工具与账号切换成本。',
       source: '自有资料',
     },
@@ -372,8 +439,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'zed-tabnine',
       title: 'Zed AI / Tabnine 等补全工具对比',
+      hook: '轻量补全路线：隐私本地化也能 AI 写代码',
+      outcome: '看懂 Zed/Tabnine 等补全工具差异，选出适合自己的',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '轻量补全路线与隐私本地化选项。',
     },
     [
@@ -386,8 +455,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'openhands-devin',
       title: 'OpenHands / Devin 类自治 Agent 观察',
+      hook: '自治 Agent 到底行不行：拆演示看真实边界',
+      outcome: '建立自治软件工程 Agent 的现实预期与企业引入检查表',
       category: 'AI编程工具',
-      level: '进阶',
+      level: '老手',
       desc: '自治软件工程 Agent 的能力、成本与现实预期。',
       new: true,
     },
@@ -403,10 +474,13 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'api-openai',
       title: 'OpenAI API 从零配置到第一请求',
+      hook: '30 分钟发出第一条 OpenAI API 请求',
+      outcome: 'API Key、SDK、流式输出配通，常见报错能自己排查',
       category: 'API与配置',
-      level: '入门',
+      level: '新手',
       desc: 'API Key、Base URL、Chat Completions、流式输出。',
       hot: true,
+      trackStep: 2,
     },
     [
       ['注册 OpenAI 账号与组织', 10, '视频'],
@@ -426,8 +500,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'api-anthropic',
       title: 'Anthropic Claude API 配置手册',
+      hook: 'Claude API 配置一次搞定：Messages 结构不再懵',
+      outcome: 'Anthropic Messages API 请求结构掌握，和 OpenAI 差异清楚',
       category: 'API与配置',
-      level: '入门',
+      level: '新手',
       desc: 'Messages API、系统提示、工具调用字段入门。',
     },
     [
@@ -440,8 +516,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'api-compatible',
       title: 'OpenAI 兼容接口与国内中转配置',
+      hook: '国内网关填 Cursor：Base URL 对照表复制即用',
+      outcome: 'OpenAI 兼容接口在 Cursor/Continue 里配通并实测通过',
       category: 'API与配置',
-      level: '实战',
+      level: '熟练',
       desc: 'base_url、兼容网关、Cursor/Continue 填法与排错。',
       hot: true,
     },
@@ -462,8 +540,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'api-azure',
       title: 'Azure OpenAI 企业接入要点',
+      hook: '企业上 Azure OpenAI：合规部署不走弯路',
+      outcome: 'Azure 资源、Deployment、VNet 接入与 Key 轮换流程跑通',
       category: 'API与配置',
-      level: '企业',
+      level: '老手',
       desc: '资源部署、区域、密钥、网络与合规关注点。',
     },
     [
@@ -482,8 +562,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'api-keys-security',
       title: 'API Key 安全：存储、轮换、泄露应对',
+      hook: '别再泄露 API Key：一套密钥安全规范省几万账单',
+      outcome: '密钥存储、轮换、泄露应急流程落地，pre-commit 扫描启用',
       category: 'API与配置',
-      level: '企业',
+      level: '老手',
       desc: '禁止提交仓库、密钥保险柜、泄露应急流程。',
       hot: true,
     },
@@ -500,10 +582,37 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   ),
   course(
     {
+      id: 'qq-smtp-auth',
+      title: 'QQ 邮箱 SMTP：免费给用户发注册/登录验证码',
+      hook: '免费给用户发验证码：QQ 邮箱 SMTP 手把手配通',
+      outcome: '网站注册/登录验证码邮件稳定发出，部署排错清单在手',
+      category: 'API与配置',
+      level: '新手',
+      desc: '开通 SMTP、授权码、网站名义发信、nodemailer、注册设密码、验证码登录、部署注意。',
+      hot: true,
+      new: true,
+    },
+    [
+      ['为什么用 QQ 邮箱 SMTP（免费）而不是短信', 8, '图文'],
+      ['新版 QQ 邮箱：账号与安全 → 安全设置开 SMTP', 12, '实操'],
+      ['授权码 vs QQ 密码：写进 .env 的正确字段', 10, '图文'],
+      ['SMTP_FROM：网站显示名 + 真实发信地址', 10, '实操'],
+      ['nodemailer 发送模板与未配置 SMTP 时的降级', 15, '实操'],
+      ['email_codes 表：哈希、过期、冷却、一次性校验', 15, '实操'],
+      ['API：send-code / register / login / login-code', 18, '实操'],
+      ['前端：注册验证码+设密码；登录双 Tab', 15, '实操'],
+      ['部署：服务器 .env、ignore-scripts、PM2 --update-env', 15, '实操'],
+      ['排错清单：收不到信、401、sqlite 被重编译', 12, '模板'],
+    ],
+  ),
+  course(
+    {
       id: 'api-params',
       title: '温度、Top-p、Max Tokens 等参数详解',
+      hook: '温度、Top-p 调对了：同样 prompt 输出质量差一倍',
+      outcome: '掌握各参数影响，写作/代码场景有推荐值可对照',
       category: 'API与配置',
-      level: '进阶',
+      level: '熟练',
       desc: '每个参数影响什么、何时该调、调错会怎样。',
     },
     [
@@ -516,8 +625,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'api-streaming-tools',
       title: '流式输出、Function Calling 与结构化输出',
+      hook: '流式 + 工具调用一次跑通：Agent 底座从这里搭',
+      outcome: 'SSE 流式、Function Calling、结构化输出端到端 Demo 完成',
       category: 'API与配置',
-      level: '进阶',
+      level: '熟练',
       desc: 'SSE、工具调用、JSON Schema / 结构化输出。',
     },
     [
@@ -538,11 +649,14 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-intro',
       title: 'MCP 是什么：模型上下文协议入门',
+      hook: 'MCP 是什么：5 分钟搞懂 IDE 怎么接外部工具',
+      outcome: '理解 Host/Client/Server 关系，Cursor 里看到 MCP 绿灯知道意味着什么',
       category: 'MCP与工具协议',
-      level: '入门',
+      level: '新手',
       desc: 'MCP 解决什么问题、和 Plugin / Function Calling 关系。',
       hot: true,
       new: true,
+      trackStep: 4,
     },
     [
       ['MCP 解决什么问题：工具、数据、IDE 统一协议', 12, '视频'],
@@ -560,8 +674,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-install',
       title: '在 Cursor / Claude 中安装与配置 MCP',
+      hook: 'Cursor 里装第一个 MCP：配置文件复制就能跑',
+      outcome: 'mcp.json 配好第一个 Server，权限弹窗与失败排查会处理',
       category: 'MCP与工具协议',
-      level: '实战',
+      level: '熟练',
       desc: 'mcp.json 配置、本地 Server 启动、权限弹窗处理。',
       hot: true,
     },
@@ -575,8 +691,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-server',
       title: 'MCP Server 原理与常用官方 Server 拆解',
+      hook: '拆解官方 MCP Server：filesystem/GitHub 怎么配',
+      outcome: '读懂 Server 生命周期与 tools 注册，常用 Server 独立配通',
       category: 'MCP与工具协议',
-      level: '进阶',
+      level: '熟练',
       desc: 'Server 进程结构、tools/resources 注册、filesystem / context7 配置详解。',
       hot: true,
       source: '自有资料',
@@ -596,8 +714,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-filesystem',
       title: 'MCP 实战：文件系统与仓库读写',
+      hook: '让 AI 安全读写仓库：路径沙箱别踩企业红线',
+      outcome: 'filesystem MCP 只读/读写权限与沙箱配置正确落地',
       category: 'MCP与工具协议',
-      level: '实战',
+      level: '熟练',
       desc: '只读/读写权限、路径沙箱、企业红线。',
     },
     [
@@ -610,8 +730,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-github',
       title: 'MCP 实战：GitHub / Issue / PR 动作',
+      hook: 'AI 帮你查仓库开 Issue：GitHub MCP 权限最小化',
+      outcome: 'GitHub MCP 授权后常用动作清单跑通，Issue 整理演示完成',
       category: 'MCP与工具协议',
-      level: '进阶',
+      level: '熟练',
       desc: '让模型查仓库、开 Issue、辅助 PR 描述。',
     },
     [
@@ -624,8 +746,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-browser',
       title: 'MCP 实战：浏览器自动化与抓取边界',
+      hook: '浏览器自动化交给 AI：快照点击流合规边界清楚',
+      outcome: '浏览器 MCP 能力与反爬合规边界掌握，自动化脚本有边界',
       category: 'MCP与工具协议',
-      level: '进阶',
+      level: '熟练',
       desc: '页面快照、点击流、合规与反爬注意。',
     },
     [
@@ -638,8 +762,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-custom',
       title: '自定义 MCP Server：封装企业内部工具',
+      hook: '把内部 API 包成 MCP：IDE Agent 安全调企业工具',
+      outcome: '最小 MCP Server 写好鉴权审计，团队可安装使用',
       category: 'MCP与工具协议',
-      level: '企业',
+      level: '老手',
       desc: '把内部 API 包成 MCP，供 IDE Agent 安全调用。',
       new: true,
     },
@@ -653,8 +779,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'mcp-security',
       title: 'MCP 安全：权限、提示注入与供应链',
+      hook: '第三方 MCP 别乱装：权限投毒供应链一次讲透',
+      outcome: 'MCP 威胁模型清楚，最小权限清单与引入评审流程落地',
       category: 'MCP与工具协议',
-      level: '企业',
+      level: '老手',
       desc: '第三方 Server 风险、工具投毒、最小化授权。',
     },
     [
@@ -669,10 +797,13 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'prompt-basics',
       title: '提示词工程入门：角色、目标、约束、格式',
+      hook: '四段式提示词：同一任务输出质量立刻翻倍',
+      outcome: '角色/目标/约束/格式四件套熟练，10 题改写练习过关',
       category: '提示词工程',
-      level: '入门',
+      level: '新手',
       desc: '四件套框架，立刻提升提问质量。',
       hot: true,
+      trackStep: 1,
     },
     [
       ['坏提示 vs 好提示：同一任务对比', 12, '视频'],
@@ -689,8 +820,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'prompt-advanced',
       title: 'Few-shot、CoT、ReAct 与评测',
+      hook: 'Few-shot + CoT + ReAct：复杂任务 prompt 有方法论',
+      outcome: '高级提示技巧与 A/B 评测方法掌握，版本管理有流程',
       category: '提示词工程',
-      level: '进阶',
+      level: '熟练',
       desc: '复杂任务提示技巧与 A/B 评测方法。',
     },
     [
@@ -708,8 +841,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'prompt-system',
       title: 'System Prompt 与工具说明写法',
+      hook: 'System Prompt 写对了：Agent 行为稳定不跑偏',
+      outcome: '系统提示与工具描述写法掌握，客服 Agent 设定实操完成',
       category: '提示词工程',
-      level: '进阶',
+      level: '熟练',
       desc: '给 Agent 写稳定系统设定与工具描述。',
     },
     [
@@ -722,8 +857,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'prompt-injection',
       title: '提示注入（Prompt Injection）防护',
+      hook: '别再被 prompt 注入攻破：攻击案例与防护策略',
+      outcome: '识别注入攻击形态，产品侧防护策略与检查清单落地',
       category: '提示词工程',
-      level: '企业',
+      level: '老手',
       desc: '攻击形态、案例与产品侧防护策略。',
     },
     [
@@ -738,10 +875,13 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'agent-basics',
       title: 'Agent 入门：规划、记忆、工具',
+      hook: '对话机器人 vs Agent：建立正确预期少踩坑',
+      outcome: '理解规划/记忆/工具三角，知道什么场景该上 Agent',
       category: 'Agent与自动化',
-      level: '入门',
+      level: '新手',
       desc: '对话机器人 vs Agent，建立正确预期。',
       hot: true,
+      trackStep: 5,
     },
     [
       ['概念澄清', 15, '视频'],
@@ -753,8 +893,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'agent-tools',
       title: 'Agent 工具调用：从 Function 到 MCP 闭环',
+      hook: 'Agent 工具闭环：plan → tool → observe 一次跑通',
+      outcome: '设计 tools、执行循环、错误重试，端到端 Demo 拆解完成',
       category: 'Agent与自动化',
-      level: '实战',
+      level: '熟练',
       desc: '设计 tools、执行循环、错误重试、与 MCP 组合的企业 Agent 模式。',
       hot: true,
       new: true,
@@ -774,8 +916,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'multi-agent',
       title: '多 Agent 协作：调研 / 写作 / 审核',
+      hook: '多 Agent 分工写作：调研/写作/审核少幻觉',
+      outcome: '角色分工与交接协议设计完成，端到端多 Agent 演练跑通',
       category: 'Agent与自动化',
-      level: '进阶',
+      level: '熟练',
       desc: '角色分工、交接协议、减少幻觉。',
     },
     [
@@ -788,8 +932,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'workflow-auto',
       title: '业务自动化：n8n / 飞书 / 企微串联',
+      hook: '怎样让 AI 自动干活，人睡觉也能有钱到账',
+      outcome: 'n8n/飞书/企微串联模型，一条业务通知流自动跑完',
       category: 'Agent与自动化',
-      level: '实战',
+      level: '老手',
       desc: '把模型接到企业工具链自动跑。',
       hot: true,
     },
@@ -805,8 +951,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'model-map',
       title: '主流大模型能力地图与选型',
+      hook: 'GPT / Claude / 国产模型怎么选：一张对照表省试错',
+      outcome: '按任务选对模型，成本与速度直觉建立',
       category: '大模型认知',
-      level: '入门',
+      level: '新手',
       desc: 'GPT / Claude / Gemini / 国产模型怎么选。',
       hot: true,
     },
@@ -820,8 +968,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'model-terms-core',
       title: 'LLM 核心机制：Token、上下文、注意力（通俗版）',
+      hook: 'Token、上下文、注意力：专有名词 15 分钟讲人话',
+      outcome: 'LLM 核心机制通俗理解，知道为什么会忘、会瞎编',
       category: '大模型认知',
-      level: '入门',
+      level: '新手',
       desc: '用非数学语言讲清关键专有名词。',
       hot: true,
     },
@@ -836,8 +986,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'model-training',
       title: '预训练、SFT、RLHF、LoRA 名词解释',
+      hook: '预训练/SFT/RLHF/LoRA：训练名词和企业相关度',
+      outcome: '训练流水线全景清楚，和微调/RAG 选型有关联直觉',
       category: '大模型认知',
-      level: '进阶',
+      level: '熟练',
       desc: '训练阶段专有名称与企业相关度。',
     },
     [
@@ -850,8 +1002,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'model-moe-multimodal',
       title: 'MoE、多模态、推理模型差异',
+      hook: 'MoE、多模态、推理模型：选型不再被名词唬住',
+      outcome: '混合专家/多模态/推理模型差异清楚，知道何时用哪种',
       category: '大模型认知',
-      level: '进阶',
+      level: '熟练',
       desc: '混合专家、图文音视频、o 系列推理模型。',
       new: true,
     },
@@ -867,8 +1021,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'rag-basics',
       title: 'RAG 入门：检索增强生成为何重要',
+      hook: '公司文档问答不再胡编：RAG 最小 Demo 当天跑通',
+      outcome: 'Indexing/Retrieval/Generation 流程掌握，10 页 PDF 问答思路清楚',
       category: '知识库与RAG',
-      level: '入门',
+      level: '新手',
       desc: '用公司文档回答，减少过期与胡编。',
       hot: true,
     },
@@ -887,8 +1043,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'rag-chunking',
       title: '文档切片、元数据与评测集',
+      hook: '切片切对了检索准一倍：Chunk 策略与质检集模板',
+      outcome: '文档切片、元数据、评测集设计完成，问答质检有方法',
       category: '知识库与RAG',
-      level: '实战',
+      level: '熟练',
       desc: 'Chunk、重叠、元数据、问答质检。',
     },
     [
@@ -901,8 +1059,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'rag-vector',
       title: '向量数据库选型直觉',
+      hook: '向量库怎么选：Milvus / PGVector 一张决策表',
+      outcome: '向量数据库选型维度掌握，小型方案有具体建议',
       category: '知识库与RAG',
-      level: '进阶',
+      level: '熟练',
       desc: 'Milvus / PGVector / 云检索的选型维度。',
     },
     [
@@ -917,8 +1077,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'domain-api-cheatsheet',
       title: '域名与接口手把手：Base URL 速查与填法',
+      hook: 'Base URL 速查表：OpenAI/Azure/DeepSeek 复制即用',
+      outcome: '各厂商域名/路径/鉴权对照表在手，填 Cursor 不再试错',
       category: 'API与配置',
-      level: '入门',
+      level: '新手',
       desc: 'OpenAI / Anthropic / Azure / DeepSeek / 兼容网关域名、路径、鉴权对照，复制即用。',
       hot: true,
       new: true,
@@ -939,12 +1101,15 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'newbie-first-week',
       title: '新手第一周：从零到能独立调 API + 用 Cursor',
+      hook: '7 天从零到能调 API + 用 Cursor：每天 30 分钟',
+      outcome: '7 天计划全部完成，能独立调 API、用 Cursor、配 MCP',
       category: 'AI编程工具',
-      level: '入门',
+      level: '新手',
       desc: '7 天计划：提示词、IDE、API、MCP、安全复盘，每天 30～45 分钟可完成。',
       hot: true,
       new: true,
       source: '自有资料',
+      trackStep: 0,
     },
     [
       ['Day1：四段式提示词完成 3 个真实任务', 35, '实操'],
@@ -960,8 +1125,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'cost-control',
       title: '成本与限流：Token 账单、配额与模型路由',
+      hook: 'Agent 账单别再失控：Token 告警与模型路由一套配齐',
+      outcome: '账单拆分、hard limit、缓存、模型路由落地，429 有应对策略',
       category: 'API与配置',
-      level: '企业',
+      level: '老手',
       desc: '告警、hard limit、缓存、历史截断、模型路由，避免 Agent 账单失控。',
       new: true,
       source: '自有资料',
@@ -981,8 +1148,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'hallucination-defense',
       title: '幻觉防控：Grounding、引用与拒答策略',
+      hook: 'AI 瞎编少一半：Grounding + 引用 + 拒答策略',
+      outcome: '幻觉防控系统方法落地，golden QA 评测集与 bad case 回流机制建立',
       category: '知识库与RAG',
-      level: '实战',
+      level: '熟练',
       desc: '减少瞎编的系统方法：RAG 引用、低 temperature、校验、人工复核流程。',
       hot: true,
       new: true,
@@ -1002,8 +1171,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'enterprise-ai-checklist',
       title: '企业 AI 落地清单：从试点到规模推广',
+      hook: '企业 AI 从试点到规模：法务/数据/审计一条龙清单',
+      outcome: '企业落地 checklist 填完，试点 30 天指标与扩面条件明确',
       category: '安全合规',
-      level: '企业',
+      level: '老手',
       desc: '法务、数据分级、工具白名单、审计、培训、供应商评估一条龙 checklist。',
       new: true,
       source: '自有资料',
@@ -1023,8 +1194,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'streaming-sse',
       title: '流式输出 SSE 实战：前后端与网关',
+      hook: '流式 SSE 前后端跑通：首 token 延迟优化有招',
+      outcome: 'SSE 协议、fetch 流式读取、网关缓冲坑排查完成',
       category: 'API与配置',
-      level: '进阶',
+      level: '熟练',
       desc: 'SSE 协议、fetch 流式读取、Node 转发、网关缓冲坑与首 token 优化。',
       new: true,
     },
@@ -1045,8 +1218,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'biz-overview',
       title: 'AI 商业自动化落地全景',
+      hook: 'AI 商业自动化全景：30 天试点计划直接开干',
+      outcome: '场景选型、ROI 表、30 天试点计划三件套落地',
       category: '商业落地',
-      level: '企业',
+      level: '老手',
       desc: '场景选型、试点、度量与扩面。',
       hot: true,
     },
@@ -1060,8 +1235,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'biz-sales-cs',
       title: '销售跟进与客服质检自动化',
+      hook: '销售跟进+客服质检自动化：纪要报告少加班',
+      outcome: '销售卡点诊断与客服质检流跑通，模板包可直接用',
       category: '商业落地',
-      level: '实战',
+      level: '老手',
       desc: '纪要、跟进建议、质检报告。',
     },
     [
@@ -1076,8 +1253,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'sec-baseline',
       title: '企业 AI 安全基线与脱敏',
+      hook: '企业 AI 安全基线：红线脱敏审计一次配齐',
+      outcome: '安全红线、脱敏练习、审计字段规范落地',
       category: '安全合规',
-      level: '企业',
+      level: '老手',
       desc: '红线、脱敏、账号与审计。',
       hot: true,
     },
@@ -1091,8 +1270,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'sec-policy',
       title: '《企业 AI 使用规范》模板包',
+      hook: '《企业 AI 使用规范》模板包：制度培训签署拿来即用',
+      outcome: '制度模板、培训稿、签署页三件套可直接发布',
       category: '安全合规',
-      level: '企业',
+      level: '老手',
       desc: '制度、培训稿、签署页。',
     },
     [
@@ -1106,8 +1287,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'office-suite',
       title: '办公提效：邮件、PPT、纪要、调研',
+      hook: '邮件/PPT/纪要/调研：办公四件套 prompt 省 2 小时/天',
+      outcome: '高频办公场景提示词熟练，复核习惯建立',
       category: '办公提效',
-      level: '入门',
+      level: '新手',
       desc: '高频办公场景提示词与复核习惯。',
     },
     [
@@ -1121,8 +1304,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'office-excel',
       title: '表格 AI：清洗、公式、异常解释',
+      hook: '表格 AI 清洗公式：Excel 脏活交给模型解释清楚',
+      outcome: '表格任务描述、公式生成、异常解释可靠用法掌握',
       category: '办公提效',
-      level: '入门',
+      level: '新手',
       desc: 'Excel / 表格场景的可靠用法。',
       hot: true,
     },
@@ -1138,8 +1323,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'ind-pack',
       title: '行业包：电商 / 制造 / 教育 / 传媒',
+      hook: '电商/制造/教育/传媒：垂直场景 prompt 合集直接用',
+      outcome: '四行业提示词与质控要点掌握，场景改写能立刻上手',
       category: '行业场景',
-      level: '实战',
+      level: '熟练',
       desc: '垂直场景提示词与质控要点合集。',
     },
     [
@@ -1149,6 +1336,207 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       ['传媒多平台改写', 20, '实操'],
     ],
   ),
+  // ——— 商业落地 · 结果先行新课 ———
+  course(
+    {
+      id: 'viral-hook-writing',
+      title: '百万播放钩子文案：抖音标题结果先行写法',
+      hook: '怎样用 AI 做出能打百万播放的短视频脚本',
+      outcome: '产出 20 条可 A/B 测试的钩子文案，完播率与点击率有提升方向',
+      category: '商业落地',
+      level: '新手',
+      desc: '结果先行标题、前三秒钩子、痛点-反差-承诺结构，AI 批量改写与人工复核。',
+      hot: true,
+      new: true,
+      source: '自有资料',
+      trackStep: 2,
+    },
+    [
+      ['完播率秘密：结果先行 vs 过程描述对比', 15, '视频'],
+      ['钩子公式：痛点 → 反差 → 具体结果', 18, '图文'],
+      ['AI 批量生成 50 条钩子再人工筛 10 条', 25, '实操'],
+      ['数字/时间/身份三要素怎么加才不假', 12, '图文'],
+      ['A/B 测试表：标题-封面-前三秒联动', 15, '模板'],
+      ['违禁词与平台规则快速自查', 10, '图文'],
+      ['案例拆解：知识类/带货类/剧情类各 3 条', 20, '视频'],
+    ],
+  ),
+  course(
+    {
+      id: 'ai-douyin-pipeline',
+      title: 'AI 做抖音：从脚本到发布一条龙流水线',
+      hook: '一套流程从选题到发布：AI 帮你日更抖音不断更',
+      outcome: '搭好脚本→分镜→配音→剪辑→发布的自动化流水线，日更 1 条可持续',
+      category: '商业落地',
+      level: '熟练',
+      desc: '选题库、脚本模板、TTS、剪映/CapCut 批处理、发布排期与数据复盘。',
+      hot: true,
+      new: true,
+    },
+    [
+      ['选题库：热点+常青+转化三类比例', 15, '模板'],
+      ['脚本生成：钩子+正文+CTA 三段式 prompt', 20, '实操'],
+      ['分镜表自动出：画面/字幕/时长对齐', 18, '实操'],
+      ['TTS 配音与字幕时间轴批量对齐', 22, '实操'],
+      ['剪映/CapCut 模板批处理导出', 25, '视频'],
+      ['发布排期与评论区首评话术', 12, '图文'],
+      ['数据复盘：播放/完播/转粉/私信漏斗', 18, '实操'],
+      ['失败重试：断更预警与备用选题池', 10, '模板'],
+    ],
+  ),
+  course(
+    {
+      id: 'auto-money-pipeline',
+      title: 'AI 自动化工作流到账：n8n + 模型 + 收款闭环',
+      hook: '怎样让 AI 自动干活，人睡觉也能有钱到账',
+      outcome: '一条从线索采集→AI 处理→通知→收款的自动化流水线跑通',
+      category: 'Agent与自动化',
+      level: '老手',
+      desc: 'n8n/Make 编排、Webhook、支付回调、异常告警与 ROI 粗算。',
+      hot: true,
+      new: true,
+    },
+    [
+      ['到账闭环地图：流量→转化→交付→收款', 15, '视频'],
+      ['n8n 节点选型：HTTP/Cron/分支/重试', 20, '实操'],
+      ['模型节点：分类/摘要/回复模板化', 22, '实操'],
+      ['Webhook 验签与幂等：防重复扣款', 18, '图文'],
+      ['支付回调对接：微信/支付宝/demo 沙箱', 25, '实操'],
+      ['异常告警：Slack/飞书/邮件三选一', 12, '实操'],
+      ['成本监控：单次转化 API 成本上限', 15, '模板'],
+      ['30 天 ROI 复盘表与扩面条件', 12, '模板'],
+    ],
+  ),
+  course(
+    {
+      id: 'knowledge-ip-start',
+      title: '知识付费 IP 冷启动：定位、试课、首单',
+      hook: '7 天冷启动知识付费 IP：从 0 到第一笔成交',
+      outcome: '完成定位、试听课、定价与首单成交，私域承接路径跑通',
+      category: '商业落地',
+      level: '新手',
+      desc: '人设定位、痛点选题、免费试课、小课包定价、朋友圈/社群首发。',
+      hot: true,
+      new: true,
+    },
+    [
+      ['定位三角：谁的问题+独特结果+信任状', 18, '模板'],
+      ['选题 10 条：搜索量+痛点+可交付', 20, '实操'],
+      ['试听课结构：钩子+干货+限时福利', 22, '视频'],
+      ['定价阶梯：引流课/正价课/陪跑', 15, '图文'],
+      ['首发渠道：朋友圈+社群+直播预告', 18, '实操'],
+      ['首单成交话术与异议处理', 15, '模板'],
+      ['复盘：转粉率、咨询率、成交率', 12, '图文'],
+    ],
+  ),
+  course(
+    {
+      id: 'private-domain-convert',
+      title: '公域引流私域成交：抖音→微信转化漏斗',
+      hook: '公域播放量变成私域成交：一套漏斗话术直接复制',
+      outcome: '从短视频/直播引流到企微/个微的承接话术与 SOP 落地',
+      category: '商业落地',
+      level: '熟练',
+      desc: '钩子视频、私信话术、加微理由、朋友圈节奏、1v1 成交脚本。',
+      hot: true,
+      new: true,
+    },
+    [
+      ['漏斗地图：曝光→点击→私信→加微→成交', 12, '视频'],
+      ['短视频 CTA：不违规的引流说法', 15, '图文'],
+      ['私信自动回复+人工接管节点', 20, '实操'],
+      ['加微理由设计：资料包/诊断/社群', 15, '模板'],
+      ['朋友圈 7 天节奏：信任→案例→限时', 18, '图文'],
+      ['1v1 成交脚本：需求诊断→方案→关单', 25, '实操'],
+      ['数据看板：各环节转化率基准', 12, '模板'],
+    ],
+  ),
+  course(
+    {
+      id: 'ai-content-matrix',
+      title: '矩阵号内容批量生产：一稿多发不断更',
+      hook: '矩阵号日更不断更：AI 批量生产一稿多发',
+      outcome: '建立选题-脚本-改写-排期矩阵，3 个账号同步更新有 SOP',
+      category: '商业落地',
+      level: '熟练',
+      desc: '母稿策略、平台改写、账号人设差异、排期表与质检清单。',
+      new: true,
+    },
+    [
+      ['矩阵策略：母账号+卫星账号分工', 15, '图文'],
+      ['母稿 prompt：一次生成多平台版本', 22, '实操'],
+      ['抖音/小红书/视频号语气改写规则', 18, '实操'],
+      ['排期表：发布时间与人设不冲突', 12, '模板'],
+      ['质检清单：违禁、同质化、品牌一致', 15, '模板'],
+      ['批量配音与封面模板化', 20, '视频'],
+      ['周复盘：哪类母稿转粉最高', 15, '实操'],
+    ],
+  ),
+  course(
+    {
+      id: 'prompt-to-product',
+      title: '提示词做成可卖的小产品：模板包上架',
+      hook: '别把 prompt 藏硬盘：打包成可卖的小产品',
+      outcome: '完成 1 套可售 prompt 模板包（含说明+示例+定价页）',
+      category: '商业落地',
+      level: '熟练',
+      desc: '需求验证、模板结构、交付格式、定价、上架渠道与售后说明。',
+      new: true,
+    },
+    [
+      ['选品：高频痛点+可标准化输出', 15, '图文'],
+      ['模板结构：场景+变量+示例+反例', 20, '实操'],
+      ['交付物：Notion/飞书/PDF 怎么选', 12, '图文'],
+      ['定价：锚定、阶梯、限时首发', 15, '模板'],
+      ['上架：小报童/自有站/社群团购', 18, '实操'],
+      ['售后：更新日志与买家答疑 SOP', 12, '模板'],
+      ['案例：办公/电商/自媒体各 1 套', 22, '视频'],
+    ],
+  ),
+  course(
+    {
+      id: 'overnight-delivery',
+      title: '录播课自动化交付飞轮：购课即学零人工',
+      hook: '购课即学零人工：录播课自动化交付飞轮',
+      outcome: '支付→开通→邮件/短信→进群→进度追踪全自动，售后工单有模板',
+      category: '商业落地',
+      level: '老手',
+      desc: '支付 webhook、权限开通、邮件模板、社群机器人、进度同步。',
+      new: true,
+    },
+    [
+      ['交付飞轮：支付→权限→通知→社群', 15, '视频'],
+      ['Webhook 触发开通与幂等设计', 20, '实操'],
+      ['邮件/短信模板：购课成功+学习指引', 15, '模板'],
+      ['社群机器人：欢迎语+课表+答疑入口', 18, '实操'],
+      ['进度回写：完成度触发续费/升单', 20, '图文'],
+      ['退款/换课异常流程', 12, '模板'],
+      ['监控：开通失败率与通知到达率', 15, '实操'],
+    ],
+  ),
+  course(
+    {
+      id: 'live-script-funnel',
+      title: '直播间转化话术漏斗：停留→信任→成交',
+      hook: '直播间从停留到成交：一套话术漏斗照着念',
+      outcome: '完整直播脚本（开场-塑品-逼单-售后）可直接用于首播',
+      category: '商业落地',
+      level: '熟练',
+      desc: '停留钩子、互动节奏、塑品三角、限时逼单、异议处理与复盘。',
+      hot: true,
+      new: true,
+    },
+    [
+      ['漏斗五段：停留→互动→信任→成交→复购', 12, '视频'],
+      ['开场 3 分钟：结果承诺+福利预告', 15, '模板'],
+      ['互动节奏：点名+问题+上墙', 15, '图文'],
+      ['塑品：痛点+方案+案例+价格锚', 20, '实操'],
+      ['逼单：限时限量+风险逆转', 18, '模板'],
+      ['异议处理：太贵/再看看/问家人', 15, '图文'],
+      ['播后复盘：在线峰值→成交转化', 12, '模板'],
+    ],
+  ),
+
 ]
 
 export function getItem(id: string) {
@@ -1156,16 +1544,16 @@ export function getItem(id: string) {
 }
 
 export const FEATURED_IDS = [
-  'cursor',
-  'mcp-intro',
-  'api-openai',
-  'copilot',
-  'prompt-basics',
-  'rag-basics',
-  'model-terms-core',
-  'claude-code',
+  'viral-hook-writing',
+  'ai-douyin-pipeline',
+  'auto-money-pipeline',
+  'knowledge-ip-start',
+  'private-domain-convert',
   'newbie-first-week',
-  'cost-control',
+  'cursor',
+  'prompt-basics',
+  'mcp-intro',
+  'prompt-to-product',
 ] as const
 
 export type LearningPath = {
@@ -1178,45 +1566,59 @@ export type LearningPath = {
 
 export const LEARNING_PATHS: LearningPath[] = [
   {
-    id: 'path-ide',
-    title: 'AI 编程工具路线',
-    desc: 'Cursor / Copilot / Claude Code / Windsurf 等',
+    id: 'path-newbie',
+    title: '新手：从零到会用 AI',
+    desc: '7 天上手、提示词、Cursor、钩子文案、API 与 MCP 入门',
     count: 0,
-    courseIds: ['cursor', 'copilot', 'claude-code', 'newbie-first-week', 'cursor-rules', 'windsurf', 'continue-dev', 'aider', 'cline-roo'],
+    courseIds: [
+      'newbie-first-week',
+      'prompt-basics',
+      'viral-hook-writing',
+      'model-map',
+      'api-openai',
+      'cursor',
+      'mcp-intro',
+      'agent-basics',
+      'office-suite',
+      'knowledge-ip-start',
+    ],
   },
   {
-    id: 'path-api',
-    title: 'API 与工程接入',
-    desc: '密钥、兼容接口、参数、流式与工具调用',
+    id: 'path-skilled',
+    title: '熟练：可交付的自动化与内容系统',
+    desc: '抖音流水线、矩阵生产、Agent 工具、RAG 与兼容接口',
     count: 0,
-    courseIds: ['domain-api-cheatsheet', 'api-openai', 'api-anthropic', 'api-compatible', 'api-azure', 'api-keys-security', 'api-params', 'streaming-sse', 'cost-control', 'api-streaming-tools'],
+    courseIds: [
+      'ai-douyin-pipeline',
+      'ai-content-matrix',
+      'private-domain-convert',
+      'prompt-to-product',
+      'live-script-funnel',
+      'agent-tools',
+      'api-compatible',
+      'mcp-install',
+      'workflow-auto',
+      'rag-chunking',
+      'prompt-advanced',
+      'hallucination-defense',
+    ],
   },
   {
-    id: 'path-mcp',
-    title: 'MCP 从零到企业',
-    desc: '协议认知、安装配置、GitHub/浏览器/自定义 Server',
+    id: 'path-veteran',
+    title: '老手：知识变现 / Agent 流水线 / 企业级落地',
+    desc: '自动化到账、录播交付飞轮、企业合规与 MCP 安全',
     count: 0,
-    courseIds: ['mcp-intro', 'mcp-install', 'mcp-server', 'mcp-filesystem', 'mcp-github', 'mcp-browser', 'mcp-custom', 'mcp-security'],
-  },
-  {
-    id: 'path-prompt',
-    title: '提示词与 Agent',
-    desc: '提示词工程到多 Agent 协作',
-    count: 0,
-    courseIds: ['prompt-basics', 'prompt-advanced', 'prompt-system', 'agent-basics', 'agent-tools', 'multi-agent'],
-  },
-  {
-    id: 'path-rag',
-    title: '知识库 RAG',
-    desc: '检索增强、切片、向量库',
-    count: 0,
-    courseIds: ['rag-basics', 'rag-chunking', 'rag-vector', 'hallucination-defense'],
-  },
-  {
-    id: 'path-biz',
-    title: '企业落地与安全',
-    desc: '自动化、规范、脱敏审计',
-    count: 0,
-    courseIds: ['biz-overview', 'enterprise-ai-checklist', 'biz-sales-cs', 'sec-baseline', 'sec-policy'],
+    courseIds: [
+      'auto-money-pipeline',
+      'overnight-delivery',
+      'biz-overview',
+      'enterprise-ai-checklist',
+      'mcp-custom',
+      'mcp-security',
+      'cost-control',
+      'api-azure',
+      'sec-baseline',
+      'prompt-injection',
+    ],
   },
 ].map((p) => ({ ...p, count: p.courseIds.length }))

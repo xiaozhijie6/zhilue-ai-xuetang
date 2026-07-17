@@ -1937,6 +1937,57 @@ export const GLOSSARY: GlossaryItem[] = [
     related: ['api-key', 'mcp-server', 'webhook', 'pii'],
   },
   {
+    id: 'smtp',
+    term: 'SMTP',
+    en: 'Simple Mail Transfer Protocol',
+    category: '工程与API',
+    short: '发邮件用的标准协议。网站给用户发验证码、通知信，通常走 SMTP（或厂商 HTTP 邮件 API）。',
+    detail:
+      'SMTP 是服务器把邮件投递到收件方邮箱系统的协议。个人站长最常见的免费路径是：用 QQ / 163 邮箱开通 SMTP，在后端用 nodemailer（或类似库）连接 smtp.qq.com:465，用「邮箱账号 + 授权码」登录后发送。\n\n' +
+      '和「用户注册填的邮箱」不是一回事：用户邮箱是收件人（To）；SMTP_USER 才是发件账号。想让收件箱显示网站名，用 From 头：显示名 <真实邮箱>，例如 Everyone is great <123@qq.com>。\n\n' +
+      '企业规模可再上阿里云邮件推送、SendGrid、Resend 等；个人项目用 QQ SMTP 足够验证码场景，注意日发送限额与垃圾邮件策略。',
+    howto: [
+      '在 QQ 邮箱开启 SMTP，生成授权码（不是登录密码）。',
+      '在 server/.env 配置 SMTP_HOST / PORT / USER / PASS / FROM。',
+      '后端用 nodemailer.createTransport + sendMail 发信。',
+      '验证码场景：短过期、哈希存储、发送冷却、失败次数上限。',
+      '改 .env 后重启进程（PM2 用 --update-env）。',
+      '先给自己邮箱发一封测试，再开放注册页。',
+    ],
+    domains: ['https://mail.qq.com', 'https://nodemailer.com'],
+    pitfalls: [
+      '把 QQ 登录密码当成 SMTP_PASS，认证失败。',
+      '生产未配 SMTP 却依赖发信，用户卡在「获取验证码」。',
+      '把授权码提交到 GitHub 或打进前端包。',
+      'From 地址与 SMTP 登录账号不一致导致拒信。',
+    ],
+    related: ['smtp-auth-code', 'api-key'],
+  },
+  {
+    id: 'smtp-auth-code',
+    term: '邮箱授权码',
+    en: 'SMTP Authorization Code',
+    category: '工程与API',
+    short: '邮箱服务商为第三方客户端/服务器发信生成的专用密码，替代网页登录密码。',
+    detail:
+      'QQ、163 等邮箱开启 POP3/IMAP/SMTP 后，会要求生成「授权码」。程序连接 SMTP 时，账号仍是你的邮箱地址，密码栏填授权码。授权码通常只展示一次，应存密码管理器或服务器 .env（chmod 600）。\n\n' +
+      '泄露应急：在邮箱安全设置里作废/重新生成授权码，并同步更新所有服务器环境变量后重启。不要把授权码写进教程截图或公开仓库。\n\n' +
+      '它和 API Key 同类：都是长期凭证，遵循最小暴露面与可轮换原则。',
+    howto: [
+      'QQ 邮箱：设置 → 账号与安全 → 安全设置 → 开启 SMTP → 生成授权码。',
+      '复制到 SMTP_PASS，SMTP_USER 填完整邮箱。',
+      '确认 SMTP_FROM 显示名可读、尖括号内地址与 USER 一致。',
+      '轮换后检查所有环境（本地、预发、生产）是否更新。',
+    ],
+    domains: ['https://mail.qq.com'],
+    pitfalls: [
+      '把授权码发到群聊/工单明文。',
+      '只改本地 .env，忘记改生产服务器。',
+      '重新生成后旧授权码仍留在某处备份脚本。',
+    ],
+    related: ['smtp', 'api-key'],
+  },
+  {
     id: 'pii',
     term: '个人身份信息',
     en: 'PII',

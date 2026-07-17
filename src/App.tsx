@@ -4,7 +4,6 @@ import {
   CATEGORIES,
   FEATURED_IDS,
   KNOWLEDGE_LIBRARY,
-  LEARNING_PATHS,
   LEVELS,
   getItem,
   type KnowledgeItem,
@@ -14,23 +13,29 @@ import { GLOSSARY, GLOSSARY_CATEGORIES } from './data/glossary'
 import { ENDPOINT_GROUPS, ENDPOINTS, endpointsByGroup } from './data/endpoints'
 import { GUIDE_CATEGORIES, NEWBIE_GUIDES, guidesByCategory, type GuideCategory } from './data/newbie'
 import {
-  CAT_NAV,
-  COMMUNITY_TOPICS,
   FREE_TILES,
   HERO_SLIDES,
+  HOME_TRACK_CARDS,
   REC_TABS,
 } from './data/home'
+import { HOOK_FEED } from './data/hooks'
+import { TRACKS, type TrackId } from './data/tracks'
 import { AmbientBackground } from './components/AmbientBackground'
-import { AiIcon, CourseIcon } from './components/AiIcon'
+import { AiIcon } from './components/AiIcon'
 import { CourseCover } from './components/CourseCover'
 import { CourseDetail } from './components/CourseDetail'
 import './index.css'
 
 const PHONE_KEY = 'zhilue_phone'
 const PROGRESS_KEY = 'zhilue_progress'
+const MONEY_ID_RE =
+  /viral|money|private|overnight|knowledge-ip|live-script|prompt-to-product|content-matrix|douyin/
 
-type Tab = 'courses' | 'paths' | 'glossary' | 'guide' | 'learn'
+type Tab = 'home' | 'track' | 'glossary' | 'guide' | 'learn'
 type SortKey = 'hot' | 'new' | 'students'
+type RecTabId = (typeof REC_TABS)[number]['id']
+
+const TRACK_LEVELS: TrackId[] = ['新手', '熟练', '老手']
 
 function maskPhone(phone: string) {
   if (phone.length < 7) return phone
@@ -189,28 +194,57 @@ function CourseRow({
             {item.hot && <i className="tag tag--hot">热门</i>}
             {item.new && <i className="tag tag--new">上新</i>}
             {item.source === '自有资料' && <i className="tag">自有资料</i>}
-            <i className="tag">{item.level}</i>
+            <i className={`tag tag--level tag--level-${item.level}`}>{item.level}</i>
           </div>
-          <h3>{item.title}</h3>
-          <p>{item.desc}</p>
+          <h3>{item.hook}</h3>
+          <p>{item.outcome || item.title}</p>
           <div className="gk-row__meta">
+            <span>{item.title}</span>
             <span>{item.teacher}</span>
             <span>{item.lessons.length} 讲</span>
             <span>{item.students.toLocaleString()} 人学过</span>
-            <span>{item.duration}</span>
             {progress > 0 && <span className="gk-row__pct">已学 {progress}%</span>}
           </div>
         </div>
       </button>
       <button type="button" className="gk-row__cta" onClick={onOpen}>
-        查看详情
+        看怎么做到
       </button>
     </article>
   )
 }
 
+function CatalogCard({
+  item,
+  progress,
+  onOpen,
+}: {
+  item: KnowledgeItem
+  progress: number
+  onOpen: () => void
+}) {
+  return (
+    <button type="button" className="home-card home-card--catalog" onClick={onOpen}>
+      <CourseCover
+        id={item.id}
+        category={item.category}
+        teacher={item.teacher}
+        level={item.level}
+        hot={item.hot}
+      />
+      <strong className="home-card__hook">{item.hook}</strong>
+      <em className="home-card__title">{item.title}</em>
+      <span className="home-card__outcome">
+        {item.outcome} · {item.level} · {item.students.toLocaleString()} 人学过
+      </span>
+      {progress > 0 && <span className="home-card__progress">已学 {progress}%</span>}
+    </button>
+  )
+}
+
 export default function App() {
-  const [tab, setTab] = useState<Tab>('courses')
+  const [tab, setTab] = useState<Tab>('home')
+  const [trackLevel, setTrackLevel] = useState<TrackId>('新手')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [glossaryId, setGlossaryId] = useState<string | null>(GLOSSARY[0]?.id ?? null)
   const [phone, setPhone] = useState<string | null>(() => sessionStorage.getItem(PHONE_KEY))
@@ -228,10 +262,18 @@ export default function App() {
   const [progressMap, setProgressMap] = useState(loadProgress)
   const [learnId, setLearnId] = useState<string>(FEATURED_IDS[0])
   const [heroIndex, setHeroIndex] = useState(0)
-  const [recTab, setRecTab] = useState<(typeof REC_TABS)[number]['id']>('hot')
+  const [recTab, setRecTab] = useState<RecTabId>('hot')
 
-  const openCatalog = (opts?: { category?: (typeof CATEGORIES)[number]; query?: string }) => {
+  const goToTrack = (levelId: TrackId) => {
+    setTrackLevel(levelId)
+    setTab('track')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const openCatalog = (opts?: { category?: (typeof CATEGORIES)[number]; query?: string; level?: Level | '全部' }) => {
+    setTab('home')
     if (opts?.category) setCategory(opts.category)
+    if (opts?.level) setLevel(opts.level)
     if (opts?.query !== undefined) setQuery(opts.query)
     window.setTimeout(() => {
       document.getElementById('course-catalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -242,6 +284,7 @@ export default function App() {
   const glossaryItem = GLOSSARY.find((g) => g.id === glossaryId) ?? null
   const guideItem = NEWBIE_GUIDES.find((g) => g.id === guideId) ?? NEWBIE_GUIDES[0] ?? null
   const learnCourse = getItem(learnId) ?? KNOWLEDGE_LIBRARY[0]
+  const activeTrack = TRACKS.find((t) => t.id === trackLevel) ?? TRACKS[0]
   const endpointList = useMemo(() => endpointsByGroup(endpointGroup), [endpointGroup])
   const guideList = useMemo(() => {
     const q = guideQuery.trim().toLowerCase()
@@ -261,7 +304,7 @@ export default function App() {
   }, [guideList, guideId])
 
   useEffect(() => {
-    if (tab !== 'courses') return
+    if (tab !== 'home') return
     const t = window.setInterval(() => {
       setHeroIndex((i) => (i + 1) % HERO_SLIDES.length)
     }, 5200)
@@ -269,7 +312,7 @@ export default function App() {
   }, [tab])
 
   useEffect(() => {
-    if (tab === 'courses' && query.trim()) {
+    if (tab === 'home' && query.trim()) {
       window.setTimeout(() => {
         document.getElementById('course-catalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }, 40)
@@ -298,7 +341,9 @@ export default function App() {
       if (category !== '全部' && item.category !== category) return false
       if (level !== '全部' && item.level !== level) return false
       if (!q) return true
-      return `${item.title}${item.desc}${item.category}${item.teacher}`.toLowerCase().includes(q)
+      return `${item.hook}${item.outcome}${item.title}${item.desc}${item.category}${item.teacher}`
+        .toLowerCase()
+        .includes(q)
     })
     list = [...list].sort((a, b) => {
       if (sort === 'students') return b.students - a.students
@@ -321,22 +366,21 @@ export default function App() {
     const tabMeta = REC_TABS.find((t) => t.id === recTab) ?? REC_TABS[0]
     let list = [...KNOWLEDGE_LIBRARY]
     switch (tabMeta.filter) {
-      case 'new':
-        list = list.filter((c) => c.new || c.hot).sort((a, b) => Number(!!b.new) - Number(!!a.new))
+      case 'money':
+        list = list.filter((c) => c.category === '商业落地' || MONEY_ID_RE.test(c.id))
+        list.sort((a, b) => b.students - a.students)
+        break
+      case 'newbie':
+        list = list.filter((c) => c.level === '新手')
         break
       case 'tools':
         list = list.filter((c) => c.category === 'AI编程工具')
         break
-      case 'mcp':
-        list = list.filter((c) => c.category === 'MCP与工具协议')
+      case 'auto':
+        list = list.filter((c) => c.category === 'Agent与自动化')
         break
-      case 'api':
-        list = list.filter((c) => c.category === 'API与配置')
-        break
-      case 'rag':
-        list = list.filter(
-          (c) => c.category === '知识库与RAG' || c.category === '大模型认知' || c.id.includes('multimodal'),
-        )
+      case 'new':
+        list = list.filter((c) => c.new || c.hot).sort((a, b) => Number(!!b.new) - Number(!!a.new))
         break
       default:
         list = list.filter((c) => c.hot || FEATURED_IDS.includes(c.id as (typeof FEATURED_IDS)[number]))
@@ -364,7 +408,6 @@ export default function App() {
 
   const openCourse = (id: string) => {
     setSelectedId(id)
-    setTab('courses')
   }
 
   const requireLogin = (then?: () => void) => {
@@ -395,16 +438,16 @@ export default function App() {
 
       <header className="gk-top">
         <div className="gk-top__inner">
-          <button type="button" className="gk-logo" onClick={() => setTab('courses')}>
+          <button type="button" className="gk-logo" onClick={() => setTab('home')}>
             知略 <span>AI 学堂</span>
           </button>
           <nav className="gk-tabs" aria-label="主导航">
             {(
               [
-                ['courses', '课程'],
-                ['paths', '学习路径'],
+                ['home', '首页'],
+                ['track', '进阶路线'],
                 ['glossary', '术语词典'],
-                ['guide', '新手指南'],
+                ['guide', '避坑指南'],
                 ['learn', '学习中心'],
               ] as const
             ).map(([id, label]) => (
@@ -432,8 +475,8 @@ export default function App() {
                   tab === 'glossary'
                     ? '搜索术语…'
                     : tab === 'guide'
-                      ? '搜索新手问题、最佳实践…'
-                      : '搜索课程、工具、API、MCP…'
+                      ? '搜索避坑问题、最佳实践…'
+                      : '搜索钩子、结果、课程…'
                 }
                 value={tab === 'glossary' ? gQuery : tab === 'guide' ? guideQuery : query}
                 onChange={(e) => {
@@ -456,9 +499,24 @@ export default function App() {
         </div>
       </header>
 
-      {tab !== 'courses' && (
+      {tab === 'home' && (
+        <div className="home-level-bar" aria-label="进阶等级">
+          {TRACK_LEVELS.map((lv) => (
+            <button
+              key={lv}
+              type="button"
+              className="home-level-pill"
+              onClick={() => goToTrack(lv)}
+            >
+              {lv}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {tab !== 'home' && (
         <div
-          className="gk-banner"
+          className="gk-banner gk-banner--result"
           onPointerMove={(e) => {
             const el = e.currentTarget
             const r = el.getBoundingClientRect()
@@ -468,126 +526,128 @@ export default function App() {
         >
           <div className="gk-banner__inner">
             <div className="gk-banner__copy">
-              <p className="gk-banner__eyebrow">B 端 AI 能力提升平台</p>
+              <p className="gk-banner__eyebrow">先给结果，再给方法</p>
               <h1>
-                <span className="gk-banner__line">系统化掌握 AI 工程落地</span>
-                <span className="gk-banner__line gk-banner__line--accent">工具链 · API 集成 · MCP 协议 · 合规治理</span>
+                <span className="gk-banner__line">知略 AI 知识库</span>
+                <span className="gk-banner__line gk-banner__line--accent">新手 → 熟练 → 老手，每一步都能拿到结果</span>
               </h1>
               <p className="gk-banner__lead">
-                面向技术团队与业务管理者，覆盖从选型、配置到规模化落地的完整知识体系：{stats.courses} 门专栏、{stats.tools} 个工具专题、{stats.terms} 条术语、{stats.lessons} 讲课程。
+                {stats.courses} 门结果向课程 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 从钩子、到账到自动化飞轮。
               </p>
-              <div className="gk-chips" aria-label="快捷筛选">
-                {(
-                  [
-                    ['AI编程工具', 'AI编程工具'],
-                    ['API与配置', 'API'],
-                    ['MCP与工具协议', 'MCP'],
-                    ['提示词工程', '提示词'],
-                    ['知识库与RAG', 'RAG'],
-                    ['大模型认知', '模型'],
-                  ] as const
-                ).map(([cat, label]) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    className={`gk-chip ${category === cat ? 'is-on' : ''}`}
-                    onClick={() => {
-                      setCategory(cat)
-                      setTab('courses')
-                      setQuery('')
-                    }}
-                  >
-                    {label}
+              <div className="gk-chips" aria-label="快捷入口">
+                {TRACK_LEVELS.map((lv) => (
+                  <button key={lv} type="button" className="gk-chip" onClick={() => goToTrack(lv)}>
+                    {lv}路线
                   </button>
                 ))}
-                <button
-                  type="button"
-                  className="gk-chip gk-chip--ghost"
-                  onClick={() => {
-                    setTab('glossary')
-                    setGCat('全部')
-                  }}
-                >
-                  术语词典 →
+                <button type="button" className="gk-chip gk-chip--ghost" onClick={() => setTab('home')}>
+                  回首页看结果 →
                 </button>
               </div>
             </div>
             <div className="gk-banner__panel">
               <div className="gk-banner__stat">
                 <strong>{stats.courses}</strong>
-                <span>体系课程</span>
+                <span>结果向课程</span>
               </div>
               <div className="gk-banner__stat">
-                <strong>{stats.tools}</strong>
-                <span>工具专题</span>
+                <strong>3</strong>
+                <span>进阶轨道</span>
               </div>
               <div className="gk-banner__stat">
                 <strong>{stats.terms}</strong>
                 <span>标准术语</span>
               </div>
               <div className="gk-banner__hint">
-                <em>企业适用</em>
-                <span>从团队培训到个人技能升级，按角色与目标选择学习路径</span>
+                <em>结果先行</em>
+                <span>每条内容先告诉你能拿到什么，再教你怎么做</span>
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* PATHS */}
-      {tab === 'paths' && (
-        <main className="gk-main">
-          <h2 className="gk-section-title">按角色与目标学习</h2>
-          <p className="gk-section-desc">为不同岗位与业务场景规划的学习路线，点击路径即可进入对应课程列表。</p>
-          <div className="gk-paths">
-            {LEARNING_PATHS.map((path) => (
+      {/* TRACK */}
+      {tab === 'track' && (
+        <main className="gk-main track-page">
+          <div className="track-level-pills" aria-label="切换等级">
+            {TRACK_LEVELS.map((lv) => (
               <button
-                key={path.id}
+                key={lv}
                 type="button"
-                className="gk-path"
-                onClick={() => {
-                  setCategory('全部')
-                  setQuery('')
-                  setTab('courses')
-                  // filter by showing path courses via query on first course title - better: set a path filter
-                  setSelectedId(null)
-                  sessionStorage.setItem('zhilue_path', path.id)
-                  setCategory(
-                    path.id === 'path-ide'
-                      ? 'AI编程工具'
-                      : path.id === 'path-api'
-                        ? 'API与配置'
-                        : path.id === 'path-mcp'
-                          ? 'MCP与工具协议'
-                          : path.id === 'path-prompt'
-                            ? '提示词工程'
-                            : path.id === 'path-rag'
-                              ? '知识库与RAG'
-                              : '商业落地',
-                  )
-                }}
+                className={trackLevel === lv ? 'is-on' : ''}
+                onClick={() => setTrackLevel(lv)}
               >
-                <strong>{path.title}</strong>
-                <span>{path.desc}</span>
-                <em>{path.count} 门课程</em>
+                {lv}
               </button>
             ))}
           </div>
-          <h2 className="gk-section-title">路径包含课程（可点开）</h2>
-          <div className="gk-list">
-            {LEARNING_PATHS.flatMap((p) => p.courseIds)
-              .filter((id, i, arr) => arr.indexOf(id) === i)
-              .map((id) => getItem(id))
-              .filter(Boolean)
-              .map((item) => (
-                <CourseRow
-                  key={item!.id}
-                  item={item!}
-                  progress={courseProgress(item!.id)}
-                  onOpen={() => openCourse(item!.id)}
-                />
-              ))}
+
+          <header
+            className="track-hero"
+            style={{ ['--track-color' as string]: activeTrack.color }}
+          >
+            <span className="track-hero__badge">{activeTrack.badge}</span>
+            <h1>{activeTrack.title}</h1>
+            <p className="track-hero__hook">{activeTrack.hook}</p>
+            <p className="track-hero__promise">{activeTrack.promise}</p>
+            <span className="track-hero__days">{activeTrack.days}</span>
+          </header>
+
+          <div className="track-steps">
+            {activeTrack.steps.map((step, i) => (
+              <section key={step.title} className="track-step">
+                <div className="track-step__head">
+                  <em>STEP {String(i + 1).padStart(2, '0')}</em>
+                  <h2>{step.title}</h2>
+                  <p className="track-step__result">→ {step.result}</p>
+                </div>
+                <div className="track-step__courses">
+                  {step.courseIds.map((cid) => {
+                    const item = getItem(cid)
+                    if (!item) return null
+                    return (
+                      <CourseRow
+                        key={cid}
+                        item={item}
+                        progress={courseProgress(cid)}
+                        onOpen={() => openCourse(cid)}
+                      />
+                    )
+                  })}
+                </div>
+              </section>
+            ))}
           </div>
+
+          <aside className="track-progression">
+            <p>
+              <strong>循序渐进：</strong>
+              新手拿第一条结果 → 熟练搭流水线批量交付 → 老手自动化飞轮睡后到账
+            </p>
+            <div className="track-progression__actions">
+              {trackLevel !== '新手' && (
+                <button type="button" className="btn btn--ghost-dark" onClick={() => goToTrack('新手')}>
+                  ← 回到新手村
+                </button>
+              )}
+              {trackLevel !== '熟练' && trackLevel === '新手' && (
+                <button type="button" className="btn btn--accent" onClick={() => goToTrack('熟练')}>
+                  下一步：熟练工 →
+                </button>
+              )}
+              {trackLevel === '熟练' && (
+                <button type="button" className="btn btn--accent" onClick={() => goToTrack('老手')}>
+                  下一步：老手局 →
+                </button>
+              )}
+              {trackLevel === '老手' && (
+                <button type="button" className="btn btn--ghost-dark" onClick={() => openCatalog()}>
+                  浏览全部课程 →
+                </button>
+              )}
+            </div>
+          </aside>
         </main>
       )}
 
@@ -744,9 +804,9 @@ export default function App() {
       {/* GUIDE */}
       {tab === 'guide' && (
         <main className="gk-main gk-guide">
-          <h2 className="gk-section-title">企业落地避坑指南</h2>
+          <h2 className="gk-section-title">避坑指南</h2>
           <p className="gk-section-desc">
-            汇总 B 端团队高频问题：密钥管理、域名配置、提示词工程、Cursor/MCP 集成、幻觉控制与合规（共{' '}
+            汇总高频踩坑：密钥管理、域名配置、提示词工程、Cursor/MCP 集成、幻觉控制与合规（共{' '}
             {NEWBIE_GUIDES.length} 篇）。
           </p>
           <div className="gk-filters">
@@ -847,7 +907,7 @@ export default function App() {
                         const c = getItem(cid)
                         return (
                           <button key={cid} type="button" onClick={() => openCourse(cid)}>
-                            {c?.title ?? cid}
+                            {c?.hook ?? c?.title ?? cid}
                           </button>
                         )
                       })}
@@ -884,7 +944,7 @@ export default function App() {
         <main className="gk-main gk-learn">
           <div className="gk-learn__bar">
             <div>
-              <h2>企业学习中心</h2>
+              <h2>学习中心</h2>
               <p>已登录 {maskPhone(phone)} · 进度保存在本机</p>
             </div>
             <button type="button" className="btn btn--ghost-dark" onClick={logout}>
@@ -906,18 +966,19 @@ export default function App() {
                     onClick={() => setLearnId(id)}
                   >
                     <em>{pct}% 完成</em>
-                    <span>{c.title}</span>
+                    <span>{c.hook}</span>
                     <ProgressBar pct={pct} />
                   </button>
                 )
               })}
-              <button type="button" className="btn btn--ghost-dark" onClick={() => setTab('courses')}>
-                去课程库选更多
+              <button type="button" className="btn btn--ghost-dark" onClick={() => setTab('home')}>
+                去首页选更多
               </button>
             </aside>
             <section>
+              <p className="gk-learn__hook">{learnCourse.hook}</p>
               <h1>{learnCourse.title}</h1>
-              <p>{learnCourse.desc}</p>
+              <p>{learnCourse.outcome || learnCourse.desc}</p>
               <div className="gk-lessons">
                 {learnCourse.lessons.map((lesson, i) => {
                   const done = progressMap[learnCourse.id]?.includes(lesson.id)
@@ -942,24 +1003,17 @@ export default function App() {
         </main>
       )}
 
-      {/* COURSES */}
-      {tab === 'courses' && (
+      {/* HOME */}
+      {tab === 'home' && (
         <main className="gk-main home">
-          <div className="home-promo">
-            <strong>本周上新</strong>
-            <span>Cursor · Claude Code · MCP · API 工程手册持续更新</span>
-            <button type="button" onClick={() => openCourse('mcp-intro')}>
-              免费领 MCP 入门 →
-            </button>
+          <div className="home-promo home-promo--result">
+            <strong>结果先行</strong>
+            <span>先给结果，再给方法 · AI 知识库按新手→熟练→老手</span>
           </div>
 
           <section className="home-hero" aria-label="本周精选">
             {heroCourse && (
-              <button
-                type="button"
-                className="home-slide"
-                onClick={() => openCourse(heroCourse.id)}
-              >
+              <button type="button" className="home-slide home-slide--warm" onClick={() => openCourse(heroCourse.id)}>
                 <div className="home-slide__glow" />
                 <div className="home-slide__copy">
                   <p className="home-slide__eye">{heroSlide.eyebrow}</p>
@@ -969,7 +1023,6 @@ export default function App() {
                     <span>{heroCourse.lessons.length} 讲</span>
                     <span>{heroCourse.level}</span>
                     <span>{heroCourse.students.toLocaleString()} 人学过</span>
-                    <span>{heroCourse.teacher.replace(/^知略\s*[·•]\s*/, '')}</span>
                   </div>
                   <span className="home-slide__cta">{heroSlide.cta}</span>
                 </div>
@@ -997,105 +1050,84 @@ export default function App() {
             </div>
           </section>
 
-          <section className="home-cats-bar" aria-label="分类入口">
-            {CAT_NAV.map((nav) => (
-              <button
-                key={nav.category}
-                type="button"
-                className={category === nav.category ? 'is-on' : ''}
-                onClick={() => openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })}
-              >
-                <AiIcon icon={nav.icon} size={32} />
-                <span>
-                  <strong>{nav.title}</strong>
-                  <em>{nav.keywords}</em>
-                </span>
-              </button>
-            ))}
-          </section>
-
-          <section className="home-spotlight" aria-label="精选速达">
-            {FEATURED_IDS.slice(0, 4).map((id) => {
-              const item = getItem(id)
-              if (!item) return null
+          <section className="home-tracks" aria-label="三级进阶入口">
+            {HOME_TRACK_CARDS.map((card) => {
+              const track = TRACKS.find((t) => t.id === card.level)!
               return (
                 <button
-                  key={id}
+                  key={card.level}
                   type="button"
-                  className="home-spotlight__card"
-                  onClick={() => openCourse(id)}
+                  className="home-track-portal"
+                  style={{ ['--track-color' as string]: track.color }}
+                  onClick={() => goToTrack(card.level)}
                 >
-                  <CourseIcon id={item.id} category={item.category} size={42} />
-                  <span>
-                    <strong>{item.title}</strong>
-                    <em>
-                      {item.level} · {item.students.toLocaleString()} 人在学
-                    </em>
-                  </span>
+                  <span className="home-track-portal__badge">{track.badge}</span>
+                  <strong className="home-track-portal__hook">{card.hook}</strong>
+                  <em>{track.title} · {track.days}</em>
+                  <span className="home-track-portal__cta">{card.cta} →</span>
                 </button>
               )
             })}
           </section>
 
-          <section className="home-mid">
-            <div className="home-free">
-              <div className="home-block-head">
-                <div>
-                  <h2>0 成本试学</h2>
-                  <p className="home-block-desc">先用公开/免费内容建立共识，再决定系统学习</p>
-                </div>
-                <button type="button" onClick={() => openCatalog()}>
-                  全部课程 →
-                </button>
-              </div>
-              <div className="home-free__grid">
-                {FREE_TILES.map((tile) => (
-                  <button
-                    key={tile.id}
-                    type="button"
-                    className="home-free__card"
-                    onClick={() => openCourse(tile.courseId)}
-                  >
-                    <AiIcon icon={tile.icon} size={48} />
-                    <span>
-                      <strong>{tile.title}</strong>
-                      <em>{tile.desc}</em>
-                    </span>
-                  </button>
-                ))}
+          <section className="hook-feed" aria-label="先看结果">
+            <div className="home-block-head">
+              <div>
+                <h2>先看结果</h2>
+                <p className="home-block-desc">每条先告诉你能拿到什么，再点进去学方法</p>
               </div>
             </div>
-            <aside className="home-tribe">
-              <div className="home-block-head">
-                <h2>团队常见问题</h2>
-                <span>实时</span>
+            <div className="hook-feed__list">
+              {HOOK_FEED.map((feed) => (
+                <article key={feed.id} className="hook-card">
+                  <div className="hook-card__top">
+                    <i className="hook-card__tag">{feed.tag}</i>
+                    <i className={`hook-card__level hook-card__level--${feed.level}`}>{feed.level}</i>
+                  </div>
+                  <h3 className="hook-card__hook">{feed.hook}</h3>
+                  <p className="hook-card__result">{feed.result}</p>
+                  <p className="hook-card__proof">{feed.proof}</p>
+                  <button type="button" className="hook-card__cta" onClick={() => openCourse(feed.courseId)}>
+                    看怎么做到 →
+                  </button>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="home-free">
+            <div className="home-block-head">
+              <div>
+                <h2>马上能拿结果</h2>
+                <p className="home-block-desc">免费试学，先验证结果再系统进阶</p>
               </div>
-              <ul>
-                {COMMUNITY_TOPICS.map((t) => (
-                  <li key={t.text}>
-                    <i>{t.tag}</i>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        openCatalog({
-                          category: '全部',
-                          query: t.text.replace(/[？?].*$/, '').slice(0, 8),
-                        })
-                      }
-                    >
-                      {t.text}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </aside>
+              <button type="button" onClick={() => openCatalog()}>
+                全部课程 →
+              </button>
+            </div>
+            <div className="home-free__grid">
+              {FREE_TILES.map((tile) => (
+                <button
+                  key={tile.id}
+                  type="button"
+                  className="home-free__card"
+                  onClick={() => openCourse(tile.courseId)}
+                >
+                  <AiIcon icon={tile.icon} size={48} />
+                  <span>
+                    <strong>{tile.title}</strong>
+                    <em>{tile.desc}</em>
+                  </span>
+                </button>
+              ))}
+            </div>
           </section>
 
           <section className="home-rec">
             <div className="home-block-head">
               <div>
                 <h2>重点推荐</h2>
-                <p className="home-block-desc">热门主讲课与实战专题，适合团队培训与个人提升</p>
+                <p className="home-block-desc">按结果类型筛选，找到你最想先拿到的那一项</p>
               </div>
             </div>
             <div className="home-rec__tabs">
@@ -1112,12 +1144,7 @@ export default function App() {
             </div>
             <div className="home-rec__grid">
               {recommended.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className="home-card"
-                  onClick={() => openCourse(item.id)}
-                >
+                <button key={item.id} type="button" className="home-card" onClick={() => openCourse(item.id)}>
                   <CourseCover
                     id={item.id}
                     category={item.category}
@@ -1125,9 +1152,10 @@ export default function App() {
                     level={item.level}
                     hot={item.hot}
                   />
-                  <strong>{item.title}</strong>
+                  <strong className="home-card__hook">{item.hook}</strong>
+                  <em className="home-card__title">{item.title}</em>
                   <span>
-                    {item.students.toLocaleString()} 人学过 · {item.lessons.length} 讲
+                    {item.outcome} · {item.students.toLocaleString()} 人学过
                   </span>
                 </button>
               ))}
@@ -1139,7 +1167,7 @@ export default function App() {
               <div>
                 <h2>完整课程目录</h2>
                 <p className="home-block-desc">
-                  {stats.courses} 门课已收录，按分类、难度筛选，或直接搜索
+                  {stats.courses} 门课已收录，按分类、难度筛选，或直接搜索钩子与结果
                 </p>
               </div>
               <div className="gk-sort">
@@ -1189,42 +1217,22 @@ export default function App() {
               </div>
             </div>
 
-            <p className="home-catalog-count">
-              当前显示 {filtered.length} 门课程
-            </p>
+            <p className="home-catalog-count">当前显示 {filtered.length} 门课程</p>
 
             <div className="home-catalog-grid">
               {filtered.map((item) => (
-                <button
+                <CatalogCard
                   key={item.id}
-                  type="button"
-                  className="home-card home-card--catalog"
-                  onClick={() => openCourse(item.id)}
-                >
-                  <CourseCover
-                    id={item.id}
-                    category={item.category}
-                    teacher={item.teacher}
-                    level={item.level}
-                    hot={item.hot}
-                  />
-                  <strong>{item.title}</strong>
-                  <span>
-                    {item.level} · {item.students.toLocaleString()} 人学过 · {item.lessons.length} 讲
-                  </span>
-                  {courseProgress(item.id) > 0 && (
-                    <span className="home-card__progress">
-                      已学 {courseProgress(item.id)}%
-                    </span>
-                  )}
-                </button>
+                  item={item}
+                  progress={courseProgress(item.id)}
+                  onOpen={() => openCourse(item.id)}
+                />
               ))}
             </div>
             {filtered.length === 0 && (
               <p className="gk-empty">没有匹配课程，试试换分类或清空搜索。</p>
             )}
           </section>
-
         </main>
       )}
 
@@ -1245,9 +1253,7 @@ export default function App() {
       )}
 
       <footer className="gk-footer">
-        <div>
-          知略 AI 学堂 · 知识展示站
-        </div>
+        <div>知略 AI 学堂 · 先拿结果再学方法</div>
         <div>
           {stats.courses} 课 · {stats.terms} 术语 · 电话登录
         </div>

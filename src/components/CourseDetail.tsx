@@ -23,7 +23,7 @@ export function CourseDetail({
   return (
     <main className="gk-main course-detail">
       <button type="button" className="course-detail__back" onClick={onBack}>
-        ← 返回课程库
+        ← 返回
       </button>
 
       <div className="course-detail__hero">
@@ -38,13 +38,15 @@ export function CourseDetail({
         </div>
         <div className="course-detail__info">
           <div className="course-detail__tags">
+            <span className={`level-badge level-badge--${course.level}`}>{course.level}</span>
             <span>{course.category}</span>
-            <span>{course.level}</span>
             {course.hot && <i className="tag tag--hot">热门</i>}
             {course.new && <i className="tag tag--new">上新</i>}
-            {course.source === '自有资料' && <i className="tag">企业内训</i>}
+            {course.source === '自有资料' && <i className="tag">自有资料</i>}
           </div>
-          <h1>{course.title}</h1>
+          <p className="course-detail__hook">{course.hook}</p>
+          <p className="course-detail__outcome">{course.outcome}</p>
+          <h1 className="course-detail__title">{course.title}</h1>
           <p className="course-detail__desc">{course.desc}</p>
           <div className="course-detail__meta">
             <span>{course.teacher}</span>
@@ -62,8 +64,8 @@ export function CourseDetail({
             </button>
           </div>
           <div className="course-detail__trust">
+            <span>✓ 先给结果</span>
             <span>✓ 可试听</span>
-            <span>✓ 企业适用</span>
             <span>✓ 持续更新</span>
           </div>
         </div>

@@ -202,6 +202,22 @@ export const ENDPOINTS: EndpointRef[] = [
     auth: '文档站无需鉴权',
     tips: ['实现前先读 tools / resources / prompts 三类能力。', '供应链：只装可信 MCP 包。'],
   },
+  {
+    id: 'qq-smtp',
+    vendor: '腾讯 QQ 邮箱',
+    name: 'QQ 邮箱 SMTP（免费发信）',
+    baseUrl: 'smtp.qq.com:465',
+    notes: '个人站长给用户发注册/登录验证码的常用免费 SMTP；需先在网页邮箱开启服务并生成授权码。',
+    docsUrl: 'https://mail.qq.com',
+    auth: 'SMTP 账号=QQ邮箱；密码=授权码（非 QQ 登录密码）',
+    tips: [
+      '新版路径：设置 → 账号与安全 → 安全设置 → POP3/IMAP/SMTP。',
+      '环境变量：SMTP_HOST=smtp.qq.com SMTP_PORT=465 SMTP_USER SMTP_PASS SMTP_FROM。',
+      'SMTP_FROM 推荐：网站名 <你的QQ号@qq.com>，显示名是品牌，尖括号内是真实发信地址。',
+      'Node 可用 nodemailer；改 .env 后必须重启后端 / PM2 --update-env。',
+      '授权码勿进 Git；泄露立即在邮箱侧重生成。',
+    ],
+  },
 ]
 
 export function endpointsByGroup(group: (typeof ENDPOINT_GROUPS)[number]) {
@@ -209,7 +225,7 @@ export function endpointsByGroup(group: (typeof ENDPOINT_GROUPS)[number]) {
   const map: Record<string, string[]> = {
     'OpenAI 系': ['openai', 'azure-openai', 'openai-compatible-gateway', 'groq'],
     'Anthropic 系': ['anthropic', 'deepseek'],
-    '国内/兼容': ['deepseek', 'openai-compatible-gateway', 'dashscope', 'moonshot', 'siliconflow'],
+    '国内/兼容': ['deepseek', 'openai-compatible-gateway', 'dashscope', 'moonshot', 'siliconflow', 'qq-smtp'],
     云厂商: ['azure-openai', 'gemini', 'dashscope'],
     工具协议: ['mcp-stdio', 'mcp-http', 'mcp-spec', 'github-api', 'npm-registry'],
   }
