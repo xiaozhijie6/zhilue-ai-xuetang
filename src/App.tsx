@@ -23,6 +23,7 @@ import {
 import { AmbientBackground } from './components/AmbientBackground'
 import { AiIcon, CourseIcon } from './components/AiIcon'
 import { CourseCover } from './components/CourseCover'
+import { CourseDetail } from './components/CourseDetail'
 import './index.css'
 
 const PHONE_KEY = 'zhilue_phone'
@@ -50,6 +51,14 @@ function loadProgress(): Record<string, string[]> {
 
 function saveProgress(map: Record<string, string[]>) {
   localStorage.setItem(PROGRESS_KEY, JSON.stringify(map))
+}
+
+function ProgressBar({ pct }: { pct: number }) {
+  return (
+    <div className="progress-bar" aria-hidden="true">
+      <div className="progress-bar__fill" style={{ width: `${pct}%` }} />
+    </div>
+  )
 }
 
 function PhoneLoginModal({
@@ -220,12 +229,10 @@ export default function App() {
   const [learnId, setLearnId] = useState<string>(FEATURED_IDS[0])
   const [heroIndex, setHeroIndex] = useState(0)
   const [recTab, setRecTab] = useState<(typeof REC_TABS)[number]['id']>('hot')
-  const [catalogOpen, setCatalogOpen] = useState(false)
 
   const openCatalog = (opts?: { category?: (typeof CATEGORIES)[number]; query?: string }) => {
     if (opts?.category) setCategory(opts.category)
     if (opts?.query !== undefined) setQuery(opts.query)
-    setCatalogOpen(true)
     window.setTimeout(() => {
       document.getElementById('course-catalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }, 40)
@@ -262,8 +269,18 @@ export default function App() {
   }, [tab])
 
   useEffect(() => {
-    if (tab === 'courses' && query.trim()) setCatalogOpen(true)
+    if (tab === 'courses' && query.trim()) {
+      window.setTimeout(() => {
+        document.getElementById('course-catalog')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 40)
+    }
   }, [query, tab])
+
+  useEffect(() => {
+    if (selectedId) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [selectedId])
 
   const stats = useMemo(() => {
     const lessons = KNOWLEDGE_LIBRARY.reduce((n, c) => n + c.lessons.length, 0)
@@ -371,88 +388,10 @@ export default function App() {
     setPhone(null)
   }
 
-  /* ——— Detail overlay ——— */
-  const detailPanel =
-    selected && (
-      <div className="gk-detail-mask" onClick={() => setSelectedId(null)} role="presentation">
-        <div className="gk-detail" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
-          <button type="button" className="gk-detail__close" onClick={() => setSelectedId(null)}>
-            关闭
-          </button>
-          <div className="gk-detail__hero">
-            <CourseIcon id={selected.id} category={selected.category} size={72} />
-            <div className="gk-detail__tags">
-              <span>{selected.category}</span>
-              <span>{selected.level}</span>
-              {selected.hot && <span className="tag tag--hot">热门</span>}
-            </div>
-          </div>
-          <h2>{selected.title}</h2>
-          <p className="gk-detail__desc">{selected.desc}</p>
-          <div className="gk-detail__meta">
-            <span>{selected.teacher}</span>
-            <span>{selected.lessons.length} 讲</span>
-            <span>{selected.students.toLocaleString()} 人学过</span>
-            <span>{selected.duration}</span>
-            <span>进度 {courseProgress(selected.id)}%</span>
-          </div>
-          <div className="gk-detail__actions">
-            <button
-              type="button"
-              className="btn btn--accent"
-              onClick={() => {
-                setLearnId(selected.id)
-                setSelectedId(null)
-                requireLogin()
-              }}
-            >
-              {phone ? '开始学习' : '登录后学习'}
-            </button>
-            <button type="button" className="btn btn--ghost-dark" onClick={() => setSelectedId(null)}>
-              返回列表
-            </button>
-          </div>
-          <h3>你将了解</h3>
-          <ul className="gk-detail__list">
-            {selected.highlights.map((h) => (
-              <li key={h}>{h}</li>
-            ))}
-          </ul>
-          <h3>大纲</h3>
-          <ol className="gk-detail__list">
-            {selected.outline.map((o) => (
-              <li key={o}>{o}</li>
-            ))}
-          </ol>
-          <h3>课时（点击勾选试学进度）</h3>
-          <div className="gk-lessons">
-            {selected.lessons.map((lesson, i) => {
-              const done = progressMap[selected.id]?.includes(lesson.id)
-              return (
-                <button
-                  key={lesson.id}
-                  type="button"
-                  className={`gk-lesson ${done ? 'is-done' : ''}`}
-                  onClick={() => toggleLesson(selected.id, lesson.id)}
-                >
-                  <em>{String(i + 1).padStart(2, '0')}</em>
-                  <strong>{lesson.title}</strong>
-                  <span>
-                    {lesson.type} · {lesson.mins} 分钟
-                  </span>
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      </div>
-    )
-
   return (
     <div className="gk">
       <AmbientBackground />
       <PhoneLoginModal open={loginOpen} onClose={() => setLoginOpen(false)} onSuccess={onLogin} />
-      {detailPanel}
 
       <header className="gk-top">
         <div className="gk-top__inner">
@@ -529,14 +468,13 @@ export default function App() {
         >
           <div className="gk-banner__inner">
             <div className="gk-banner__copy">
-              <p className="gk-banner__eyebrow">Interactive Showcase</p>
+              <p className="gk-banner__eyebrow">B 端 AI 能力提升平台</p>
               <h1>
-                <span className="gk-banner__line">把 AI 知识摊开看</span>
-                <span className="gk-banner__line gk-banner__line--accent">工具 · API · MCP · 术语</span>
+                <span className="gk-banner__line">系统化掌握 AI 工程落地</span>
+                <span className="gk-banner__line gk-banner__line--accent">工具链 · API 集成 · MCP 协议 · 合规治理</span>
               </h1>
               <p className="gk-banner__lead">
-                {stats.courses} 门课 · {stats.tools} 个编程工具专题 · {stats.terms} 条术语 ·{' '}
-                {stats.lessons} 讲。
+                面向技术团队与业务管理者，覆盖从选型、配置到规模化落地的完整知识体系：{stats.courses} 门专栏、{stats.tools} 个工具专题、{stats.terms} 条术语、{stats.lessons} 讲课程。
               </p>
               <div className="gk-chips" aria-label="快捷筛选">
                 {(
@@ -577,19 +515,19 @@ export default function App() {
             <div className="gk-banner__panel">
               <div className="gk-banner__stat">
                 <strong>{stats.courses}</strong>
-                <span>课程专栏</span>
+                <span>体系课程</span>
               </div>
               <div className="gk-banner__stat">
                 <strong>{stats.tools}</strong>
-                <span>编程工具</span>
+                <span>工具专题</span>
               </div>
               <div className="gk-banner__stat">
                 <strong>{stats.terms}</strong>
-                <span>专有名词</span>
+                <span>标准术语</span>
               </div>
               <div className="gk-banner__hint">
-                <em>指针靠近</em>
-                <span>背景节点会推开并连线</span>
+                <em>企业适用</em>
+                <span>从团队培训到个人技能升级，按角色与目标选择学习路径</span>
               </div>
             </div>
           </div>
@@ -599,8 +537,8 @@ export default function App() {
       {/* PATHS */}
       {tab === 'paths' && (
         <main className="gk-main">
-          <h2 className="gk-section-title">学习路径</h2>
-          <p className="gk-section-desc">按主题打包，点路径进入对应课程列表。</p>
+          <h2 className="gk-section-title">按角色与目标学习</h2>
+          <p className="gk-section-desc">为不同岗位与业务场景规划的学习路线，点击路径即可进入对应课程列表。</p>
           <div className="gk-paths">
             {LEARNING_PATHS.map((path) => (
               <button
@@ -656,9 +594,9 @@ export default function App() {
       {/* GLOSSARY */}
       {tab === 'glossary' && (
         <main className="gk-main gk-glossary">
-          <h2 className="gk-section-title">AI 术语词典</h2>
+          <h2 className="gk-section-title">AI 术语与标准词典</h2>
           <p className="gk-section-desc">
-            从概念到手把手步骤：LLM、Token、RAG、MCP、API 域名与工程术语（共 {GLOSSARY.length} 条）。
+            统一团队沟通口径：从 LLM、Token、RAG 到 MCP、API 域名与工程合规术语（共 {GLOSSARY.length} 条）。
           </p>
           <div className="gk-filters">
             {GLOSSARY_CATEGORIES.map((c) => (
@@ -806,9 +744,9 @@ export default function App() {
       {/* GUIDE */}
       {tab === 'guide' && (
         <main className="gk-main gk-guide">
-          <h2 className="gk-section-title">新手指南 · 避坑与最佳实践</h2>
+          <h2 className="gk-section-title">企业落地避坑指南</h2>
           <p className="gk-section-desc">
-            汇总 AI 新手高频问题：密钥、域名、提示词、Cursor/MCP、幻觉、合规。每条含症状 → 原因 → 步骤 → 最佳实践（共{' '}
+            汇总 B 端团队高频问题：密钥管理、域名配置、提示词工程、Cursor/MCP 集成、幻觉控制与合规（共{' '}
             {NEWBIE_GUIDES.length} 篇）。
           </p>
           <div className="gk-filters">
@@ -946,7 +884,7 @@ export default function App() {
         <main className="gk-main gk-learn">
           <div className="gk-learn__bar">
             <div>
-              <h2>学习中心</h2>
+              <h2>企业学习中心</h2>
               <p>已登录 {maskPhone(phone)} · 进度保存在本机</p>
             </div>
             <button type="button" className="btn btn--ghost-dark" onClick={logout}>
@@ -959,6 +897,7 @@ export default function App() {
               {FEATURED_IDS.map((id) => {
                 const c = getItem(id)
                 if (!c) return null
+                const pct = courseProgress(id)
                 return (
                   <button
                     key={id}
@@ -966,8 +905,9 @@ export default function App() {
                     className={learnId === id ? 'is-on' : ''}
                     onClick={() => setLearnId(id)}
                   >
-                    <em>{courseProgress(id)}%</em>
+                    <em>{pct}% 完成</em>
                     <span>{c.title}</span>
+                    <ProgressBar pct={pct} />
                   </button>
                 )
               })}
@@ -1103,6 +1043,35 @@ export default function App() {
                   </button>
                 ))}
               </div>
+              <div className="home-update">
+                <p className="home-update__label">最近更新</p>
+                {KNOWLEDGE_LIBRARY.filter((c) => c.new).slice(0, 3).map((c) => (
+                  <button key={c.id} type="button" onClick={() => openCourse(c.id)}>
+                    <strong>{c.title}</strong>
+                    <em>{c.category}</em>
+                  </button>
+                ))}
+                {KNOWLEDGE_LIBRARY.filter((c) => c.new).length === 0 && (
+                  <p className="home-update__empty">暂无更新</p>
+                )}
+              </div>
+              <div className="home-hot-terms">
+                <p className="home-hot-terms__label">热门术语</p>
+                <div className="home-hot-terms__list">
+                  {GLOSSARY.slice(0, 5).map((g) => (
+                    <button
+                      key={g.id}
+                      type="button"
+                      onClick={() => {
+                        setGlossaryId(g.id)
+                        setTab('glossary')
+                      }}
+                    >
+                      {g.term}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </aside>
           </section>
 
@@ -1133,8 +1102,8 @@ export default function App() {
             <div className="home-free">
               <div className="home-block-head">
                 <div>
-                  <h2>免费开学</h2>
-                  <p className="home-block-desc">先上手再系统学，零门槛进门</p>
+                  <h2>0 成本试学</h2>
+                  <p className="home-block-desc">先用公开/免费内容建立共识，再决定系统学习</p>
                 </div>
                 <button type="button" onClick={() => openCatalog()}>
                   全部课程 →
@@ -1159,7 +1128,7 @@ export default function App() {
             </div>
             <aside className="home-tribe">
               <div className="home-block-head">
-                <h2>大家在聊</h2>
+                <h2>团队常见问题</h2>
                 <span>实时</span>
               </div>
               <ul>
@@ -1186,8 +1155,8 @@ export default function App() {
           <section className="home-rec">
             <div className="home-block-head">
               <div>
-                <h2>为你推荐</h2>
-                <p className="home-block-desc">热门主讲课，点开就能看大纲</p>
+                <h2>重点推荐</h2>
+                <p className="home-block-desc">热门主讲课与实战专题，适合团队培训与个人提升</p>
               </div>
             </div>
             <div className="home-rec__tabs">
@@ -1227,93 +1196,113 @@ export default function App() {
           </section>
 
           <section className="home-list-block" id="course-catalog">
-            <button
-              type="button"
-              className={`home-catalog-toggle ${catalogOpen ? 'is-open' : ''}`}
-              aria-expanded={catalogOpen}
-              onClick={() => {
-                if (catalogOpen) setCatalogOpen(false)
-                else openCatalog()
-              }}
-            >
-              <span className="home-catalog-toggle__text">
-                <strong>完整课程目录</strong>
-                <em>
-                  {stats.courses} 门课已收录
-                  {category !== '全部' ? ` · 筛选「${category}」` : ''}
-                  {query.trim() ? ` · 搜索「${query.trim()}」` : ''}
-                </em>
-              </span>
-              <span className="home-catalog-toggle__action">
-                {catalogOpen ? '收起' : '展开'}
-                <i aria-hidden="true">{catalogOpen ? '▴' : '▾'}</i>
-              </span>
-            </button>
-
-            {catalogOpen && (
-              <div className="home-catalog-panel">
-                <div className="home-block-head">
-                  <p className="home-block-desc" style={{ margin: 0 }}>
-                    当前显示 {filtered.length} 门，点行即可看大纲与课时
-                  </p>
-                  <div className="gk-sort">
-                    {(
-                      [
-                        ['hot', '综合'],
-                        ['new', '上新'],
-                        ['students', '热度'],
-                      ] as const
-                    ).map(([k, label]) => (
-                      <button
-                        key={k}
-                        type="button"
-                        className={sort === k ? 'is-on' : ''}
-                        onClick={() => setSort(k)}
-                      >
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="gk-toolbar gk-toolbar--compact">
-                  <div className="gk-filters gk-filters--sm">
-                    {LEVELS.map((lv) => (
-                      <button
-                        key={lv}
-                        type="button"
-                        className={level === lv ? 'is-on' : ''}
-                        onClick={() => setLevel(lv as Level | '全部')}
-                      >
-                        {lv}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="gk-list">
-                  {filtered.map((item) => (
-                    <CourseRow
-                      key={item.id}
-                      item={item}
-                      progress={courseProgress(item.id)}
-                      onOpen={() => openCourse(item.id)}
-                    />
-                  ))}
-                </div>
-                {filtered.length === 0 && (
-                  <p className="gk-empty">没有匹配课程，试试换分类或清空搜索。</p>
-                )}
-                <div className="home-catalog-panel__foot">
-                  <button type="button" onClick={() => setCatalogOpen(false)}>
-                    收起目录
-                  </button>
-                </div>
+            <div className="home-block-head">
+              <div>
+                <h2>完整课程目录</h2>
+                <p className="home-block-desc">
+                  {stats.courses} 门课已收录，按分类、难度筛选，或直接搜索
+                </p>
               </div>
+              <div className="gk-sort">
+                {(
+                  [
+                    ['hot', '综合'],
+                    ['new', '上新'],
+                    ['students', '热度'],
+                  ] as const
+                ).map(([k, label]) => (
+                  <button
+                    key={k}
+                    type="button"
+                    className={sort === k ? 'is-on' : ''}
+                    onClick={() => setSort(k)}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="gk-toolbar gk-toolbar--compact home-catalog-toolbar">
+              <div className="gk-filters gk-filters--sm">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    className={category === cat ? 'is-on' : ''}
+                    onClick={() => setCategory(cat as (typeof CATEGORIES)[number])}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+              <div className="gk-filters gk-filters--sm">
+                {LEVELS.map((lv) => (
+                  <button
+                    key={lv}
+                    type="button"
+                    className={level === lv ? 'is-on' : ''}
+                    onClick={() => setLevel(lv as Level | '全部')}
+                  >
+                    {lv}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <p className="home-catalog-count">
+              当前显示 {filtered.length} 门课程
+            </p>
+
+            <div className="home-catalog-grid">
+              {filtered.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className="home-card home-card--catalog"
+                  onClick={() => openCourse(item.id)}
+                >
+                  <CourseCover
+                    id={item.id}
+                    category={item.category}
+                    teacher={item.teacher}
+                    level={item.level}
+                    hot={item.hot}
+                  />
+                  <strong>{item.title}</strong>
+                  <span>
+                    {item.level} · {item.students.toLocaleString()} 人学过 · {item.lessons.length} 讲
+                  </span>
+                  {courseProgress(item.id) > 0 && (
+                    <span className="home-card__progress">
+                      已学 {courseProgress(item.id)}%
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+            {filtered.length === 0 && (
+              <p className="gk-empty">没有匹配课程，试试换分类或清空搜索。</p>
             )}
           </section>
 
         </main>
+      )}
+
+      {selected && (
+        <CourseDetail
+          course={selected}
+          progress={courseProgress(selected.id)}
+          phone={phone}
+          onBack={() => setSelectedId(null)}
+          onStart={() => {
+            setLearnId(selected.id)
+            setSelectedId(null)
+            requireLogin()
+          }}
+          onToggleLesson={toggleLesson}
+          progressMap={progressMap}
+        />
       )}
 
       <footer className="gk-footer">
