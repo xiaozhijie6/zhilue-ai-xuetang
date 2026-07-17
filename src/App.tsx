@@ -953,126 +953,65 @@ export default function App() {
             </button>
           </div>
 
-          <section className="home-market" aria-label="首页货架">
-            <aside className="home-cats-rail">
-              {CAT_NAV.map((nav) => (
-                <button
-                  key={nav.category}
-                  type="button"
-                  className={category === nav.category ? 'is-on' : ''}
-                  onClick={() => openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })}
-                >
-                  <AiIcon icon={nav.icon} size={26} />
-                  <span>
-                    <strong>{nav.title}</strong>
-                    <em>{nav.keywords}</em>
-                  </span>
-                </button>
-              ))}
-            </aside>
-
-            <div className="home-carousel">
-              {heroCourse && (
-                <button
-                  type="button"
-                  className="home-slide"
-                  onClick={() => openCourse(heroCourse.id)}
-                >
-                  <div className="home-slide__glow" />
-                  <div className="home-slide__copy">
-                    <p className="home-slide__eye">{heroSlide.eyebrow}</p>
-                    <h2>{heroSlide.title}</h2>
-                    <p>{heroSlide.subtitle}</p>
-                    <div className="home-slide__meta">
-                      <span>{heroCourse.lessons.length} 讲</span>
-                      <span>{heroCourse.level}</span>
-                      <span>{heroCourse.students.toLocaleString()} 人学过</span>
-                      <span>{heroCourse.teacher.replace(/^知略\s*[·•]\s*/, '')}</span>
-                    </div>
-                    <span className="home-slide__cta">{heroSlide.cta}</span>
+          <section className="home-hero" aria-label="本周精选">
+            {heroCourse && (
+              <button
+                type="button"
+                className="home-slide"
+                onClick={() => openCourse(heroCourse.id)}
+              >
+                <div className="home-slide__glow" />
+                <div className="home-slide__copy">
+                  <p className="home-slide__eye">{heroSlide.eyebrow}</p>
+                  <h2>{heroSlide.title}</h2>
+                  <p>{heroSlide.subtitle}</p>
+                  <div className="home-slide__meta">
+                    <span>{heroCourse.lessons.length} 讲</span>
+                    <span>{heroCourse.level}</span>
+                    <span>{heroCourse.students.toLocaleString()} 人学过</span>
+                    <span>{heroCourse.teacher.replace(/^知略\s*[·•]\s*/, '')}</span>
                   </div>
-                  <div className="home-slide__visual">
-                    <CourseCover
-                      id={heroCourse.id}
-                      category={heroCourse.category}
-                      teacher={heroCourse.teacher}
-                      level={heroCourse.level}
-                      hot={heroCourse.hot}
-                    />
-                  </div>
-                </button>
-              )}
-              <div className="home-carousel__dots">
-                {HERO_SLIDES.map((s, i) => (
-                  <button
-                    key={s.courseId}
-                    type="button"
-                    className={i === heroIndex ? 'is-on' : ''}
-                    aria-label={`幻灯片 ${i + 1}`}
-                    onClick={() => setHeroIndex(i)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <aside className="home-aside">
-              <div className="home-gift">
-                <div className="home-gift__badge">新人礼</div>
-                <h3>{phone ? `你好，${maskPhone(phone)}` : '登录解锁学习进度'}</h3>
-                <ul>
-                  <li>免费速览工具课</li>
-                  <li>勾选课时自动留存</li>
-                  <li>术语词典随时查</li>
-                </ul>
-                {phone ? (
-                  <button type="button" className="btn btn--accent" onClick={() => setTab('learn')}>
-                    进入学习中心
-                  </button>
-                ) : (
-                  <button type="button" className="btn btn--accent" onClick={() => setLoginOpen(true)}>
-                    登录 / 注册
-                  </button>
-                )}
-              </div>
-              <div className="home-paths-mini">
-                <p className="home-paths-mini__label">按目标学</p>
-                {LEARNING_PATHS.slice(0, 4).map((path) => (
-                  <button key={path.id} type="button" onClick={() => setTab('paths')}>
-                    <strong>{path.title.replace('路线', '')}</strong>
-                    <em>{path.count} 门</em>
-                  </button>
-                ))}
-              </div>
-              <div className="home-update">
-                <p className="home-update__label">最近更新</p>
-                {KNOWLEDGE_LIBRARY.filter((c) => c.new).slice(0, 3).map((c) => (
-                  <button key={c.id} type="button" onClick={() => openCourse(c.id)}>
-                    <strong>{c.title}</strong>
-                    <em>{c.category}</em>
-                  </button>
-                ))}
-                {KNOWLEDGE_LIBRARY.filter((c) => c.new).length === 0 && (
-                  <p className="home-update__empty">暂无更新</p>
-                )}
-              </div>
-              <div className="home-hot-terms">
-                <p className="home-hot-terms__label">热门术语</p>
-                <div className="home-hot-terms__list">
-                  {GLOSSARY.slice(0, 5).map((g) => (
-                    <button
-                      key={g.id}
-                      type="button"
-                      onClick={() => {
-                        setGlossaryId(g.id)
-                        setTab('glossary')
-                      }}
-                    >
-                      {g.term}
-                    </button>
-                  ))}
+                  <span className="home-slide__cta">{heroSlide.cta}</span>
                 </div>
-              </div>
-            </aside>
+                <div className="home-slide__visual">
+                  <CourseCover
+                    id={heroCourse.id}
+                    category={heroCourse.category}
+                    teacher={heroCourse.teacher}
+                    level={heroCourse.level}
+                    hot={heroCourse.hot}
+                  />
+                </div>
+              </button>
+            )}
+            <div className="home-carousel__dots">
+              {HERO_SLIDES.map((s, i) => (
+                <button
+                  key={s.courseId}
+                  type="button"
+                  className={i === heroIndex ? 'is-on' : ''}
+                  aria-label={`幻灯片 ${i + 1}`}
+                  onClick={() => setHeroIndex(i)}
+                />
+              ))}
+            </div>
+          </section>
+
+          <section className="home-cats-bar" aria-label="分类入口">
+            {CAT_NAV.map((nav) => (
+              <button
+                key={nav.category}
+                type="button"
+                className={category === nav.category ? 'is-on' : ''}
+                onClick={() => openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })}
+              >
+                <AiIcon icon={nav.icon} size={32} />
+                <span>
+                  <strong>{nav.title}</strong>
+                  <em>{nav.keywords}</em>
+                </span>
+              </button>
+            ))}
           </section>
 
           <section className="home-spotlight" aria-label="精选速达">
