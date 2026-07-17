@@ -3693,6 +3693,18 @@ button.home-slide {
   line-height: 1.55;
 }
 
+.course-detail__outcome-label {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-soft);
+  vertical-align: 0.1em;
+}
+
 .course-detail__title {
   font-size: 1.1rem !important;
   font-weight: 600 !important;
