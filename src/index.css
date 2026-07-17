@@ -1090,6 +1090,11 @@ button {
 }
 
 .gk-glossary__detail {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.gk-glossary__detail p {
   color: var(--muted);
   font-size: 0.95rem;
   line-height: 1.75;
@@ -1396,7 +1401,7 @@ button {
 .home-market {
   --hero-h: 300px;
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
   margin-bottom: 0.85rem;
   align-items: start;
   perspective: 1400px;
@@ -2162,7 +2167,7 @@ button {
     --hero-h: 300px;
     grid-template-columns: 200px minmax(0, 1fr) 200px;
     align-items: stretch;
-    gap: 0.35rem;
+    gap: 1.25rem;
   }
 
   .home-carousel {
@@ -2201,6 +2206,286 @@ button {
   .home-mid {
     grid-template-columns: 1.55fr 0.85fr;
   }
+}
+
+
+/* ——— 新手指南 ——— */
+.gk-guide__layout {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.gk-guide__side {
+  background: rgba(251, 252, 251, 0.86);
+  border: 1px solid var(--line);
+  border-radius: 1.1rem;
+  max-height: 420px;
+  overflow: auto;
+  padding: 0.45rem;
+  backdrop-filter: blur(8px);
+}
+
+.gk-guide__side button {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 0.8rem;
+  border-radius: 0.75rem;
+  display: grid;
+  gap: 0.15rem;
+  transition: background 0.15s;
+}
+
+.gk-guide__side button em {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent-dark);
+  letter-spacing: 0.04em;
+}
+
+.gk-guide__side button strong {
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.gk-guide__side button span {
+  font-size: 0.72rem;
+  color: #8a938d;
+}
+
+.gk-guide__side button.is-on,
+.gk-guide__side button:hover {
+  background: #fff4e6;
+}
+
+.gk-guide__article {
+  background: rgba(251, 252, 251, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 1.15rem;
+  padding: 1.4rem 1.45rem;
+  backdrop-filter: blur(8px);
+}
+
+.gk-guide__article h1 {
+  font-family: var(--display);
+  font-size: 1.65rem;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.85rem;
+}
+
+.gk-guide__block {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid var(--line);
+}
+
+.gk-guide__block h3 {
+  margin: 0 0 0.45rem;
+  font-size: 0.88rem;
+  color: var(--accent-dark);
+}
+
+.gk-guide__block p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.gk-guide__block--bp {
+  background: #fff8f0;
+  border-color: rgba(232, 137, 28, 0.25);
+}
+
+.gk-guide__check {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.gk-guide__check li {
+  font-size: 0.88rem;
+  color: var(--ink);
+  list-style: none;
+  position: relative;
+  padding-left: 1.4rem;
+}
+
+.gk-guide__check li::before {
+  content: '☐';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .gk-guide__layout {
+    grid-template-columns: 300px 1fr;
+    align-items: start;
+  }
+
+  .gk-guide__side {
+    max-height: 70vh;
+  }
+}
+
+/* ——— 术语步骤 / 域名 / 坑 ——— */
+.gk-glossary__steps {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.gk-glossary__steps li {
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.gk-glossary__domains {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.gk-glossary__domains li code {
+  display: block;
+  padding: 0.45rem 0.65rem;
+  border-radius: 0.5rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  font-size: 0.82rem;
+  word-break: break-all;
+}
+
+.gk-glossary__pitfalls {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.gk-glossary__pitfalls li {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.gk-glossary__pitfalls li::marker {
+  color: var(--accent);
+}
+
+/* ——— 域名与接口卡片 ——— */
+.gk-endpoints {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--line);
+}
+
+.gk-endpoints__grid {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+@media (min-width: 640px) {
+  .gk-endpoints__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gk-endpoints__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.gk-endpoint-card {
+  background: rgba(251, 252, 251, 0.9);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  display: grid;
+  gap: 0.45rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.gk-endpoint-card:hover {
+  border-color: rgba(232, 137, 28, 0.35);
+  box-shadow: 0 4px 18px rgba(250, 137, 25, 0.08);
+}
+
+.gk-endpoint-card header em {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-dark);
+}
+
+.gk-endpoint-card h3 {
+  margin: 0.15rem 0 0;
+  font-size: 0.95rem;
+  font-family: var(--display);
+}
+
+.gk-endpoint-card__url code {
+  display: block;
+  padding: 0.4rem 0.55rem;
+  border-radius: 0.45rem;
+  background: #fff8f0;
+  border: 1px solid rgba(232, 137, 28, 0.2);
+  font-size: 0.78rem;
+  word-break: break-all;
+  color: var(--accent-dark);
+}
+
+.gk-endpoint-card p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.gk-endpoint-card__auth,
+.gk-endpoint-card__models {
+  font-size: 0.78rem;
+  color: #6b756f;
+}
+
+.gk-endpoint-card ul {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.gk-endpoint-card a {
+  font-size: 0.8rem;
+  font-weight: 650;
+  color: var(--accent-dark);
+}
+
+.gk-endpoint-card a:hover {
+  color: var(--accent);
+}
+
+/* ——— 小号筛选（补充） ——— */
+.gk-filters--sm {
+  gap: 0.3rem;
+}
+
+.gk-filters--sm button.is-on {
+  box-shadow: 0 0 0 1px rgba(232, 137, 28, 0.15);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -11,6 +11,8 @@ import {
   type Level,
 } from './data/knowledge'
 import { GLOSSARY, GLOSSARY_CATEGORIES } from './data/glossary'
+import { ENDPOINT_GROUPS, ENDPOINTS, endpointsByGroup } from './data/endpoints'
+import { GUIDE_CATEGORIES, NEWBIE_GUIDES, guidesByCategory, type GuideCategory } from './data/newbie'
 import {
   CAT_NAV,
   COMMUNITY_TOPICS,
@@ -26,7 +28,7 @@ import './index.css'
 const PHONE_KEY = 'zhilue_phone'
 const PROGRESS_KEY = 'zhilue_progress'
 
-type Tab = 'courses' | 'paths' | 'glossary' | 'learn'
+type Tab = 'courses' | 'paths' | 'glossary' | 'guide' | 'learn'
 type SortKey = 'hot' | 'new' | 'students'
 
 function maskPhone(phone: string) {
@@ -210,6 +212,10 @@ export default function App() {
   const [sort, setSort] = useState<SortKey>('hot')
   const [gCat, setGCat] = useState<(typeof GLOSSARY_CATEGORIES)[number]>('全部')
   const [gQuery, setGQuery] = useState('')
+  const [guideCat, setGuideCat] = useState<GuideCategory>('全部')
+  const [guideId, setGuideId] = useState<string>(NEWBIE_GUIDES[0]?.id ?? '')
+  const [guideQuery, setGuideQuery] = useState('')
+  const [endpointGroup, setEndpointGroup] = useState<(typeof ENDPOINT_GROUPS)[number]>('全部')
   const [progressMap, setProgressMap] = useState(loadProgress)
   const [learnId, setLearnId] = useState<string>(FEATURED_IDS[0])
   const [heroIndex, setHeroIndex] = useState(0)
@@ -227,9 +233,25 @@ export default function App() {
 
   const selected = selectedId ? getItem(selectedId) : null
   const glossaryItem = GLOSSARY.find((g) => g.id === glossaryId) ?? null
+  const guideItem = NEWBIE_GUIDES.find((g) => g.id === guideId) ?? NEWBIE_GUIDES[0] ?? null
   const learnCourse = getItem(learnId) ?? KNOWLEDGE_LIBRARY[0]
+  const endpointList = useMemo(() => endpointsByGroup(endpointGroup), [endpointGroup])
+  const guideList = useMemo(() => {
+    const q = guideQuery.trim().toLowerCase()
+    return guidesByCategory(guideCat).filter((g) => {
+      if (!q) return true
+      return `${g.title}${g.symptom}${g.why}${g.steps.join('')}${g.bestPractice.join('')}`.toLowerCase().includes(q)
+    })
+  }, [guideCat, guideQuery])
   const heroSlide = HERO_SLIDES[heroIndex]
   const heroCourse = getItem(heroSlide.courseId)
+
+  useEffect(() => {
+    if (guideList.length === 0) return
+    if (!guideList.some((g) => g.id === guideId)) {
+      setGuideId(guideList[0].id)
+    }
+  }, [guideList, guideId])
 
   useEffect(() => {
     if (tab !== 'courses') return
@@ -443,6 +465,7 @@ export default function App() {
                 ['courses', '课程'],
                 ['paths', '学习路径'],
                 ['glossary', '术语词典'],
+                ['guide', '新手指南'],
                 ['learn', '学习中心'],
               ] as const
             ).map(([id, label]) => (
@@ -466,9 +489,19 @@ export default function App() {
             <div className="gk-search">
               <input
                 type="search"
-                placeholder={tab === 'glossary' ? '搜索术语…' : '搜索课程、工具、API、MCP…'}
-                value={tab === 'glossary' ? gQuery : query}
-                onChange={(e) => (tab === 'glossary' ? setGQuery(e.target.value) : setQuery(e.target.value))}
+                placeholder={
+                  tab === 'glossary'
+                    ? '搜索术语…'
+                    : tab === 'guide'
+                      ? '搜索新手问题、最佳实践…'
+                      : '搜索课程、工具、API、MCP…'
+                }
+                value={tab === 'glossary' ? gQuery : tab === 'guide' ? guideQuery : query}
+                onChange={(e) => {
+                  if (tab === 'glossary') setGQuery(e.target.value)
+                  else if (tab === 'guide') setGuideQuery(e.target.value)
+                  else setQuery(e.target.value)
+                }}
               />
             </div>
             {phone ? (
@@ -624,7 +657,9 @@ export default function App() {
       {tab === 'glossary' && (
         <main className="gk-main gk-glossary">
           <h2 className="gk-section-title">AI 术语词典</h2>
-          <p className="gk-section-desc">专有名称解释：LLM、Token、RAG、MCP、Function Calling…</p>
+          <p className="gk-section-desc">
+            从概念到手把手步骤：LLM、Token、RAG、MCP、API 域名与工程术语（共 {GLOSSARY.length} 条）。
+          </p>
           <div className="gk-filters">
             {GLOSSARY_CATEGORIES.map((c) => (
               <button key={c} type="button" className={gCat === c ? 'is-on' : ''} onClick={() => setGCat(c)}>
@@ -654,7 +689,49 @@ export default function App() {
                   {glossaryItem.en ? <em> · {glossaryItem.en}</em> : null}
                 </h1>
                 <p className="gk-glossary__short">{glossaryItem.short}</p>
-                <p className="gk-glossary__detail">{glossaryItem.detail}</p>
+                <div className="gk-glossary__detail">
+                  {glossaryItem.detail.split(/\n\n+/).map((para) => (
+                    <p key={para.slice(0, 48)}>{para}</p>
+                  ))}
+                </div>
+                {glossaryItem.howto && glossaryItem.howto.length > 0 && (
+                  <>
+                    <h3>手把手怎么做</h3>
+                    <ol className="gk-glossary__steps">
+                      {glossaryItem.howto.map((step) => (
+                        <li key={step}>{step}</li>
+                      ))}
+                    </ol>
+                  </>
+                )}
+                {glossaryItem.domains && glossaryItem.domains.length > 0 && (
+                  <>
+                    <h3>相关域名 / 地址</h3>
+                    <ul className="gk-glossary__domains">
+                      {glossaryItem.domains.map((d) => (
+                        <li key={d}>
+                          {d.startsWith('http') ? (
+                            <a href={d} target="_blank" rel="noreferrer">
+                              <code>{d}</code>
+                            </a>
+                          ) : (
+                            <code>{d}</code>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+                {glossaryItem.pitfalls && glossaryItem.pitfalls.length > 0 && (
+                  <>
+                    <h3>常见坑</h3>
+                    <ul className="gk-glossary__pitfalls">
+                      {glossaryItem.pitfalls.map((p) => (
+                        <li key={p}>{p}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
                 {glossaryItem.related && glossaryItem.related.length > 0 && (
                   <>
                     <h3>相关术语</h3>
@@ -674,6 +751,193 @@ export default function App() {
               </article>
             )}
           </div>
+
+          <section className="gk-endpoints">
+            <div className="home-block-head">
+              <div>
+                <h2 className="gk-section-title">域名与接口速查</h2>
+                <p className="gk-section-desc">配置 Cursor / SDK 时对照 Base URL，避免填错导致连不上。</p>
+              </div>
+            </div>
+            <div className="gk-filters gk-filters--sm">
+              {ENDPOINT_GROUPS.map((g) => (
+                <button
+                  key={g}
+                  type="button"
+                  className={endpointGroup === g ? 'is-on' : ''}
+                  onClick={() => setEndpointGroup(g)}
+                >
+                  {g}
+                </button>
+              ))}
+            </div>
+            <div className="gk-endpoints__grid">
+              {endpointList.map((ep) => (
+                <article key={ep.id} className="gk-endpoint-card">
+                  <header>
+                    <em>{ep.vendor}</em>
+                    <h3>{ep.name}</h3>
+                  </header>
+                  <p className="gk-endpoint-card__url">
+                    <code>{ep.baseUrl}</code>
+                  </p>
+                  <p>{ep.notes}</p>
+                  <p className="gk-endpoint-card__auth">鉴权：{ep.auth}</p>
+                  {ep.typicalModels && (
+                    <p className="gk-endpoint-card__models">型号示例：{ep.typicalModels.join(' · ')}</p>
+                  )}
+                  {ep.tips && (
+                    <ul>
+                      {ep.tips.map((t) => (
+                        <li key={t}>{t}</li>
+                      ))}
+                    </ul>
+                  )}
+                  <a href={ep.docsUrl} target="_blank" rel="noreferrer">
+                    官方文档 →
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+        </main>
+      )}
+
+      {/* GUIDE */}
+      {tab === 'guide' && (
+        <main className="gk-main gk-guide">
+          <h2 className="gk-section-title">新手指南 · 避坑与最佳实践</h2>
+          <p className="gk-section-desc">
+            汇总 AI 新手高频问题：密钥、域名、提示词、Cursor/MCP、幻觉、合规。每条含症状 → 原因 → 步骤 → 最佳实践（共{' '}
+            {NEWBIE_GUIDES.length} 篇）。
+          </p>
+          <div className="gk-filters">
+            {GUIDE_CATEGORIES.map((c) => (
+              <button
+                key={c}
+                type="button"
+                className={guideCat === c ? 'is-on' : ''}
+                onClick={() => setGuideCat(c)}
+              >
+                {c}
+              </button>
+            ))}
+          </div>
+          <div className="gk-guide__layout">
+            <aside className="gk-guide__side">
+              {guideList.map((g) => (
+                <button
+                  key={g.id}
+                  type="button"
+                  className={guideId === g.id ? 'is-on' : ''}
+                  onClick={() => setGuideId(g.id)}
+                >
+                  <em>{g.level}</em>
+                  <strong>{g.title}</strong>
+                  <span>{g.category}</span>
+                </button>
+              ))}
+              {guideList.length === 0 && <p className="gk-empty">没有匹配条目</p>}
+            </aside>
+            {guideItem && (
+              <article className="gk-guide__article">
+                <p className="gk-glossary__cat">
+                  {guideItem.category} · {guideItem.level}
+                </p>
+                <h1>{guideItem.title}</h1>
+                <div className="gk-guide__block">
+                  <h3>你可能遇到</h3>
+                  <p>{guideItem.symptom}</p>
+                </div>
+                <div className="gk-guide__block">
+                  <h3>为什么会这样</h3>
+                  <p>{guideItem.why}</p>
+                </div>
+                <div className="gk-guide__block">
+                  <h3>手把手排查 / 操作</h3>
+                  <ol className="gk-glossary__steps">
+                    {guideItem.steps.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ol>
+                </div>
+                <div className="gk-guide__block gk-guide__block--bp">
+                  <h3>最佳实践</h3>
+                  <ul className="gk-glossary__pitfalls">
+                    {guideItem.bestPractice.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ul>
+                </div>
+                {guideItem.checklist && (
+                  <div className="gk-guide__block">
+                    <h3>完成清单</h3>
+                    <ul className="gk-guide__check">
+                      {guideItem.checklist.map((c) => (
+                        <li key={c}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {guideItem.relatedTerms && guideItem.relatedTerms.length > 0 && (
+                  <>
+                    <h3>相关术语</h3>
+                    <div className="gk-glossary__related">
+                      {guideItem.relatedTerms.map((rid) => {
+                        const g = GLOSSARY.find((x) => x.id === rid)
+                        return (
+                          <button
+                            key={rid}
+                            type="button"
+                            onClick={() => {
+                              setGlossaryId(rid)
+                              setTab('glossary')
+                            }}
+                          >
+                            {g?.term ?? rid}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </>
+                )}
+                {guideItem.relatedCourses && guideItem.relatedCourses.length > 0 && (
+                  <>
+                    <h3>推荐去学</h3>
+                    <div className="gk-glossary__related">
+                      {guideItem.relatedCourses.map((cid) => {
+                        const c = getItem(cid)
+                        return (
+                          <button key={cid} type="button" onClick={() => openCourse(cid)}>
+                            {c?.title ?? cid}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </>
+                )}
+              </article>
+            )}
+          </div>
+
+          <section className="gk-endpoints" style={{ marginTop: '1.5rem' }}>
+            <h2 className="gk-section-title">配置时常用域名（速览）</h2>
+            <p className="gk-section-desc">完整说明在「术语词典」页底部；此处方便新手对照粘贴。</p>
+            <div className="gk-endpoints__grid">
+              {ENDPOINTS.slice(0, 6).map((ep) => (
+                <article key={ep.id} className="gk-endpoint-card">
+                  <h3>{ep.name}</h3>
+                  <p className="gk-endpoint-card__url">
+                    <code>{ep.baseUrl}</code>
+                  </p>
+                  <p>{ep.notes}</p>
+                </article>
+              ))}
+            </div>
+            <button type="button" className="btn btn--ghost-dark" style={{ marginTop: '0.75rem' }} onClick={() => setTab('glossary')}>
+              查看全部域名与接口 →
+            </button>
+          </section>
         </main>
       )}
 
