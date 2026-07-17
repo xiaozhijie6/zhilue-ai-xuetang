@@ -45,7 +45,10 @@ export function CourseDetail({
             {course.source === '自有资料' && <i className="tag">自有资料</i>}
           </div>
           <p className="course-detail__hook">{course.hook}</p>
-          <p className="course-detail__outcome">{course.outcome}</p>
+          <p className="course-detail__outcome">
+            <span className="course-detail__outcome-label">学完你能</span>
+            {course.outcome}
+          </p>
           <h1 className="course-detail__title">{course.title}</h1>
           <p className="course-detail__desc">{course.desc}</p>
           <div className="course-detail__meta">
@@ -64,7 +67,7 @@ export function CourseDetail({
             </button>
           </div>
           <div className="course-detail__trust">
-            <span>✓ 先给结果</span>
+            <span>✓ 学完有产出</span>
             <span>✓ 可试听</span>
             <span>✓ 持续更新</span>
           </div>
@@ -73,7 +76,7 @@ export function CourseDetail({
 
       <div className="course-detail__body">
         <section className="course-detail__left">
-          <h2>你将了解</h2>
+          <h2>这门课带你做出</h2>
           <ul className="course-detail__list">
             {course.highlights.map((h) => (
               <li key={h}>{h}</li>

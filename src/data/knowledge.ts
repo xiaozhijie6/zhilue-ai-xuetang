@@ -107,7 +107,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'cursor',
       title: 'Cursor 完全指南：从安装到 Agent 编程',
-      hook: '不会写代码也能用 Cursor 改项目：新手 3 天上手',
+      hook: '学完能用 Cursor 改自己的项目，并完成多文件任务拆解',
       outcome: '能独立用 Cursor 完成多文件改码、Rules 配置与 Agent 任务拆解',
       category: 'AI编程工具',
       level: '熟练',
@@ -932,7 +932,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'workflow-auto',
       title: '业务自动化：n8n / 飞书 / 企微串联',
-      hook: '怎样让 AI 自动干活，人睡觉也能有钱到账',
+      hook: '学完能把模型接到飞书/企微，让业务通知自动跑完',
       outcome: 'n8n/飞书/企微串联模型，一条业务通知流自动跑完',
       category: 'Agent与自动化',
       level: '老手',
@@ -1336,25 +1336,25 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       ['传媒多平台改写', 20, '实操'],
     ],
   ),
-  // ——— 商业落地 · 结果先行新课 ———
+  // ——— 商业落地 · 变现实战新课 ———
   course(
     {
       id: 'viral-hook-writing',
-      title: '百万播放钩子文案：抖音标题结果先行写法',
-      hook: '怎样用 AI 做出能打百万播放的短视频脚本',
-      outcome: '产出 20 条可 A/B 测试的钩子文案，完播率与点击率有提升方向',
+      title: '短视频标题与开场：写出更能留住观众的文案',
+      hook: '学完能独立改出抓人的短视频标题与前 3 秒开场',
+      outcome: '产出 20 条可 A/B 测试的标题开场，并建立自己的改写流程',
       category: '商业落地',
       level: '新手',
-      desc: '结果先行标题、前三秒钩子、痛点-反差-承诺结构，AI 批量改写与人工复核。',
+      desc: '前三秒结构、痛点-反差-承诺写法，AI 批量改写与人工复核。',
       hot: true,
       new: true,
       source: '自有资料',
       trackStep: 2,
     },
     [
-      ['完播率秘密：结果先行 vs 过程描述对比', 15, '视频'],
-      ['钩子公式：痛点 → 反差 → 具体结果', 18, '图文'],
-      ['AI 批量生成 50 条钩子再人工筛 10 条', 25, '实操'],
+      ['为什么观众只给你 3 秒：留存结构拆解', 15, '视频'],
+      ['开场公式：痛点 → 反差 → 具体承诺', 18, '图文'],
+      ['AI 批量生成 50 条开场再人工筛 10 条', 25, '实操'],
       ['数字/时间/身份三要素怎么加才不假', 12, '图文'],
       ['A/B 测试表：标题-封面-前三秒联动', 15, '模板'],
       ['违禁词与平台规则快速自查', 10, '图文'],
@@ -1388,7 +1388,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     {
       id: 'auto-money-pipeline',
       title: 'AI 自动化工作流到账：n8n + 模型 + 收款闭环',
-      hook: '怎样让 AI 自动干活，人睡觉也能有钱到账',
+      hook: '学完能搭出从线索处理到收款通知的自动流水线',
       outcome: '一条从线索采集→AI 处理→通知→收款的自动化流水线跑通',
       category: 'Agent与自动化',
       level: '老手',

@@ -9,10 +9,10 @@ export type CatNav = {
 }
 
 export const CAT_NAV: CatNav[] = [
-  { category: '商业落地', title: '变现结果', keywords: '播放 · 到账 · 成交', icon: 'biz' },
-  { category: '提示词工程', title: '提示词', keywords: '钩子 · 结构 · 模板', icon: 'prompt' },
+  { category: '商业落地', title: '变现实战', keywords: '短视频 · 成交 · 交付', icon: 'biz' },
+  { category: '提示词工程', title: '提示词', keywords: '结构 · 模板 · 场景', icon: 'prompt' },
   { category: 'AI编程工具', title: '编程工具', keywords: 'Cursor · Agent', icon: 'cursor' },
-  { category: 'Agent与自动化', title: '自动化', keywords: '工作流 · 到账', icon: 'agent' },
+  { category: 'Agent与自动化', title: '自动化', keywords: '工作流 · Agent', icon: 'agent' },
   { category: 'API与配置', title: 'API', keywords: '密钥 · 域名', icon: 'openai' },
   { category: 'MCP与工具协议', title: 'MCP', keywords: '工具协议', icon: 'mcp' },
   { category: '知识库与RAG', title: '知识库', keywords: '少幻觉', icon: 'rag' },
@@ -29,47 +29,47 @@ export type FreeTile = {
   courseId: string
 }
 
-/** 结果先行试学块 */
+/** 快速上手入口 */
 export const FREE_TILES: FreeTile[] = [
   {
     id: 'f1',
-    title: '怎样写出百万播放钩子',
-    desc: '先给结果，再讲方法',
+    title: '写出能打爆的短视频标题',
+    desc: '学完能独立改标题与开场',
     icon: 'prompt',
     courseId: 'viral-hook-writing',
   },
   {
     id: 'f2',
-    title: 'AI 做抖音一条龙',
-    desc: '选题→脚本→发布',
+    title: '用 AI 跑通一条抖音',
+    desc: '选题到脚本到发布',
     icon: 'biz',
     courseId: 'ai-douyin-pipeline',
   },
   {
     id: 'f3',
-    title: '3 天上手 Cursor',
-    desc: '不会代码也能改',
+    title: '用 Cursor 改自己的项目',
+    desc: '不会代码也能动手',
     icon: 'cursor',
     courseId: 'cursor',
   },
   {
     id: 'f4',
-    title: '睡觉也有钱到账',
-    desc: '自动化交付飞轮',
+    title: '搭一套自动交付流程',
+    desc: '付款后自动发课与跟进',
     icon: 'agent',
     courseId: 'auto-money-pipeline',
   },
   {
     id: 'f5',
-    title: '提示词四段式',
-    desc: '新手第一天就用',
+    title: '写出稳定可用的提示词',
+    desc: '四段式模板当天能用',
     icon: 'prompt',
     courseId: 'prompt-basics',
   },
   {
     id: 'f6',
-    title: 'MCP 让 AI 真动手',
-    desc: '查文档 · 改文件',
+    title: '给 AI 接上外部工具',
+    desc: 'MCP 查文档、改文件',
     icon: 'mcp',
     courseId: 'mcp-intro',
   },
@@ -91,8 +91,8 @@ export type RecTab = {
 }
 
 export const REC_TABS: RecTab[] = [
-  { id: 'hot', label: '先看结果', filter: 'hot' },
-  { id: 'money', label: '变现到账', filter: 'money' },
+  { id: 'hot', label: '热门精选', filter: 'hot' },
+  { id: 'money', label: '变现实战', filter: 'money' },
   { id: 'newbie', label: '新手必学', filter: 'newbie' },
   { id: 'tools', label: '工具上手', filter: 'tools' },
   { id: 'auto', label: '自动化', filter: 'auto' },
@@ -102,31 +102,31 @@ export const REC_TABS: RecTab[] = [
 export const HERO_SLIDES = [
   {
     courseId: 'viral-hook-writing',
-    eyebrow: '结果先行',
-    title: '怎样获得百万播放',
-    subtitle: '先改前 3 秒钩子，再用 AI 批量出脚本',
-    cta: '立刻学钩子',
+    eyebrow: '短视频增长',
+    title: '学完能写出冲播放的标题与开场',
+    subtitle: '掌握前 3 秒结构，用 AI 批量打磨脚本',
+    cta: '开始这门课',
   },
   {
     courseId: 'auto-money-pipeline',
-    eyebrow: '自动到账',
-    title: 'AI 自动干活，钱自己进账',
-    subtitle: '付款发货打卡复购，少人工盯梢',
-    cta: '看流水线',
+    eyebrow: '自动化变现',
+    title: '学完能搭「付款即发货」的自动流水线',
+    subtitle: '发课、打卡、复购提醒少靠人工盯梢',
+    cta: '开始这门课',
   },
   {
     courseId: 'newbie-first-week',
     eyebrow: '新手 7 天',
-    title: '零基础也能先拿到结果',
-    subtitle: '提示词 → 工具 → 第一条内容',
-    cta: '从新手村开始',
+    title: '学完能独立完成第一条 AI 内容',
+    subtitle: '从提示词到工具，再到可发布的成稿',
+    cta: '从新手开始',
   },
   {
     courseId: 'private-domain-convert',
-    eyebrow: '成交',
-    title: '播放变成付款',
-    subtitle: '公域引流到私域成交的一套漏斗',
-    cta: '复制漏斗',
+    eyebrow: '私域成交',
+    title: '学完能把播放量接到微信成交',
+    subtitle: '评论引导、主页话术到成交跟进一套带走',
+    cta: '开始这门课',
   },
 ]
 

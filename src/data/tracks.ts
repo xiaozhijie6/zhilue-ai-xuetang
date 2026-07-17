@@ -34,8 +34,8 @@ export const TRACKS: TrackDef[] = [
         courseIds: ['cursor', 'prompt-system'],
       },
       {
-        title: '先拿结果：钩子与选题',
-        result: '标题先给结果，完播才有机会',
+        title: '做出第一条能发的内容',
+        result: '会写标题开场，并能用 AI 跑通一条短视频脚本',
         courseIds: ['viral-hook-writing', 'ai-douyin-pipeline'],
       },
       {

@@ -208,7 +208,7 @@ function CourseRow({
         </div>
       </button>
       <button type="button" className="gk-row__cta" onClick={onOpen}>
-        看怎么做到
+        查看课程
       </button>
     </article>
   )
@@ -476,7 +476,7 @@ export default function App() {
                     ? '搜索术语…'
                     : tab === 'guide'
                       ? '搜索避坑问题、最佳实践…'
-                      : '搜索钩子、结果、课程…'
+                      : '搜索课程、能力、工具…'
                 }
                 value={tab === 'glossary' ? gQuery : tab === 'guide' ? guideQuery : query}
                 onChange={(e) => {
@@ -526,13 +526,13 @@ export default function App() {
         >
           <div className="gk-banner__inner">
             <div className="gk-banner__copy">
-              <p className="gk-banner__eyebrow">先给结果，再给方法</p>
+              <p className="gk-banner__eyebrow">AI 实战知识库</p>
               <h1>
                 <span className="gk-banner__line">知略 AI 知识库</span>
-                <span className="gk-banner__line gk-banner__line--accent">新手 → 熟练 → 老手，每一步都能拿到结果</span>
+                <span className="gk-banner__line gk-banner__line--accent">新手 → 熟练 → 老手，一步步把能力做出来</span>
               </h1>
               <p className="gk-banner__lead">
-                {stats.courses} 门结果向课程 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 从钩子、到账到自动化飞轮。
+                {stats.courses} 门实战课 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 覆盖编程、自动化与变现落地。
               </p>
               <div className="gk-chips" aria-label="快捷入口">
                 {TRACK_LEVELS.map((lv) => (
@@ -541,14 +541,14 @@ export default function App() {
                   </button>
                 ))}
                 <button type="button" className="gk-chip gk-chip--ghost" onClick={() => setTab('home')}>
-                  回首页看结果 →
+                  返回首页 →
                 </button>
               </div>
             </div>
             <div className="gk-banner__panel">
               <div className="gk-banner__stat">
                 <strong>{stats.courses}</strong>
-                <span>结果向课程</span>
+                <span>实战课程</span>
               </div>
               <div className="gk-banner__stat">
                 <strong>3</strong>
@@ -559,8 +559,8 @@ export default function App() {
                 <span>标准术语</span>
               </div>
               <div className="gk-banner__hint">
-                <em>结果先行</em>
-                <span>每条内容先告诉你能拿到什么，再教你怎么做</span>
+                <em>学完能做什么</em>
+                <span>每门课都写清：你能独立完成哪一类产出</span>
               </div>
             </div>
           </div>
@@ -623,7 +623,7 @@ export default function App() {
           <aside className="track-progression">
             <p>
               <strong>循序渐进：</strong>
-              新手拿第一条结果 → 熟练搭流水线批量交付 → 老手自动化飞轮睡后到账
+              新手做出第一条内容 → 熟练搭好交付流水线 → 老手把变现与自动化跑稳
             </p>
             <div className="track-progression__actions">
               {trackLevel !== '新手' && (
@@ -1007,8 +1007,8 @@ export default function App() {
       {tab === 'home' && (
         <main className="gk-main home">
           <div className="home-promo home-promo--result">
-            <strong>结果先行</strong>
-            <span>先给结果，再给方法 · AI 知识库按新手→熟练→老手</span>
+            <strong>循序进阶</strong>
+            <span>按新手 → 熟练 → 老手学习，每门课写清学完你能做出什么</span>
           </div>
 
           <section className="home-hero" aria-label="本周精选">
@@ -1076,11 +1076,11 @@ export default function App() {
             })}
           </section>
 
-          <section className="hook-feed" aria-label="先看结果">
+          <section className="hook-feed" aria-label="学完你能做到">
             <div className="home-block-head">
               <div>
-                <h2>先看结果</h2>
-                <p className="home-block-desc">每条先告诉你能拿到什么，再点进去学方法</p>
+                <h2>学完你能做到</h2>
+                <p className="home-block-desc">每门课对应一种可交付的能力，点进去按步骤练</p>
               </div>
             </div>
             <div className="hook-feed__list">
@@ -1094,7 +1094,7 @@ export default function App() {
                   <p className="hook-card__result">{feed.result}</p>
                   <p className="hook-card__proof">{feed.proof}</p>
                   <button type="button" className="hook-card__cta" onClick={() => openCourse(feed.courseId)}>
-                    看怎么做到 →
+                    进入课程 →
                   </button>
                 </article>
               ))}
@@ -1104,8 +1104,8 @@ export default function App() {
           <section className="home-free">
             <div className="home-block-head">
               <div>
-                <h2>马上能拿结果</h2>
-                <p className="home-block-desc">免费试学，先验证结果再系统进阶</p>
+                <h2>快速上手</h2>
+                <p className="home-block-desc">从高频能力切入，练会一项再系统进阶</p>
               </div>
               <button type="button" onClick={() => openCatalog()}>
                 全部课程 →
@@ -1133,7 +1133,7 @@ export default function App() {
             <div className="home-block-head">
               <div>
                 <h2>重点推荐</h2>
-                <p className="home-block-desc">按结果类型筛选，找到你最想先拿到的那一项</p>
+                <p className="home-block-desc">按变现、新手、工具、自动化等方向筛选课程</p>
               </div>
             </div>
             <div className="home-rec__tabs">
@@ -1173,7 +1173,7 @@ export default function App() {
               <div>
                 <h2>完整课程目录</h2>
                 <p className="home-block-desc">
-                  {stats.courses} 门课已收录，按分类、难度筛选，或直接搜索钩子与结果
+                  {stats.courses} 门课已收录，可按分类、难度筛选，或直接搜索能力关键词
                 </p>
               </div>
               <div className="gk-sort">
@@ -1259,7 +1259,7 @@ export default function App() {
       )}
 
       <footer className="gk-footer">
-        <div>知略 AI 学堂 · 先拿结果再学方法</div>
+        <div>知略 AI 学堂 · 新手到老手的 AI 实战知识库</div>
         <div>
           {stats.courses} 课 · {stats.terms} 术语 · 电话登录
         </div>
