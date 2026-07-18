@@ -20,7 +20,6 @@ import {
 } from './data/home'
 import { HOOK_FEED } from './data/hooks'
 import { TRACKS, type TrackId } from './data/tracks'
-import { getTutorialBody } from './data/tutorialBodies'
 import { AmbientBackground } from './components/AmbientBackground'
 import { AiIcon } from './components/AiIcon'
 import { CourseCover } from './components/CourseCover'
@@ -587,9 +586,6 @@ export default function App() {
             <h1>{activeTrack.title}</h1>
             <p className="track-hero__hook">{activeTrack.hook}</p>
             <p className="track-hero__promise">{activeTrack.promise}</p>
-            <p className="track-hero__promise" style={{ opacity: 0.85 }}>
-              每一步下方附「跟做摘录」——不是空目录，点按钮进完整正文继续做。
-            </p>
             <span className="track-hero__days">{activeTrack.days}</span>
           </header>
 
@@ -615,33 +611,6 @@ export default function App() {
                     )
                   })}
                 </div>
-                {(() => {
-                  const cid = step.courseIds.find((id) => getTutorialBody(id))
-                  if (!cid) return null
-                  const body = getTutorialBody(cid)!
-                  const sec = body.sections[0]
-                  return (
-                    <div className="track-teach">
-                      <h4>跟做摘录 · {sec.title}</h4>
-                      {sec.paragraphs.slice(0, 2).map((p) => (
-                        <p key={p.slice(0, 28)}>{p}</p>
-                      ))}
-                      {sec.steps && (
-                        <ol className="teach-steps">
-                          {sec.steps.slice(0, 5).map((s) => (
-                            <li key={s}>{s}</li>
-                          ))}
-                        </ol>
-                      )}
-                      {sec.links?.[0] && (
-                        <p className="track-teach__url">官网：{sec.links[0].url}</p>
-                      )}
-                      <button type="button" className="btn btn--ghost-dark" onClick={() => openCourse(cid)}>
-                        打开完整正文（含逐步点击说明）→
-                      </button>
-                    </div>
-                  )
-                })()}
               </section>
             ))}
           </div>
@@ -973,10 +942,8 @@ export default function App() {
         <main className="gk-main gk-learn">
           <div className="gk-learn__bar">
             <div>
-              <h2>我的进度 · 继续跟做</h2>
-              <p>
-                已登录 {maskPhone(phone)} · 左侧勾选步骤，右侧直接读正文摘录（完整教学在点开教程后）
-              </p>
+              <h2>我的进度</h2>
+              <p>已登录 {maskPhone(phone)} · 勾选步骤记进度，点开教程看完整跟做正文</p>
             </div>
             <button type="button" className="btn btn--ghost-dark" onClick={logout}>
               退出登录
@@ -1011,30 +978,8 @@ export default function App() {
               <h1>{learnCourse.title}</h1>
               <p>{learnCourse.outcome || learnCourse.desc}</p>
               <button type="button" className="btn btn--accent" style={{ margin: '0.75rem 0' }} onClick={() => openCourse(learnCourse.id)}>
-                打开完整跟做正文 →
+                打开教程跟做 →
               </button>
-              {(() => {
-                const body = getTutorialBody(learnCourse.id)
-                if (!body) {
-                  return <p className="teach-tip">这篇还在补正文，请先打开「下载指南 / Cursor / 做网页」等已有完整教程。</p>
-                }
-                const sec = body.sections[0]
-                return (
-                  <div className="track-teach">
-                    <h4>{sec.title}</h4>
-                    {sec.paragraphs.slice(0, 2).map((p) => (
-                      <p key={p.slice(0, 32)}>{p}</p>
-                    ))}
-                    {sec.steps && (
-                      <ol className="teach-steps">
-                        {sec.steps.slice(0, 4).map((s) => (
-                          <li key={s}>{s}</li>
-                        ))}
-                      </ol>
-                    )}
-                  </div>
-                )
-              })()}
               <div className="gk-lessons" style={{ marginTop: '1rem' }}>
                 {learnCourse.lessons.map((lesson, i) => {
                   const done = progressMap[learnCourse.id]?.includes(lesson.id)
@@ -1065,54 +1010,9 @@ export default function App() {
           <div className="home-promo home-promo--ink">
             <strong>怎么读</strong>
             <span>
-              首页直接给跟做正文摘录；「学习路径」按基础→工具→进阶推进；「术语词典」讲概念；「避坑指南」按故障排查；点进任意教程有完整步骤
+              表面只作导览与选题；完整安装步骤、官网链接与跟做正文在点进教程后展开。「学习路径」推进，「术语」讲概念，「避坑」排查故障
             </span>
           </div>
-
-          <section className="home-teach-grid" aria-label="三线跟做">
-            {(
-              [
-                ['基础', 'ai-download-guide', '先把软件装稳'],
-                ['工具', 'cursor-install', '装好 Cursor 并改文件'],
-                ['进阶', 'ai-build-website', '用 AI 搭出可访问页面'],
-              ] as const
-            ).map(([level, id, blurb]) => {
-              const featured = getItem(id)
-              const body = getTutorialBody(id)
-              if (!featured || !body) return null
-              const sec = body.sections[0]
-              return (
-                <article key={id} className="home-teach">
-                  <p className="home-teach__level">{level} · {blurb}</p>
-                  <h2>{featured.title}</h2>
-                  <p className="home-teach__desc">{featured.hook}</p>
-                  <div className="home-teach__body">
-                    <p>
-                      <strong>{sec.title}</strong>
-                    </p>
-                    {sec.paragraphs.slice(0, 2).map((p) => (
-                      <p key={p.slice(0, 32)}>{p}</p>
-                    ))}
-                    {sec.steps && (
-                      <ol>
-                        {sec.steps.slice(0, 5).map((s) => (
-                          <li key={s}>{s}</li>
-                        ))}
-                      </ol>
-                    )}
-                    {sec.links && sec.links[0] && (
-                      <p className="home-teach__link">
-                        官网：{sec.links[0].url}
-                      </p>
-                    )}
-                  </div>
-                  <button type="button" className="btn btn--accent home-teach__cta" onClick={() => openCourse(id)}>
-                    打开完整正文 →
-                  </button>
-                </article>
-              )
-            })}
-          </section>
 
           <section className="home-hero home-hero--cinema" aria-label="本周精选">
             <div className="home-carousel">
