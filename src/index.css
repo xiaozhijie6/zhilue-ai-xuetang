@@ -2746,16 +2746,6 @@ button.home-slide {
   box-shadow: none;
 }
 
-.gk-mega__inner {
-  padding: 1.5rem 1.75rem 1.65rem;
-  border-radius: 4px;
-  background: #fff;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow:
-    0 12px 40px rgba(15, 23, 42, 0.1),
-    0 2px 8px rgba(15, 23, 42, 0.04);
-}
-
 .gk-mega__panel[hidden] {
   display: none;
 }
@@ -2764,6 +2754,13 @@ button.home-slide {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.75rem 3rem;
+  padding: 1.5rem 1.75rem 1.65rem;
+  border-radius: 4px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow:
+    0 12px 40px rgba(15, 23, 42, 0.1),
+    0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
 @media (min-width: 720px) {
