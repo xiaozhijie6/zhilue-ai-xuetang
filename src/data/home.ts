@@ -33,7 +33,7 @@ export const CAT_NAV: CatNav[] = CATEGORY_COLUMNS.map((category) => {
   return { category, ...meta }
 })
 
-/** 悬停展开的总类面板：三列，排版对齐常见课程站 mega menu */
+/** 悬停展开的总类面板：四列对齐四级递进 */
 export type MegaColumn = {
   title: string
   categories: string[]
@@ -41,15 +41,19 @@ export type MegaColumn = {
 
 export const MEGA_COLUMNS: MegaColumn[] = [
   {
-    title: 'AI 编程工具',
-    categories: ['入门起步', '工具安装', '工具用法'],
+    title: '01 入门 · 装稳',
+    categories: ['入门起步'],
   },
   {
-    title: '前端 / JS',
+    title: '02 工具 · 改文件',
+    categories: ['工具安装', '工具用法'],
+  },
+  {
+    title: '03 作品 · 出成品',
     categories: ['前端 / JS', '小程序与 App', 'AI生图'],
   },
   {
-    title: '技术提升',
+    title: '04 精通 · 接得住',
     categories: ['提示词工程', '办公提效', 'API与配置', 'MCP与Agent', '安全与成本'],
   },
 ]
@@ -62,47 +66,51 @@ export type FreeTile = {
   courseId: string
 }
 
-/** 每条标题句式故意不同，避免读起来像同一模板 */
+/**
+ * 文字样板（全页面统一）：
+ * - title：场景痛点一句（≤18 字）
+ * - desc：动作清单，顿号分隔
+ */
 export const FREE_TILES: FreeTile[] = [
   {
     id: 'f1',
-    title: 'Win / Mac 装 AI，别再到处找下载页',
-    desc: '官方入口、安装勾选项、第一次打开',
+    title: '装 AI 老是下到假站？先认准官方入口',
+    desc: '认入口、按系统装、第一次打开',
     icon: 'download',
     courseId: 'ai-download-guide',
   },
   {
     id: 'f2',
-    title: '不翻墙，今晚就把 Trae 跑起来',
-    desc: 'trae.cn 下载、手机号登录、改掉第一个文件',
+    title: '不翻墙也想改代码？今晚先把 Trae 装上',
+    desc: '认 trae.cn、手机号登、改第一个文件',
     icon: 'cursor',
     courseId: 'install-trae',
   },
   {
     id: 'f3',
-    title: '明天能发出去的落地页长什么样？',
-    desc: '需求一句话，布局文案一起出',
+    title: '客户明天要链接？今晚先铺一版网页',
+    desc: '定区块、写文案、本地预览',
     icon: 'web',
     courseId: 'ai-build-website',
   },
   {
     id: 'f4',
-    title: '微信小程序三页骨架直接生成',
-    desc: '首页 · 列表 · 详情，带着交互说明',
+    title: '小程序别从零画？三页骨架一次铺开',
+    desc: '首页、列表、详情、带交互',
     icon: 'miniapp',
     courseId: 'ai-build-miniprogram',
   },
   {
     id: 'f5',
-    title: '同一句话，为什么别人问得更准',
+    title: '问完还是废话？提示词少了四件套',
     desc: '角色、目标、约束、格式拆开写',
     icon: 'prompt',
     courseId: 'prompt-basics',
   },
   {
     id: 'f6',
-    title: '封面图别再找设计师排期了',
-    desc: '出图、改图、统一风格怎么写',
+    title: '出图老是差不多？把主体和风格写死',
+    desc: '主体、风格、比例、负面词',
     icon: 'image',
     courseId: 'ai-image-gen',
   },
@@ -120,46 +128,46 @@ export const COMMUNITY_TOPICS = [
 export type RecTab = {
   id: string
   label: string
-  filter: 'hot' | 'new' | 'basic' | 'tools' | 'build' | 'image'
+  filter: 'hot' | 'new' | '入门' | '工具' | '作品' | '精通'
 }
 
 export const REC_TABS: RecTab[] = [
   { id: 'hot', label: '大家都在看', filter: 'hot' },
-  { id: 'basic', label: '刚接触 AI', filter: 'basic' },
-  { id: 'tools', label: '工具与安装', filter: 'tools' },
-  { id: 'build', label: '网页与 App', filter: 'build' },
-  { id: 'image', label: '出图相关', filter: 'image' },
+  { id: '入门', label: '入门起步', filter: '入门' },
+  { id: '工具', label: '工具与安装', filter: '工具' },
+  { id: '作品', label: '网页与出图', filter: '作品' },
+  { id: '精通', label: 'API 与 Agent', filter: '精通' },
   { id: 'new', label: '刚更新', filter: 'new' },
 ]
 
 export const HERO_SLIDES = [
   {
     courseId: 'ai-download-guide',
-    eyebrow: '国内先跑通',
+    eyebrow: '01 入门 · 先跑通',
     title: '别再卡在「下载哪个」这一步',
-    subtitle: '先豆包/Kimi 网页版，再决定要不要装编程 IDE',
-    cta: '去看安装步骤',
+    subtitle: '先网页版、再客户端、不必翻墙',
+    cta: '去看入门台阶',
   },
   {
     courseId: 'install-trae',
-    eyebrow: '不翻墙编程',
-    title: 'Trae 国内版：装好就能改项目文件',
-    subtitle: 'trae.cn 直连、手机号登录、内置豆包/DeepSeek',
-    cta: '打开 Trae 安装',
+    eyebrow: '02 工具 · 不翻墙',
+    title: 'Trae 国内版：装好就能改项目',
+    subtitle: 'trae.cn 直连、手机号登、内置国产模型',
+    cta: '去看工具台阶',
   },
   {
     courseId: 'ai-build-website',
-    eyebrow: '前端 / JS',
-    title: '客户明天要链接，你今晚先出一版',
-    subtitle: '区块、文案、配色一起定，本地就能预览',
-    cta: '去做网页',
+    eyebrow: '03 作品 · 能交活',
+    title: '客户明天要链接，今晚先出一版',
+    subtitle: '区块、文案、配色、本地预览',
+    cta: '去看作品台阶',
   },
   {
     courseId: 'ai-image-gen',
-    eyebrow: '视觉物料',
+    eyebrow: '03 作品 · 出物料',
     title: '海报和封面，提示词写对就不翻车',
-    subtitle: '主体、构图、风格统一，多图一套带走',
-    cta: '去练生图',
+    subtitle: '主体、构图、风格、多图一套',
+    cta: '去看作品台阶',
   },
 ]
 
@@ -169,8 +177,10 @@ export type HomeTrackCard = {
   cta: string
 }
 
+/** 文字样板统一：hook=痛点疑问一句；cta=「去X台阶」 */
 export const HOME_TRACK_CARDS: HomeTrackCard[] = [
-  { level: '基础', hook: '连安装都卡壳？先把常用 AI 装稳', cta: '先过基础' },
-  { level: '工具', hook: '想改项目文件？先装 Trae / 灵码，不必翻墙', cta: '去看工具' },
-  { level: '进阶', hook: '网页、小程序、App、图——拿出能给人看的东西', cta: '去做作品' },
+  { level: '入门', hook: '连安装都卡壳？先把常用 AI 装稳', cta: '去入门台阶' },
+  { level: '工具', hook: '想改项目文件？先装 Trae / 灵码，不必翻墙', cta: '去工具台阶' },
+  { level: '作品', hook: '要做给人看的东西？网页、小程序、App、图', cta: '去作品台阶' },
+  { level: '精通', hook: '会改文件了？往下接 API、Agent 与成本', cta: '去精通台阶' },
 ]

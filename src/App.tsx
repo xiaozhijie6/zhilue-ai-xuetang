@@ -33,7 +33,7 @@ type Tab = 'home' | 'track' | 'glossary' | 'guide' | 'learn'
 type SortKey = 'hot' | 'new' | 'students'
 type RecTabId = (typeof REC_TABS)[number]['id']
 
-const TRACK_LEVELS: TrackId[] = ['基础', '工具', '进阶']
+const TRACK_LEVELS: TrackId[] = ['入门', '工具', '作品', '精通']
 
 function shortCourseLabel(item: KnowledgeItem) {
   const head = item.title.split(/[：:]/)[0]?.trim() || item.title
@@ -52,25 +52,25 @@ type TabBanner = {
 
 const TAB_BANNERS: Record<Exclude<Tab, 'home'>, TabBanner> = {
   track: {
-    eyebrow: '分阶段推进 · 可勾进度',
+    eyebrow: '四级递进 · 入门 → 工具 → 作品 → 精通',
     title: '学习路径',
-    accent: '装得上、改得动、做得出来',
-    lead: '基础装稳 → 工具能改文件 → 进阶做出作品。按结果选阶段，不靠堆课名。',
+    accent: '装得上、改得动、做出来、接得住',
+    lead: '入门装稳 → 工具能改 → 作品能交 → 精通可控。按结果选台阶，不靠堆课名。',
     hintLabel: '怎么走',
-    hint: '先定阶段，再点进教程看完整跟做正文',
+    hint: '先定台阶，再点进教程看完整跟做正文',
     stats: [
-      ['3', '学习阶段'],
+      ['4', '学习台阶'],
       ['图文', '逐步跟做'],
       ['国内', '优先直连'],
     ],
   },
   glossary: {
-    eyebrow: '名词解释 · 含手把手与坑',
+    eyebrow: '名词解释 · 短义 + 详解 + 坑',
     title: '术语词典',
     accent: '听得懂、讲得清、用得对',
-    lead: 'LLM、Token、RAG、MCP、Base URL… 按词条查概念，不是安装步骤，也不是故障排查。',
+    lead: '概念查这里：LLM、Token、RAG、MCP、Base URL 一查到底，不混安装与排错。',
     hintLabel: '怎么查',
-    hint: '左侧点词条；右侧看短义、详解、相关术语',
+    hint: '左侧点词条，右侧看短义、详解、相关术语',
     stats: [
       ['词条', '可检索'],
       ['分类', '快速筛'],
@@ -81,7 +81,7 @@ const TAB_BANNERS: Record<Exclude<Tab, 'home'>, TabBanner> = {
     eyebrow: '症状驱动 · 逐步排查',
     title: '避坑指南',
     accent: '对上症状、查清原因、修好翻车',
-    lead: '按故障现象入手：你遇到什么 → 为什么 → 怎么排。不教从零安装，专治装完却翻车。',
+    lead: '按故障现象入手：你遇到什么 → 为什么 → 怎么排。不教从零安装，专治装完翻车。',
     hintLabel: '怎么排',
     hint: '先对症状，再按步骤排查，别一上来重装',
     stats: [
@@ -94,13 +94,13 @@ const TAB_BANNERS: Record<Exclude<Tab, 'home'>, TabBanner> = {
     eyebrow: '登录同步 · 勾选记进度',
     title: '我的进度',
     accent: '学到哪、勾到哪、接着做',
-    lead: '记下你跟做到哪一步；点开教程看完整正文，勾选完成的步骤，下次接着学。',
+    lead: '记下你跟做到哪一步；点开教程看完整正文，勾选完成步骤，下次接着学。',
     hintLabel: '怎么记',
-    hint: '登录后勾选步骤即可；换设备需同一手机号',
+    hint: '登录后勾选步骤即可，换设备需同一手机号',
     stats: [
       ['进度', '本地记住'],
       ['教程', '点开跟做'],
-      ['阶段', '可回路径'],
+      ['台阶', '可回路径'],
     ],
   },
 }
@@ -311,7 +311,7 @@ function CatalogCard({
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('home')
-  const [trackLevel, setTrackLevel] = useState<TrackId>('基础')
+  const [trackLevel, setTrackLevel] = useState<TrackId>('入门')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [glossaryId, setGlossaryId] = useState<string | null>(GLOSSARY[0]?.id ?? null)
   const [phone, setPhone] = useState<string | null>(() => sessionStorage.getItem(PHONE_KEY))
@@ -436,17 +436,19 @@ export default function App() {
     const tabMeta = REC_TABS.find((t) => t.id === recTab) ?? REC_TABS[0]
     let list = [...KNOWLEDGE_LIBRARY]
     switch (tabMeta.filter) {
-      case 'basic':
-        list = list.filter((c) => c.level === '基础')
+      case '入门':
+        list = list.filter((c) => c.level === '入门')
         break
-      case 'tools':
+      case '工具':
         list = list.filter((c) => c.category === '工具安装' || c.category === '工具用法')
         break
-      case 'build':
-        list = list.filter((c) => c.category === '前端 / JS' || c.category === '小程序与 App')
+      case '作品':
+        list = list.filter((c) => c.category === '前端 / JS' || c.category === '小程序与 App' || c.category === 'AI生图')
         break
-      case 'image':
-        list = list.filter((c) => c.category === 'AI生图')
+      case '精通':
+        list = list.filter(
+          (c) => c.category === 'API与配置' || c.category === 'MCP与Agent' || c.category === '安全与成本',
+        )
         break
       case 'new':
         list = list.filter((c) => c.new || c.hot).sort((a, b) => Number(!!b.new) - Number(!!a.new))
@@ -697,7 +699,7 @@ export default function App() {
                     ))}
                 {tab === 'learn' && (
                   <>
-                    <button type="button" className="gk-chip" onClick={() => goToTrack('基础')}>
+                    <button type="button" className="gk-chip" onClick={() => goToTrack('入门')}>
                       回学习路径
                     </button>
                     <button type="button" className="gk-chip" onClick={() => setTab('glossary')}>
@@ -782,25 +784,30 @@ export default function App() {
           <aside className="track-progression">
             <p>
               <strong>怎么往下走：</strong>
-              装不稳先补基础；会装了再啃工具；要交活再进作品线
+              装不稳先补入门；会改文件再进作品；要接 API / Agent 进精通
             </p>
             <div className="track-progression__actions">
-              {trackLevel !== '基础' && (
-                <button type="button" className="btn btn--ghost-dark" onClick={() => goToTrack('基础')}>
-                  ← 回到基础
+              {trackLevel !== '入门' && (
+                <button type="button" className="btn btn--ghost-dark" onClick={() => goToTrack('入门')}>
+                  ← 回到入门
                 </button>
               )}
-              {trackLevel !== '工具' && trackLevel === '基础' && (
+              {trackLevel === '入门' && (
                 <button type="button" className="btn btn--accent" onClick={() => goToTrack('工具')}>
                   下一步：工具 →
                 </button>
               )}
               {trackLevel === '工具' && (
-                <button type="button" className="btn btn--accent" onClick={() => goToTrack('进阶')}>
-                  下一步：进阶 →
+                <button type="button" className="btn btn--accent" onClick={() => goToTrack('作品')}>
+                  下一步：作品 →
                 </button>
               )}
-              {trackLevel === '进阶' && (
+              {trackLevel === '作品' && (
+                <button type="button" className="btn btn--accent" onClick={() => goToTrack('精通')}>
+                  下一步：精通 →
+                </button>
+              )}
+              {trackLevel === '精通' && (
                 <button type="button" className="btn btn--ghost-dark" onClick={() => openCatalog()}>
                   浏览全部教程 →
                 </button>
@@ -1163,9 +1170,9 @@ export default function App() {
       {tab === 'home' && (
         <main className="gk-main home home--mixed">
           <div className="home-promo home-promo--ink">
-            <strong>怎么读</strong>
+            <strong>怎么走</strong>
             <span>
-              默认服务国内用户、不依赖翻墙：先 Trae.cn / 通义灵码。表面只作导览；完整步骤在点进教程后展开。「学习路径」推进，「术语」讲概念，「避坑」排查故障
+              入门装稳 → 工具能改 → 作品能交 → 精通可控。先定台阶，再点进教程跟做；术语讲概念，避坑查故障。
             </span>
           </div>
 
@@ -1214,7 +1221,7 @@ export default function App() {
             </div>
           </section>
 
-          <section className="home-tracks" aria-label="三级进阶入口">
+          <section className="home-tracks" aria-label="四级递进入口">
             {HOME_TRACK_CARDS.map((card) => {
               const track = TRACKS.find((t) => t.id === card.level)!
               return (
@@ -1234,11 +1241,11 @@ export default function App() {
             })}
           </section>
 
-          <section className="hook-feed" aria-label="先挑卡住的点">
+          <section className="hook-feed" aria-label="按卡点找教程">
             <div className="home-block-head">
               <div>
-                <h2>先挑一个你现在卡的点</h2>
-                <p className="home-block-desc">标题各写各的，点进对应教程按步骤跟</p>
+                <h2>先挑你现在卡在哪</h2>
+                <p className="home-block-desc">每条一个痛点，点进对应教程按步骤跟</p>
               </div>
             </div>
             <div className="hook-feed__list">
@@ -1274,8 +1281,8 @@ export default function App() {
           <section className="home-free">
             <div className="home-block-head">
               <div>
-                <h2>六条捷径</h2>
-                <p className="home-block-desc">安装、Cursor、网页、小程序、提示词、生图，各走各的</p>
+                <h2>六条快速上手</h2>
+                <p className="home-block-desc">安装、Trae、网页、小程序、提示词、生图，各走一条</p>
               </div>
               <button type="button" onClick={() => openCatalog()}>
                 全部教程 →
@@ -1302,8 +1309,8 @@ export default function App() {
           <section className="home-rec">
             <div className="home-block-head">
               <div>
-                <h2>按心情翻</h2>
-                <p className="home-block-desc">刚接触、写代码、做页面、出图——标签点一下就行</p>
+                <h2>按台阶翻</h2>
+                <p className="home-block-desc">入门、工具、作品、精通——标签点一下就行</p>
               </div>
             </div>
             <div className="home-rec__tabs">

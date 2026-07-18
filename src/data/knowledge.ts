@@ -1,6 +1,6 @@
 /** 知略内容库：AI 自学知识库 / 教程库 */
 
-export type Level = '基础' | '工具' | '进阶'
+export type Level = '入门' | '工具' | '作品' | '精通'
 
 export type Lesson = {
   id: string
@@ -53,7 +53,7 @@ export const CATEGORY_COLUMNS = CATEGORIES.filter((c) => c !== '全部')
 /** 安装大类简称，便于文案引用 */
 export const INSTALL_CATEGORY = '工具安装' as const
 
-export const LEVELS: Array<Level | '全部'> = ['全部', '基础', '工具', '进阶']
+export const LEVELS: Array<Level | '全部'> = ['全部', '入门', '工具', '作品', '精通']
 
 function L(id: string, rows: Array<[string, number, Lesson['type']]>): Lesson[] {
   return rows.map(([title, mins, type], i) => ({
@@ -92,7 +92,7 @@ function course(
 ): KnowledgeItem {
   const lessons = partial.lessons ?? L(partial.id, lessonRows)
   const hook = partial.hook ?? partial.title
-  const outcome = partial.outcome ?? `学完能独立掌握「${partial.title}」的核心方法并立刻上手`
+  const outcome = partial.outcome ?? `跟做完你能独立掌握「${partial.title}」并立刻上手`
   return {
     format: '图文教程 · 步骤拆解',
     audience: 'AI 自学者',
@@ -117,7 +117,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '5 分钟搞懂 AI 能帮你做什么，不再盲目跟风',
       outcome: '能按场景选对 AI 用法：聊天、办公、编程、做图各走哪条路',
       category: '入门起步',
-      level: '基础',
+      level: '入门',
       desc: '用生活化语言讲清大模型能力边界，建立正确预期。',
       source: '自有资料',
       hot: true,
@@ -139,7 +139,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '打开 AI 当天就能问出有用答案，而不是瞎聊',
       outcome: '完成第一次结构化提问，拿到能直接复制使用的回答',
       category: '入门起步',
-      level: '基础',
+      level: '入门',
       desc: '注册后第一次对话的完整流程：选模型、写问题、追问、保存结果。',
       source: '自有资料',
       hot: true,
@@ -162,7 +162,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '国内优先：先网页版跑通，再决定要不要装客户端',
       outcome: '国内网页版能聊天；清楚海外客户端可跳过；知道编程去 Trae.cn / 通义灵码',
       category: '入门起步',
-      level: '基础',
+      level: '入门',
       desc: '小白逐步：先豆包/Kimi；ChatGPT/Claude/Cursor 标为可选；编程指向 Trae 与灵码。',
       source: '自有资料',
       hot: true,
@@ -189,7 +189,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '手机号怎么点、邮件在哪找：注册一次就能继续学',
       outcome: '至少一个 AI 账号注册成功，会删对话、会记登录方式',
       category: '入门起步',
-      level: '基础',
+      level: '入门',
       desc: '国内手机号逐步注册；ChatGPT/Claude 注册与登录方式陷阱；隐私三分钟设置。',
       source: '自有资料',
     },
@@ -210,7 +210,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '7 天自学计划：每天 30 分钟，从零到能提问、能办公、懂安全',
       outcome: '7 天清单全部打勾，能独立对话、写提示词、知道密钥不能乱贴',
       category: '入门起步',
-      level: '基础',
+      level: '入门',
       desc: '按天拆分的自学路径，覆盖安装、提问、办公、安全底线。',
       source: '自有资料',
       hot: true,
@@ -235,7 +235,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '四段式提示词：同一任务输出质量立刻翻倍',
       outcome: '熟练写角色/目标/约束/格式，10 题改写练习过关',
       category: '提示词工程',
-      level: '基础',
+      level: '入门',
       desc: '四件套框架，立刻提升提问质量。',
       source: '自有资料',
       hot: true,
@@ -259,7 +259,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '邮件 / 纪要 / PPT / 调研：四套 prompt 省 2 小时/天',
       outcome: '高频办公场景各练通一遍，建立「AI 起草 + 人工复核」习惯',
       category: '办公提效',
-      level: '基础',
+      level: '入门',
       desc: '高频办公场景提示词与复核习惯，不涉及买课或直播话术。',
       hot: true,
     },
@@ -279,7 +279,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '别再泄露 API Key：一套密钥安全规范省几万账单',
       outcome: '密钥存储、轮换、泄露应急流程落地，pre-commit 扫描启用',
       category: '安全与成本',
-      level: '基础',
+      level: '入门',
       desc: '禁止提交仓库、环境变量、泄露应急 — 自学阶段就要懂的底线。',
       hot: true,
     },
@@ -555,7 +555,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '30 分钟发出第一条 OpenAI API 请求',
       outcome: 'API Key、SDK、流式输出配通，常见报错能自己排查',
       category: 'API与配置',
-      level: '工具',
+      level: '精通',
       desc: 'API Key、Base URL、Chat Completions、流式输出。',
       hot: true,
       trackStep: 2,
@@ -579,7 +579,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '国内网关填 Cursor：Base URL 对照表复制即用',
       outcome: 'OpenAI 兼容接口在 Cursor 里配通并实测通过',
       category: 'API与配置',
-      level: '工具',
+      level: '精通',
       desc: 'base_url、兼容网关、Cursor 填法与排错。',
       hot: true,
     },
@@ -600,7 +600,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'Base URL 速查表：OpenAI / Azure / DeepSeek 复制即用',
       outcome: '各厂商域名/路径/鉴权对照表在手，填 Cursor 不再试错',
       category: 'API与配置',
-      level: '工具',
+      level: '精通',
       desc: 'OpenAI / Anthropic / Azure / DeepSeek / 兼容网关域名、路径、鉴权对照。',
       hot: true,
       new: true,
@@ -624,7 +624,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'MCP 是什么：5 分钟搞懂 IDE 怎么接外部工具',
       outcome: '理解 Host/Client/Server 关系，Cursor 里 MCP 绿灯知道意味着什么',
       category: 'MCP与Agent',
-      level: '工具',
+      level: '精通',
       desc: 'MCP 解决什么问题、和 Plugin / Function Calling 关系。',
       hot: true,
       new: true,
@@ -648,7 +648,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'Cursor 里装第一个 MCP：配置文件复制就能跑',
       outcome: 'mcp.json 配好第一个 Server，权限弹窗与失败排查会处理',
       category: 'MCP与Agent',
-      level: '工具',
+      level: '精通',
       desc: 'mcp.json 配置、本地 Server 启动、权限弹窗处理。',
       hot: true,
     },
@@ -668,7 +668,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'System Prompt 写对了：Agent 行为稳定不跑偏',
       outcome: '系统提示与工具描述写法掌握，能写稳定的 Agent 设定',
       category: '提示词工程',
-      level: '工具',
+      level: '精通',
       desc: '给 Agent 写稳定系统设定与工具描述。',
     },
     [
@@ -688,7 +688,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '公司文档问答不再胡编：RAG 最小思路当天理解',
       outcome: 'Indexing/Retrieval/Generation 流程掌握，知道何时该用 RAG',
       category: 'API与配置',
-      level: '工具',
+      level: '精通',
       desc: '用公司文档回答，减少过期与胡编 — 自学做产品前的知识底座。',
       hot: true,
     },
@@ -709,7 +709,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'Agent 工具闭环：plan → tool → observe 一次跑通',
       outcome: '理解 tools 设计、执行循环、错误重试，知道 MCP 与 Function Calling 怎么选',
       category: 'MCP与Agent',
-      level: '工具',
+      level: '精通',
       desc: '设计 tools、执行循环、错误重试、与 MCP 组合。',
       hot: true,
       new: true,
@@ -733,7 +733,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '客户明天要链接，今晚先出一版能打开的页面',
       outcome: '独立完成一个多区块网页：布局、文案、样式、本地预览',
       category: '前端 / JS',
-      level: '进阶',
+      level: '作品',
       desc: 'HTML/CSS/JS 或 React 路线，Cursor Agent 驱动从零搭站。',
       source: '自有资料',
       hot: true,
@@ -758,7 +758,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '页面做好了不够，还要有人点得开的地址',
       outcome: '落地页部署到 Vercel / Netlify / GitHub Pages，拿到可分享链接',
       category: '前端 / JS',
-      level: '进阶',
+      level: '作品',
       desc: '从设计稿描述到部署，免费托管一条龙。',
       hot: true,
     },
@@ -780,7 +780,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '别从零画线框：首页、列表、详情一次铺开',
       outcome: '产出首页、列表、详情页结构与 wxml/wxss 草稿，可导入开发者工具',
       category: '小程序与 App',
-      level: '进阶',
+      level: '作品',
       desc: '页面结构、交互说明与可导入微信开发者工具的原型稿。',
       source: '自有资料',
       hot: true,
@@ -804,7 +804,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '代码还没写，先把四个关键屏讲清楚',
       outcome: '信息架构、关键页 wireframe 描述、组件清单一次产出',
       category: '小程序与 App',
-      level: '进阶',
+      level: '作品',
       desc: 'React Native / Flutter 或 Figma 描述路线，面向可交付原型。',
       new: true,
     },
@@ -827,7 +827,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '出图老是「差不多」？把主体和风格写死',
       outcome: 'Midjourney / DALL·E / 国内生图工具各练通，能出可用图',
       category: 'AI生图',
-      level: '进阶',
+      level: '作品',
       desc: '提示词结构、比例、风格、局部重绘与导出。',
       source: '自有资料',
       hot: true,
@@ -850,7 +850,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: '同一品牌多张图风格统一：封面、Banner、头像一套出',
       outcome: '建立品牌色/风格 reference，批量出封面与海报且风格一致',
       category: 'AI生图',
-      level: '进阶',
+      level: '作品',
       desc: '风格 reference、seed、LoRA 直觉与品牌规范。',
       new: true,
     },
@@ -872,7 +872,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'AI 瞎编少一半：Grounding + 引用 + 拒答策略',
       outcome: '知道幻觉类型，会用引用格式与拒答话术，建立复核习惯',
       category: '安全与成本',
-      level: '进阶',
+      level: '精通',
       desc: '减少瞎编的系统方法：检索引用、低 temperature、人工复核。',
     },
     [
@@ -889,7 +889,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       hook: 'Agent 账单别再失控：Token 告警与模型路由一套配齐',
       outcome: '账单拆分、hard limit、模型路由直觉建立，429 有应对策略',
       category: '安全与成本',
-      level: '进阶',
+      level: '精通',
       desc: '告警、hard limit、缓存、模型路由，避免 Agent 账单失控。',
       source: '自有资料',
     },
@@ -931,7 +931,7 @@ export type LearningPath = {
 export const LEARNING_PATHS: LearningPath[] = [
   {
     id: 'path-basic',
-    title: '基础：从零下载与上手',
+    title: '入门：从零下载与上手',
     desc: '安装、注册、第一次对话、提示词与办公、安全底线',
     count: 0,
     courseIds: [
@@ -947,8 +947,8 @@ export const LEARNING_PATHS: LearningPath[] = [
   },
   {
     id: 'path-tools',
-    title: '工具：安装智能体 + 用法深潜',
-    desc: '先装 Trae/灵码（不翻墙），海外工具可选；再学用法、API 与 MCP',
+    title: '工具：装智能体 + 学用法',
+    desc: '先装 Trae/灵码（不翻墙），海外工具可选；再学 Cursor 用法',
     count: 0,
     courseIds: [
       'tool-pick-compare',
@@ -963,20 +963,12 @@ export const LEARNING_PATHS: LearningPath[] = [
       'cursor',
       'cursor-rules',
       'claude-code',
-      'api-openai',
-      'domain-api-cheatsheet',
-      'api-compatible',
-      'mcp-intro',
-      'mcp-install',
-      'prompt-system',
-      'rag-basics',
-      'agent-tools',
     ],
   },
   {
     id: 'path-advanced',
-    title: '进阶：用 AI 做出真实作品',
-    desc: '网页、落地页、小程序、App 界面、生图与成本防控',
+    title: '作品：用 AI 做出真实成品',
+    desc: '网页、落地页、小程序、App 界面、生图与品牌视觉',
     count: 0,
     courseIds: [
       'ai-build-website',
@@ -985,8 +977,24 @@ export const LEARNING_PATHS: LearningPath[] = [
       'ai-build-app',
       'ai-image-gen',
       'ai-image-brand',
-      'hallucination-defense',
+    ],
+  },
+  {
+    id: 'path-master',
+    title: '精通：接 API、玩 Agent、控成本',
+    desc: 'OpenAI API、MCP、RAG、Agent 工具调用、成本与幻觉',
+    count: 0,
+    courseIds: [
+      'api-openai',
+      'domain-api-cheatsheet',
+      'api-compatible',
+      'mcp-intro',
+      'mcp-install',
+      'prompt-system',
+      'rag-basics',
+      'agent-tools',
       'cost-control',
+      'hallucination-defense',
     ],
   },
 ].map((p) => ({ ...p, count: p.courseIds.length }))

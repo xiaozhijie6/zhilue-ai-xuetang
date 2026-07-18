@@ -49,7 +49,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
     ],
     checklist: ['已吊销旧 Key', '历史已清理', '账单已核对', '.env 已忽略'],
     relatedTerms: ['api-key', 'base-url'],
-    relatedCourses: ['api-keys-security', 'api-openai', 'qq-smtp-auth'],
+    relatedCourses: ['api-keys-security', 'api-openai'],
   },
   {
     id: 'base-url-wrong',
@@ -72,7 +72,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '兼容接口务必实测 stream 与 tools 是否支持。',
     ],
     relatedTerms: ['base-url', 'openai-compatible', 'rate-limit'],
-    relatedCourses: ['api-compatible', 'api-openai', 'api-azure'],
+    relatedCourses: ['api-compatible', 'api-openai'],
   },
   {
     id: 'prompt-vague',
@@ -94,7 +94,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '关键决策要人工复核，不要「全信模型」。',
     ],
     relatedTerms: ['system-prompt', 'few-shot', 'cot'],
-    relatedCourses: ['prompt-basics', 'prompt-advanced', 'prompt-system'],
+    relatedCourses: ['prompt-basics', 'prompt-system'],
   },
   {
     id: 'hallucination-code',
@@ -116,7 +116,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '对陌生库优先打开官方文档核对，再合并代码。',
     ],
     relatedTerms: ['hallucination', 'mcp', 'grounding'],
-    relatedCourses: ['cursor', 'mcp-intro', 'prompt-advanced'],
+    relatedCourses: ['cursor', 'mcp-intro'],
   },
   {
     id: 'cursor-agent-mode',
@@ -160,7 +160,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '每个 Server 权限最小化。',
     ],
     relatedTerms: ['mcp', 'mcp-server'],
-    relatedCourses: ['mcp-intro', 'mcp-install', 'mcp-security'],
+    relatedCourses: ['mcp-intro', 'mcp-install'],
   },
   {
     id: 'context-overflow',
@@ -181,7 +181,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '单次任务目标单一，完成再开下一轮。',
     ],
     relatedTerms: ['context-window', 'token', 'max-tokens'],
-    relatedCourses: ['model-terms-core', 'prompt-system', 'rag-basics'],
+    relatedCourses: ['prompt-system', 'rag-basics'],
   },
   {
     id: '429-rate-limit',
@@ -202,7 +202,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '监控 429 比例，作为容量告警。',
     ],
     relatedTerms: ['rate-limit', 'latency'],
-    relatedCourses: ['api-params', 'api-streaming-tools'],
+    relatedCourses: [],
   },
   {
     id: 'privacy-upload',
@@ -224,7 +224,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '外包与实习生单独配额与策略。',
     ],
     relatedTerms: ['guardrails', 'prompt-injection'],
-    relatedCourses: ['sec-baseline', 'sec-policy', 'api-keys-security'],
+    relatedCourses: ['api-keys-security'],
   },
   {
     id: 'prompt-injection-doc',
@@ -246,7 +246,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '红队定期测注入话术。',
     ],
     relatedTerms: ['prompt-injection', 'mcp', 'guardrails'],
-    relatedCourses: ['prompt-injection', 'mcp-security', 'sec-baseline'],
+    relatedCourses: [],
   },
   {
     id: 'which-model',
@@ -267,7 +267,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '记录每次任务的模型与成本，方便复盘。',
     ],
     relatedTerms: ['llm', 'latency'],
-    relatedCourses: ['model-map', 'biz-overview'],
+    relatedCourses: [],
   },
   {
     id: 'rag-vs-finetune',
@@ -289,7 +289,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '切片按标题结构，避免随机硬切。',
     ],
     relatedTerms: ['rag', 'lora', 'embedding', 'chunking'],
-    relatedCourses: ['rag-basics', 'rag-chunking', 'rag-vector'],
+    relatedCourses: ['rag-basics'],
   },
   {
     id: 'first-week-path',
@@ -336,7 +336,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       'A/B 基准题集每季度更新一次。',
     ],
     relatedTerms: ['llm', 'latency', 'token'],
-    relatedCourses: ['model-map', 'cost-control', 'api-params'],
+    relatedCourses: ['cost-control'],
   },
   {
     id: 'streaming-debug',
@@ -360,7 +360,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '日志记录首 token 延迟与总时长，分开监控。',
     ],
     relatedTerms: ['sse', 'latency'],
-    relatedCourses: ['streaming-sse', 'api-streaming-tools', 'api-openai'],
+    relatedCourses: ['api-openai'],
   },
   {
     id: 'tools-schema-error',
@@ -385,7 +385,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '记录 tool_call 成功率与失败原因分布。',
     ],
     relatedTerms: ['function-calling', 'json-schema'],
-    relatedCourses: ['api-streaming-tools', 'agent-tools', 'prompt-system'],
+    relatedCourses: ['agent-tools', 'prompt-system'],
   },
   {
     id: 'rag-chunk-miss',
@@ -409,7 +409,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '文档更新后增量重建索引并记录版本号。',
     ],
     relatedTerms: ['rag', 'embedding', 'chunking'],
-    relatedCourses: ['rag-basics', 'rag-chunking', 'hallucination-defense'],
+    relatedCourses: ['rag-basics', 'hallucination-defense'],
   },
   {
     id: 'cost-shock',
@@ -434,7 +434,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
     ],
     checklist: ['已设告警', '已限 max_tokens', '历史有截断', 'Dev/Prod Key 分离'],
     relatedTerms: ['token', 'rate-limit'],
-    relatedCourses: ['cost-control', 'api-params', 'api-keys-security'],
+    relatedCourses: ['cost-control', 'api-keys-security'],
   },
   {
     id: 'multi-turn-drift',
@@ -458,7 +458,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '评测多轮场景，不只看单轮效果。',
     ],
     relatedTerms: ['system-prompt', 'context-window'],
-    relatedCourses: ['prompt-system', 'prompt-advanced', 'model-terms-core'],
+    relatedCourses: ['prompt-system'],
   },
   {
     id: 'data-residency',
@@ -482,7 +482,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '供应商变更须重新做法务评估。',
     ],
     relatedTerms: ['guardrails', 'base-url'],
-    relatedCourses: ['enterprise-ai-checklist', 'api-azure', 'sec-baseline'],
+    relatedCourses: [],
   },
   {
     id: 'eval-output',
@@ -507,7 +507,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
     ],
     checklist: ['事实已核对', '代码已跑通', '格式合规', '无泄密'],
     relatedTerms: ['hallucination', 'grounding'],
-    relatedCourses: ['hallucination-defense', 'prompt-advanced', 'rag-basics'],
+    relatedCourses: ['hallucination-defense', 'rag-basics'],
   },
   {
     id: 'prompt-injection-app',
@@ -531,7 +531,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '记录注入尝试用于风控与迭代。',
     ],
     relatedTerms: ['prompt-injection', 'guardrails'],
-    relatedCourses: ['prompt-injection', 'mcp-security', 'enterprise-ai-checklist'],
+    relatedCourses: [],
   },
   {
     id: 'mcp-npx-fail',
@@ -555,7 +555,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '敏感 Server 不用 npx 每次拉最新，锁版本号。',
     ],
     relatedTerms: ['mcp', 'mcp-server'],
-    relatedCourses: ['mcp-install', 'mcp-intro', 'mcp-server'],
+    relatedCourses: ['mcp-install', 'mcp-intro'],
   },
   {
     id: 'temperature-code-high',
@@ -579,7 +579,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '评测时用 temp=0 保证可复现。',
     ],
     relatedTerms: ['temperature', 'top-p'],
-    relatedCourses: ['api-params', 'prompt-basics', 'cursor'],
+    relatedCourses: ['prompt-basics', 'cursor'],
   },
   {
     id: 'paste-code-broken',
@@ -627,7 +627,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '明确 SLA：Bot 是辅助不是 7×24 无人客服。',
     ],
     relatedTerms: ['webhook', 'agent'],
-    relatedCourses: ['workflow-auto', 'agent-basics', 'enterprise-ai-checklist'],
+    relatedCourses: [],
   },
   {
     id: 'qq-smtp-email-otp',
@@ -668,7 +668,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '授权码未进 Git / 未进前端包',
     ],
     relatedTerms: ['smtp', 'smtp-auth-code', 'api-key'],
-    relatedCourses: ['qq-smtp-auth', 'api-keys-security', 'api-compatible'],
+    relatedCourses: ['api-keys-security', 'api-compatible'],
   },
   {
     id: 'rag-finetune-longctx',
@@ -692,7 +692,7 @@ export const NEWBIE_GUIDES: NewbieGuide[] = [
       '任何方案都要有「无依据则拒答」策略。',
     ],
     relatedTerms: ['rag', 'lora', 'context-window'],
-    relatedCourses: ['rag-basics', 'model-training', 'rag-chunking'],
+    relatedCourses: ['rag-basics'],
   },
 ]
 
