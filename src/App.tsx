@@ -1014,7 +1014,7 @@ export default function App() {
           <div className="home-promo home-promo--ink">
             <strong>怎么读</strong>
             <span>
-              表面只作导览与选题；完整安装步骤、官网链接与跟做正文在点进教程后展开。「学习路径」推进，「术语」讲概念，「避坑」排查故障
+              默认服务国内用户、不依赖翻墙：先 Trae.cn / 通义灵码。表面只作导览；完整步骤在点进教程后展开。「学习路径」推进，「术语」讲概念，「避坑」排查故障
             </span>
           </div>
 

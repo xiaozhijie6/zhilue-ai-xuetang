@@ -13,8 +13,8 @@ export type HookFeedItem = {
 export const HOOK_FEED: HookFeedItem[] = [
   {
     id: 'h1',
-    hook: 'ChatGPT、Claude、国内常用——下载入口别再瞎搜',
-    result: '按 Windows / Mac 找到官方渠道，装完能登录',
+    hook: '国内常用先装稳——别再搜「破解版下载」',
+    result: '先网页版跑通；写代码再去 Trae.cn / 通义灵码',
     proof: '安装指南',
     level: '基础',
     courseId: 'ai-download-guide',
@@ -31,11 +31,11 @@ export const HOOK_FEED: HookFeedItem[] = [
   },
   {
     id: 'h3',
-    hook: 'Cursor 装好了却不敢点？先改一个小文件练手',
-    result: '登录、选模型、完成第一次落盘修改',
-    proof: 'Cursor 起步',
+    hook: '不翻墙也能改代码？今晚先把 Trae 国内版装上',
+    result: 'trae.cn 下载、手机号登录、完成第一次落盘修改',
+    proof: 'Trae 安装',
     level: '工具',
-    courseId: 'cursor-install',
+    courseId: 'install-trae',
     tag: '起步',
   },
   {

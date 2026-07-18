@@ -305,6 +305,7 @@ export function resolveIconKey(id: string, category?: string): IconKey {
   if (s.includes('cursor')) return 'cursor'
   if (s.includes('claude') || s.includes('anthropic')) return 'claude'
   if (s.includes('cc-switch') || s.includes('ccswitch')) return 'mcp'
+  if (s.includes('lingma') || s.includes('tongyi')) return 'openai'
   if (s.includes('codex')) return 'openai'
   if (s.includes('openai') || s.startsWith('api-openai') || s.includes('domain-api')) return 'openai'
   if (s.includes('gemini')) return 'gemini'

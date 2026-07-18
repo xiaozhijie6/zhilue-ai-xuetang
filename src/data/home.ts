@@ -13,7 +13,7 @@ export const CAT_NAV: CatNav[] = [
   {
     category: 'AI编程工具与智能体安装',
     title: '工具安装',
-    keywords: 'Cursor · CC Switch · Key',
+    keywords: 'Trae · 灵码 · 不翻墙',
     icon: 'cursor',
   },
   { category: 'AI编程工具', title: '工具用法', keywords: 'Agent · Rules', icon: 'agent' },
@@ -44,10 +44,10 @@ export const FREE_TILES: FreeTile[] = [
   },
   {
     id: 'f2',
-    title: '今晚就把 Cursor 跑起来',
-    desc: '登录、选模型、改掉第一个文件',
+    title: '不翻墙，今晚就把 Trae 跑起来',
+    desc: 'trae.cn 下载、手机号登录、改掉第一个文件',
     icon: 'cursor',
-    courseId: 'cursor-install',
+    courseId: 'install-trae',
   },
   {
     id: 'f3',
@@ -80,8 +80,8 @@ export const FREE_TILES: FreeTile[] = [
 ]
 
 export const COMMUNITY_TOPICS = [
-  { tag: '下载', text: 'Cursor 安装包官方地址在哪？Mac 权限怎么开' },
-  { tag: '工具', text: 'Agent 模式改多文件，Rules 怎么写才稳' },
+  { tag: '下载', text: 'Trae 国内版官网是 trae.cn 还是 trae.ai？别下错' },
+  { tag: '工具', text: '不翻墙先装 Trae 还是通义灵码？怎么选' },
   { tag: '网页', text: '落地页部署到免费域名踩过哪些坑' },
   { tag: '小程序', text: '生成的结构怎么接到微信开发者工具' },
   { tag: '生图', text: '同一角色多张图，风格老是飘怎么办' },
@@ -106,17 +106,17 @@ export const REC_TABS: RecTab[] = [
 export const HERO_SLIDES = [
   {
     courseId: 'ai-download-guide',
-    eyebrow: '今天就能装好',
+    eyebrow: '国内先跑通',
     title: '别再卡在「下载哪个」这一步',
-    subtitle: '浏览器版、客户端、注册流程分开写清楚',
+    subtitle: '先豆包/Kimi 网页版，再决定要不要装编程 IDE',
     cta: '去看安装步骤',
   },
   {
-    courseId: 'cursor',
-    eyebrow: '编程助手',
-    title: 'Cursor 不是聊天窗口，是改项目的工作台',
-    subtitle: 'Chat、Agent、Rules、接模型，按场景用',
-    cta: '打开 Cursor 教程',
+    courseId: 'install-trae',
+    eyebrow: '不翻墙编程',
+    title: 'Trae 国内版：装好就能改项目文件',
+    subtitle: 'trae.cn 直连、手机号登录、内置豆包/DeepSeek',
+    cta: '打开 Trae 安装',
   },
   {
     courseId: 'ai-build-website',
@@ -142,6 +142,6 @@ export type HomeTrackCard = {
 
 export const HOME_TRACK_CARDS: HomeTrackCard[] = [
   { level: '基础', hook: '连安装都卡壳？先把常用 AI 装稳', cta: '先过基础' },
-  { level: '工具', hook: '想改项目文件，别只会复制粘贴对话', cta: '去看工具' },
+  { level: '工具', hook: '想改项目文件？先装 Trae / 灵码，不必翻墙', cta: '去看工具' },
   { level: '进阶', hook: '网页、小程序、App、图——拿出能给人看的东西', cta: '去做作品' },
 ]

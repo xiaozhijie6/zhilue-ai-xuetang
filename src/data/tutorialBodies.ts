@@ -99,7 +99,7 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
     intro: [
       '这篇是给「电脑会开浏览器、但从没装过 AI」的人写的。每一步都写清：打开哪个网址、点哪个按钮、成功时屏幕上会出现什么。',
       '铁律：地址栏自己输入或从本页复制官方链接；不要搜「ChatGPT 破解版」「Cursor 绿色版」。假网站会骗账号和钱。',
-      '建议顺序：① 先用浏览器打开一个国内 AI 能聊天 → ② 再决定要不要装客户端 → ③ 要写代码再装 Cursor。',
+      '建议顺序：① 先用浏览器打开一个国内 AI 能聊天 → ② 再决定要不要装客户端 → ③ 要写代码再装 Trae.cn 或通义灵码（不必先翻墙装 Cursor）。',
     ],
     sections: [
       {
@@ -116,19 +116,19 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
         ],
       },
       {
-        title: '先选路线：浏览器就够 vs 还要装软件',
+        title: '先选路线：国内网页版优先',
         paragraphs: [
-          '路线 A（推荐新手第一天）：只开网页。不装任何东西也能用。国内：豆包 / Kimi / 通义；海外：ChatGPT / Claude（需能访问对应网站）。',
-          '路线 B：装「官方桌面客户端」。有独立窗口、快捷键，适合每天用很久。必须从官网下载页进。',
-          '路线 C：装 Cursor（编程用编辑器）。只有你要改代码、做网页/小程序时才需要；可以第二天再装。',
+          '路线 A（推荐新手第一天）：只开网页。国内：豆包 / Kimi / 通义；海外 ChatGPT / Claude 打不开就跳过。',
+          '路线 B：装「官方桌面客户端」。有独立窗口、快捷键；海外客户端常需网络可达，装不上先跳过。',
+          '路线 C：要写代码 → 装 Trae 国内版（https://www.trae.cn）或通义灵码。Cursor 标为可选，常需海外网络。',
         ],
-        tip: '今天目标只要做到：网页里能登录，并发出一条消息收到回复。客户端可以明天再装。',
+        tip: '今天目标：国内网页里能登录并发出一条消息。写代码第二天再装 Trae，不必先翻墙。',
         links: [
           { label: '豆包网页版（国内好上手）', url: 'https://www.doubao.com/chat/' },
           { label: 'Kimi 网页版', url: 'https://kimi.moonshot.cn/' },
           { label: '通义千问网页版', url: 'https://tongyi.aliyun.com/' },
-          { label: 'ChatGPT 网页版', url: 'https://chatgpt.com/' },
-          { label: 'Claude 网页版', url: 'https://claude.ai/' },
+          { label: 'Trae 国内版（写代码）', url: 'https://www.trae.cn' },
+          { label: '通义灵码下载', url: 'https://lingma.aliyun.com/download' },
         ],
       },
       {
@@ -225,28 +225,25 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
         ],
       },
       {
-        title: '跟做 E：安装 Cursor（要写代码再装）',
+        title: '跟做 E：要写代码 → 装 Trae 国内版（不翻墙）',
         paragraphs: [
-          'Cursor 不是聊天网页，是「带 AI 的代码编辑器」。不会写代码也可以装，但请先完成上面的网页聊天。',
-          '① 先注册（可选但推荐）：打开 https://cursor.com 点 Sign up / 免费注册。',
-          '② 打开官方下载页：https://cursor.com/download',
-          '③ Windows：点 Download for Windows，得到安装包（通常在「下载」文件夹）。双击运行；个人电脑选默认/User 安装即可，一路 Next。',
-          '④ 若弹出蓝色「Windows 已保护你的电脑」：点「更多信息」→「仍要运行」。前提：你确定是刚从 cursor.com 下的。',
-          '⑤ Mac：下载 .dmg → 拖到应用程序 → 打开。',
-          '⑥ 打开 Cursor → Sign in（可用 Google / GitHub / 邮箱）→ 不要点 Skip。',
-          '⑦ 菜单 File → Open Folder（打开文件夹）→ 新建一个空文件夹例如「我的AI练习」再打开它。',
-          '⑧ 成功标准：左边能看到文件夹名字，按 Ctrl+L（Mac 用 Cmd+L）能打开 AI 对话框。更细的跟做见「Cursor 安装」专篇。',
+          '编程用「带 AI 的编辑器」，国内默认选 Trae 国内版（trae.cn），不必先翻墙装 Cursor。',
+          '① 地址栏输入 https://www.trae.cn （注意是 .cn，不是 trae.ai）。',
+          '② 点「下载 IDE」或同等按钮，按系统下 Windows / Mac 安装包。',
+          '③ 安装后打开 → 用手机号等国内方式登录。',
+          '④ 打开或新建一个练习文件夹，让 AI 改一个小文件验证。',
+          '⑤ 已有 VS Code：也可装通义灵码插件（见专篇）。Cursor 仅在你有稳定海外网络时再考虑。',
         ],
         steps: [
-          '只从 https://cursor.com/download 下载。',
-          '安装并登录，不要跳过登录。',
-          'File → Open Folder 打开一个你自己新建的空文件夹。',
-          '按 Ctrl+L（Mac：Cmd+L）确认 AI 面板能打开。',
+          '只从 https://www.trae.cn 下载。',
+          '登录成功后完成一次 AI 改文件。',
+          '更细步骤打开《Trae 国内版安装》专篇。',
         ],
         links: [
-          { label: 'Cursor 下载（唯一推荐）', url: 'https://cursor.com/download' },
-          { label: 'Cursor 官方安装说明', url: 'https://cursor.com/help/getting-started/install' },
+          { label: 'Trae 国内版官网', url: 'https://www.trae.cn' },
+          { label: '通义灵码下载', url: 'https://lingma.aliyun.com/download' },
         ],
+        tip: '下错成 trae.ai 海外版就卸载重来。Cursor 专篇标为可选。',
       },
       {
         title: '装不上？对照这张排错表',
@@ -262,13 +259,13 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
           '先完成「国内网页版能聊天」再折腾客户端。',
           '仍不行：换一台电脑或手机浏览器验证是不是本机问题。',
         ],
-        tip: '新手最稳路径：豆包或 Kimi 网页版跑通 → 再装 Cursor。ChatGPT/Claude 打不开就先跳过，不影响学提示词和国内工具。',
+        tip: '新手最稳路径：豆包或 Kimi 网页版跑通 → 要写代码再装 Trae.cn 或通义灵码。ChatGPT/Claude/Cursor 打不开就先跳过。',
       },
       {
         title: '装完自检 + 桌面整理',
         paragraphs: [
           '自检三问：① 能登录吗？② 能发出消息并收到回复吗？③ 下次不用搜索，靠书签/开始菜单就能打开吗？',
-          '整理：浏览器书签栏固定「豆包」「Kimi」「通义」；开始菜单把 ChatGPT/Cursor 固定到任务栏（右键图标 → 固定到任务栏）。',
+          '整理：浏览器书签栏固定「豆包」「Kimi」「通义」；要写代码再装 Trae（trae.cn）并固定到任务栏。',
           '把本页官方链接再收藏一次，避免以后被假「下载站」骗。',
         ],
         steps: [
@@ -700,15 +697,27 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'cursor-install': {
     intro: [
-      'Cursor 擅长：日常写功能、多文件修改、可视化看 Diff——最适合新手当「主 AI 编程编辑器」。',
-      '本篇：官网下载 → 账号登录 →（可选）API Key → 第一次改文件。终端里的 Claude Code/Codex 密钥请另用《CC Switch 安装》管理。',
+      '【可选·常需海外网络】Cursor 官网与账号服务在国内可能不稳定。不翻墙请优先《Trae 国内版安装》。',
+      '仅当你已有稳定可达 cursor.com 的网络时，再跟做本篇。',
     ],
     sections: [
+      {
+        title: '网络说明（先读）',
+        paragraphs: [
+          '若打不开 https://cursor.com/download ，或登录一直转圈：停止本教程，改装 https://www.trae.cn 。',
+          '不要为了装 Cursor 去随便下载「绿色破解版」。',
+        ],
+        steps: [
+          '浏览器试开 cursor.com；失败则关闭本篇。',
+          '成功再继续下载安装。',
+        ],
+        links: [{ label: '国内替代 Trae.cn', url: 'https://www.trae.cn' }],
+      },
       {
         title: '擅长什么',
         paragraphs: [
           '擅长：边看代码边改、Chat/Agent 改多文件、接受/拒绝 Diff。',
-          '不擅长替代：纯终端长任务可搭配 Claude Code；行内补全也可另装 Copilot（不必同时开太多）。',
+          '国内无网络条件时：同等目标用 Trae.cn 完成即可。',
         ],
       },
       {
@@ -2064,167 +2073,204 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'tool-pick-compare': {
     intro: [
-      '【AI编程工具与智能体安装】里，每个软件一篇独立教程：先讲它擅长什么，再讲下载、登录、API Key。',
-      'Claude Code / Codex 等多 CLI 的密钥，推荐再用《CC Switch 安装》统一管理，避免手改一堆配置文件。',
+      '本站默认服务国内用户：优先选不翻墙也能用的工具。海外产品标成「可选」，官网打不开就跳过，不影响你学会 AI 改代码。',
+      '推荐顺序：Trae 国内版（trae.cn）或通义灵码 → 需要终端 Agent 时再装 Claude Code/Codex + CC Switch（填国内可直连的 API）。',
     ],
     sections: [
       {
-        title: '每个工具主要擅长什么',
+        title: '国内直连优先（先看这里）',
         paragraphs: [
-          'Cursor：日常写功能、多文件改动、可视化看 Diff；新手最容易上手的 AI IDE。',
-          'Claude Code：终端里长任务、仓库级重构、边跑命令边改；适合「丢给 Agent 干完再验收」。',
-          'Codex CLI：OpenAI 生态下的终端编程智能体；和 ChatGPT/OpenAI 账号体系更近。',
-          'GitHub Copilot：行内补全最快、GitHub 集成深；适合已有 VS Code、主要想加速敲代码。',
-          'Windsurf：Cascade 代理式改多文件，偏「让 AI 多走几步」。',
-          'Trae：中文场景友好的 AI IDE，国内用户常作 Cursor 替代选项之一。',
-          'CC Switch：不写代码，专管 Claude Code / Codex / Gemini CLI 等工具的供应商与 API Key 一键切换。',
-        ],
-        tip: '登录（订阅账号）和 API Key（按量密钥）是两条路：可以只走登录；额度不够或要用中转时再配 Key。',
-      },
-      {
-        title: '登录 vs API Key（别混）',
-        paragraphs: [
-          '登录：用 Google/GitHub/手机号进官方账号，适合个人订阅用户。',
-          'API Key：在平台控制台创建 sk-… 密钥，填进工具或 CC Switch；适合开发者、多供应商、中转站。',
-          '密钥=密码：不发微信群、不提交 Git、不截图完整 Key。',
+          'Trae 国内版（https://www.trae.cn）：独立 AI IDE，内置豆包/DeepSeek 等，手机号登录，免海外支付。注意别下成海外版 trae.ai。',
+          '通义灵码（https://lingma.aliyun.com/download）：装在 VS Code / JetBrains 里，阿里云账号登录，国内直连。',
+          '聊天入门仍用豆包/Kimi/通义网页（见「下载与入门」），那是写文问答；改本地项目请用上面两个。',
         ],
         steps: [
-          '先选定主工具并完成「能改一个文件」。',
-          '若要用自备 Key：先读《CC Switch 安装》（CLI）或工具内 Settings（IDE）。',
+          '零基础、要独立编辑器 → 打开《Trae 国内版安装》。',
+          '已有 VS Code、只想加 AI → 打开《通义灵码安装》。',
+          '今天只装其中一个，跑通「改一个文件」再考虑别的。',
+        ],
+        links: [
+          { label: 'Trae 国内版', url: 'https://www.trae.cn' },
+          { label: '通义灵码下载', url: 'https://lingma.aliyun.com/download' },
         ],
       },
       {
-        title: '建议安装顺序',
+        title: '对照表：擅长什么 + 要不要翻墙',
         paragraphs: [
-          '1）装主编程工具（如 Cursor 或 Claude Code）并验证能干活。',
-          '2）若主工具是 Claude Code / Codex：再装 CC Switch，把 API Key 收进去。',
-          '3）IDE（Cursor/Windsurf/Trae）优先用软件内登录；自备 OpenAI 兼容 Key 时在 Settings 填 Base URL + Key。',
+          'Trae.cn：日常 AI 编程 IDE｜国内直连｜新手首选。',
+          '通义灵码：VS Code 补全/问答｜国内直连｜已有 VS Code 首选。',
+          'CC Switch：管 CLI 的 API Key｜软件可装；配合国内中转 Base URL 可不翻墙用 Claude Code/Codex。',
+          'Cursor / Windsurf / Copilot：能力强｜官网与账号常需海外网络 → 标为可选。',
+          'Claude Code / Codex：终端强 Agent｜官方登录常需海外；国内用中转 Key + CC Switch。',
+        ],
+        tip: '打不开 cursor.com、claude.ai、github.com 某些页时，不要硬扛——先把 Trae.cn 用熟。',
+      },
+      {
+        title: '登录 vs 国内 API Key',
+        paragraphs: [
+          'Trae / 灵码：优先手机号或阿里云登录，一般不必先买海外 Key。',
+          'Claude Code / Codex：国内用户少走官方 OAuth，改用可信国内 API 供应商的 Key，在 CC Switch 里填 Base URL + Key。',
+          '密钥仍是密码：不进微信、不进 Git。',
         ],
         steps: [
-          '写下：主工具 = ____；是否需要 CC Switch = 是/否。',
-          '打开对应安装教程跟做。',
+          '写下主工具：Trae 或 灵码。',
+          '是否还要终端 Agent：否 → 结束；是 → 再学 CC Switch + Claude Code/Codex（可选篇）。',
         ],
       },
     ],
-    checklist: ['能说出主工具擅长什么', '分清登录与 API Key', '需要时打开了 CC Switch 教程'],
+    checklist: ['选定国内主工具', '知道海外篇可跳过', '需要中转时知道去看 CC Switch'],
     refs: [
-      { label: 'CC Switch 官网', url: 'https://ccswitch.io' },
-      { label: 'CC Switch GitHub', url: 'https://github.com/farion1231/cc-switch' },
-      { label: 'Cursor 下载', url: 'https://cursor.com/download' },
-      { label: 'Claude Code', url: 'https://code.claude.com/docs/en/overview' },
+      { label: 'Trae.cn', url: 'https://www.trae.cn' },
+      { label: '通义灵码', url: 'https://lingma.aliyun.com/download' },
+      { label: 'CC Switch', url: 'https://ccswitch.io' },
+    ],
+  },
+
+  'install-lingma': {
+    intro: [
+      '通义灵码（阿里云，下载页 https://lingma.aliyun.com/download）是国内直连的 AI 编程助手：装进 VS Code 或 JetBrains，用阿里云账号登录即可，不必翻墙。',
+      '产品名在市场上可能显示为通义灵码 / TONGYI Lingma / Qoder CN 等，认准发行者是阿里云。',
+    ],
+    sections: [
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：在现有 VS Code 里补全、问答、改代码片段；中文注释与国内项目友好。',
+          '若你还没有编辑器、想要一体 AI IDE：改装 Trae.cn，不必先装灵码。',
+        ],
+      },
+      {
+        title: '准备 VS Code',
+        paragraphs: [
+          '打开 https://code.visualstudio.com/ 下载安装（微软官网，国内一般可访问）。',
+          '版本建议 1.68 以上。',
+        ],
+        steps: ['VS Code 能正常打开'],
+        links: [
+          { label: 'VS Code', url: 'https://code.visualstudio.com/' },
+          { label: '通义灵码下载页', url: 'https://lingma.aliyun.com/download' },
+        ],
+      },
+      {
+        title: '安装扩展',
+        paragraphs: [
+          'VS Code 左侧扩展（Ctrl+Shift+X）→ 搜索「通义灵码」或 TONGYI Lingma / Qoder CN。',
+          '发行者认准 Alibaba Cloud / 阿里云 → 安装 → 按提示重启。',
+          '也可从灵码下载页走「立即安装」或 VSIX 离线包（以官网当前按钮为准）。',
+        ],
+        steps: [
+          '扩展列表显示已安装。',
+          '侧边栏出现灵码入口（没有则右键侧栏勾选）。',
+        ],
+      },
+      {
+        title: '登录阿里云',
+        paragraphs: [
+          '点侧栏灵码图标 → 登录 → 浏览器打开阿里云登录页（淘宝/支付宝/手机号等）。',
+          '登录成功后回到 VS Code，窗口应显示已登录。',
+        ],
+        steps: [
+          '完成登录。',
+          '新建文件试补全或在灵码对话里问一句中文。',
+        ],
+      },
+      {
+        title: '排错',
+        paragraphs: [
+          '搜不到扩展：检查 VS Code 是否太旧；或改用官网 VSIX。',
+          '登录页打不开：换网络/浏览器；确认用的是阿里云登录而不是 GitHub Copilot 登录。',
+          '无补全：看是否已登录、是否被其他 AI 扩展抢焦点。',
+        ],
+      },
+    ],
+    checklist: ['扩展已装', '阿里云已登录', '补全或对话验证通过'],
+    refs: [
+      { label: '灵码下载', url: 'https://lingma.aliyun.com/download' },
+      { label: '阿里云灵码产品页', url: 'https://www.aliyun.com/product/lingma' },
     ],
   },
 
   'install-cc-switch': {
     intro: [
-      'CC Switch（官方站 https://ccswitch.io ，源码 https://github.com/farion1231/cc-switch）是桌面应用：集中管理 Claude Code、Codex、Gemini CLI 等工具的供应商与 API Key，一键切换，少改配置文件。',
-      '它不替代 Cursor/Claude Code 本身——先装好对应 CLI/工具，再用 CC Switch 管密钥。',
+      '国内场景下，CC Switch 的价值是：让 Claude Code / Codex 走「可直连的国内 API / 中转 Base URL」，而不是去登老打不开的官方海外页。',
+      '官网 https://ccswitch.io ；下载 https://github.com/farion1231/cc-switch/releases 。先装好 claude 或 codex 命令，再装本软件填 Key。',
     ],
     sections: [
       {
-        title: 'CC Switch 擅长什么',
+        title: '什么时候才需要装',
         paragraphs: [
-          '擅长：多供应商预设、一键启用、系统托盘切换、统一看用量（功能以当前版本为准）。',
-          '不擅长：替你写业务代码；也不能代替「先把 claude / codex 命令装好」。',
-          '官方支持工具包括：Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes 等（以 README 最新列表为准）。',
+          '只使用 Trae.cn / 通义灵码：通常不需要 CC Switch。',
+          '要用终端里的 Claude Code 或 Codex，且准备使用国内可访问的 API 供应商：再装。',
+          '不要指望 CC Switch 帮你翻墙；它只是改本地配置里的 Base URL 和 Key。',
         ],
       },
       {
-        title: '只从官方下载',
+        title: '下载安装',
         paragraphs: [
-          '官网：https://ccswitch.io',
-          '下载页：打开 https://github.com/farion1231/cc-switch/releases ，选最新 Release。',
-          'Windows：CC-Switch-v…-Windows.msi（安装版）或 Windows-Portable.zip（绿色版）。',
-          'macOS：推荐 brew install --cask cc-switch；或下载 macOS.dmg。',
-          'Linux：.deb / .rpm / AppImage 按发行版选。',
-          '不要从百度网盘「破解版」或陌生站点下。',
+          '打开 GitHub Releases（若 GitHub 较慢，可多试几次或用官网 ccswitch.io 提供的下载入口）。',
+          'Windows：.msi 或 Portable.zip；Mac：brew install --cask cc-switch 或 .dmg。',
         ],
         steps: [
-          '浏览器打开 GitHub Releases 官方页。',
-          '按自己的系统下载对应安装包。',
-          '把 Releases 页加入书签。',
+          '安装并打开主界面。',
+          '确认不是来路不明的修改版。',
         ],
         links: [
           { label: 'ccswitch.io', url: 'https://ccswitch.io' },
-          { label: 'GitHub Releases', url: 'https://github.com/farion1231/cc-switch/releases' },
-          { label: '中文 README', url: 'https://github.com/farion1231/cc-switch/blob/main/README_ZH.md' },
+          { label: 'Releases', url: 'https://github.com/farion1231/cc-switch/releases' },
         ],
       },
       {
-        title: 'Windows / Mac 安装',
+        title: '添加国内可直连供应商（API Key）',
         paragraphs: [
-          'Windows：双击 .msi 按向导安装 → 开始菜单打开 CC Switch；或解压 Portable 运行 exe。',
-          'Mac Homebrew：终端执行 brew install --cask cc-switch；更新用 brew upgrade --cask cc-switch。',
-          'Mac dmg：拖进应用程序后打开（官方称已签名公证，一般可直接开）。',
+          '在你已注册的国内/合规 API 控制台创建 Key，并复制官方文档中的 Base URL（是否带 /v1 以该文档为准）。',
+          'CC Switch → 添加供应商 → 名称自定 → 粘贴 Base URL + API Key → 勾选 Claude Code 和/或 Codex → 保存。',
+          '点「启用」→ 新开终端 → 运行 claude 或 codex 测一句「只回复 ok」。',
         ],
         steps: [
-          '安装完成并能打开主界面。',
-          '若已装 Claude Code/Codex：首次可按提示导入现有配置作为默认供应商。',
+          'Key 只保存在密码器与 CC Switch，不发微信。',
+          '启用后新开终端验证成功。',
         ],
+        tip: '供应商请自行选择可信、合规、能开票/有文档的平台；本站不绑定某一中转品牌。',
       },
       {
-        title: '登录与添加供应商（填 API Key）',
+        title: '安全',
         paragraphs: [
-          'CC Switch 本身主要是本地配置管理；「登录」通常指：让 Claude Code/Codex 走官方 OAuth，或在供应商里填 API Key。',
-          '添加供应商（主界面）：点「添加供应商」→ 选预设或自定义。',
-          '必填直觉：名称（自己认得）+ Base URL（供应商文档里的地址）+ API Key（sk-…，只显示一次要立刻保存到密码器）。',
-          '勾选要作用的工具（如 Claude Code、Codex）→ 保存。',
-          '在主界面选中该供应商 → 点「启用」；或从系统托盘点名称切换。',
-        ],
-        steps: [
-          '准备好一把有效 API Key（来自官方控制台或你信任的合规供应商）。',
-          '在 CC Switch 新增供应商并粘贴 Key（勿发给别人）。',
-          '点启用。',
-          '大多数工具需重启终端后再运行 claude 或 codex；Claude Code 当前支持热切换（以官方说明为准）。',
-        ],
-        tip: '想切回官方订阅登录：添加「官方登录」类预设并启用，再在 CLI 里走一遍 Log out / Log in。',
-      },
-      {
-        title: '验证是否生效',
-        paragraphs: [
-          '新开一个终端窗口（重要）。',
-          '进入练习目录，运行 claude 或 codex，发一句「只回复 ok」。',
-          '若仍走旧账号/报 Key 错误：确认启用的是目标供应商、Base URL 有无多余空格、Key 未过期。',
-        ],
-        steps: [
-          '重启终端后 CLI 能正常对话。',
-          '备忘录记下：当前启用的供应商名称（不要写完整 Key）。',
-        ],
-      },
-      {
-        title: '安全清单',
-        paragraphs: [
-          '只从 ccswitch.io / 官方 GitHub Releases 下载。',
-          'API Key 不进截图、不进公开仓库。',
-          '数据默认在本机 ~/.cc-switch/（见官方 README）；卸载软件一般不抹掉你对 CLI 的最小可用配置（官方强调最小侵入）。',
+          '只从官方站下载；Key 不进仓库；启用错供应商时立刻切换并轮换 Key。',
         ],
       },
     ],
     checklist: [
-      '从官方 Releases 安装成功',
-      '添加过至少一个含 API Key 的供应商',
-      '启用后新开终端验证 claude 或 codex',
-      '知道如何切回官方登录预设',
+      '已安装 CC Switch',
+      '添加过可直连的 Base URL + Key',
+      '新开终端验证 CLI',
     ],
     refs: [
       { label: '官网', url: 'https://ccswitch.io' },
       { label: 'Releases', url: 'https://github.com/farion1231/cc-switch/releases' },
-      { label: '用户手册入口（仓库 docs）', url: 'https://github.com/farion1231/cc-switch' },
     ],
   },
 
   'install-claude-code': {
     intro: [
-      'Claude Code 擅长：终端里做仓库级任务——重构、修 Bug、跑测试、提交流程。可视化点选改文件更适合 Cursor。',
-      '本篇：安装 → 官方登录 →（可选）API Key / CC Switch。用法细节见「Claude Code 用法」。',
+      '【可选】Claude Code 很强，但官方 claude.ai 登录在国内常需海外网络。国内推荐：装好 CLI 后，用《CC Switch》填可直连的中转 API Key，跳过官方 OAuth。',
+      '若你只想要可视化改代码：用 Trae.cn 即可，不必装本篇。',
     ],
     sections: [
       {
-        title: '擅长什么 / 不擅长什么',
+        title: '国内怎么用（不依赖官方登录）',
         paragraphs: [
-          '擅长：长程 Agent、跨文件改动、结合 git/命令行一次做完。',
-          '不擅长：当你只想「看界面点一下」——那时用 Cursor 更爽。',
-          '可与 Cursor 并存：日常 IDE 用 Cursor，重活丢给 Claude Code。',
+          '1）按下面命令尽量装上 claude（脚本下载失败见排错）。',
+          '2）打开 CC Switch，添加国内可访问供应商的 Base URL + API Key，启用到 Claude Code。',
+          '3）新开终端运行 claude 验证。',
+          '官方浏览器登录仅在你能稳定打开 Claude 账号体系时再用。',
+        ],
+        links: [{ label: 'CC Switch', url: 'https://ccswitch.io' }],
+      },
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：终端长任务、仓库级重构、结合命令行。',
+          '日常点选改文件：Trae / 灵码更合适。',
         ],
       },
       {
@@ -2292,15 +2338,15 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'install-codex': {
     intro: [
-      'Codex CLI 擅长：在 OpenAI / ChatGPT 生态里用终端 Agent 改仓库、跑任务。和「网页 Codex」不是同一安装入口。',
-      '包名必须是 @openai/codex。装好后可官方登录，或用 CC Switch 管理 API Key。',
+      '【可选】Codex 官方站点与 ChatGPT 登录在国内可能不可达。国内路径：安装 CLI → CC Switch 填 OpenAI 兼容的国内 Base URL + Key。',
+      '不翻墙做 IDE 编程请用 Trae.cn / 通义灵码。',
     ],
     sections: [
       {
-        title: '擅长什么',
+        title: '擅长什么 + 网络',
         paragraphs: [
-          '擅长：熟悉 GPT/OpenAI 工作流的开发者；CLI 自动化与仓库任务。',
-          '若你主要用 Claude 订阅：优先 Claude Code；两者可都装，按账号选。',
+          '擅长：终端里的 OpenAI 系 Agent。',
+          'platform.openai.com 打不开时：不要卡在「官方登录」，改走兼容中转 Key。',
         ],
       },
       {
@@ -2359,15 +2405,21 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'install-copilot': {
     intro: [
-      'GitHub Copilot 擅长：敲代码时的灰色行内补全、与 GitHub 仓库/PR 生态集成；Agent 能力因版本而异，整体偏「加速输入」而非「终端长任务」。',
-      '主路径是 GitHub 账号登录订阅，一般不经过 CC Switch（CC Switch 主要管 Claude Code/Codex 等 CLI 配置）。',
+      '【可选·常需海外网络】GitHub Copilot 登录与订阅在国内常不稳定。不翻墙请优先《通义灵码安装》。',
     ],
     sections: [
       {
+        title: '网络说明',
+        paragraphs: [
+          'GitHub 登录页或 Copilot 激活失败时：停止本篇，改装通义灵码（阿里云登录、国内直连）。',
+        ],
+        links: [{ label: '通义灵码', url: 'https://lingma.aliyun.com/download' }],
+      },
+      {
         title: '擅长什么',
         paragraphs: [
-          '擅长：补全函数、写样板代码、在 VS Code 里低摩擦用 AI。',
-          '若你要强 Agent 改整仓：同时装 Cursor 或 Claude Code。',
+          '擅长：行内补全、GitHub 生态。',
+          '国内替代：通义灵码。',
         ],
       },
       {
@@ -2410,15 +2462,21 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'install-windsurf': {
     intro: [
-      'Windsurf 擅长：Cascade 代理式、多步骤改项目，偏「让 AI 多自主走几步」的 AI IDE。',
-      '安装后先账号登录验证；模型/API Key 在软件 Settings 里配（界面文案以当前版本为准）。CLI 密钥仍用 CC Switch。',
+      '【可选·常需海外网络】Windsurf 下载与账号在国内可能不稳。不翻墙请用 Trae.cn。',
     ],
     sections: [
       {
+        title: '网络说明',
+        paragraphs: [
+          'windsurf.com 打不开或登录失败：改装 https://www.trae.cn 。',
+        ],
+        links: [{ label: 'Trae 国内版', url: 'https://www.trae.cn' }],
+      },
+      {
         title: '擅长什么',
         paragraphs: [
-          '擅长：Cascade 工作流、快速原型、Agent 风格编辑。',
-          '和 Cursor 同属 AI IDE，二选一作主力即可，避免同时开两套抢快捷键。',
+          '擅长：Cascade 代理式改多文件。',
+          '国内无网络时用 Trae 即可达到「AI 改项目」目标。',
         ],
       },
       {
@@ -2455,48 +2513,69 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'install-trae': {
     intro: [
-      'Trae 擅长：中文界面与国内网络环境下的 AI 编程 IDE 体验，适合把 Cursor 当备选对比的用户。',
-      '本篇：下载 → 登录 → 在设置里配模型/API Key → 改文件验证。',
+      '国内用户请装 Trae 国内版：https://www.trae.cn （直连、内置豆包/DeepSeek 等）。不要下 https://www.trae.ai 海外版——那套模型与网络面向海外。',
+      '本篇默认不翻墙：下载 → 登录 → 用内置模型改文件；自定义 API 可选。',
     ],
     sections: [
       {
         title: '擅长什么',
         paragraphs: [
-          '擅长：中文提示、本土化上手；完成「打开文件夹 + AI 改文件」闭环。',
-          '深度 Agent/CLI：仍可另装 Claude Code + CC Switch。',
+          '擅长：不翻墙做 AI 编程；中文需求/注释；Chat / Builder 等模式（以产品当前界面为准）。',
+          '若只要给现有 VS Code 加插件：可改学《通义灵码安装》。',
         ],
       },
       {
-        title: '下载安装与登录',
+        title: '认准国内版下载',
         paragraphs: [
-          '官网 https://www.trae.ai → Download → 安装 → 按引导登录（手机号/第三方以产品为准）。',
-        ],
-        steps: ['Trae 打开且登录稳定'],
-        links: [{ label: 'Trae', url: 'https://www.trae.ai' }],
-      },
-      {
-        title: '配置 API Key / 模型',
-        paragraphs: [
-          '打开设置（齿轮）：找到模型提供商、API Key 或「自定义服务商」一类入口。',
-          '填写供应商提供的 Base URL（若需要）与 API Key → 保存。',
-          '先用官方默认模型能聊天，再换成自备 Key，方便排查。',
+          '地址栏输入 https://www.trae.cn ，点「下载 IDE」或同等按钮，按系统下 Windows .exe / Mac .dmg。',
+          '安装包来源必须是 trae.cn。若页面跳到 trae.ai 或要求海外登录，说明下错版本，关掉重来。',
         ],
         steps: [
-          '设置页保存成功。',
-          'AI 面板能回复「只回答 ok」。',
+          '从 trae.cn 下载完成。',
+          '备忘录写：Trae 国内版 | 日期。',
+        ],
+        links: [{ label: 'Trae 国内版官网', url: 'https://www.trae.cn' }],
+      },
+      {
+        title: '安装与登录（手机号即可）',
+        paragraphs: [
+          'Windows：双击安装，默认路径即可；Mac：dmg 拖进应用程序。',
+          '首次打开：用手机号 / 抖音 / 飞书等国内方式登录（以页面选项为准），完成协议勾选。',
+          '可选：从 VS Code 导入设置与扩展。',
+        ],
+        steps: [
+          '能打开 Trae 主窗口。',
+          '登录成功，能看到 AI 对话或 Builder 入口。',
         ],
       },
       {
-        title: '验证改文件 + 与 CC Switch',
+        title: '用内置模型完成第一次改文件',
         paragraphs: [
-          'Open Folder → 让 AI 改 trae-ok.txt 一行内容并接受。',
-          'CC Switch 不管 Trae IDE 内部设置；只在你同时用 Claude Code/Codex 时再装。',
+          'File → Open Folder 打开练习目录。',
+          '模型列表优先选豆包或 DeepSeek 等内置项（名称以当前产品为准）。',
+          '让 AI：「创建 trae-ok.txt，内容写：国内直连练习成功。」接受修改并保存。',
         ],
-        steps: ['完成一次改文件验证'],
+        steps: [
+          '不配置任何海外 Key 也能改文件成功。',
+          '（可选）再在设置里试自定义国内 API。',
+        ],
+        tip: '内置模型若排队：换 Flash/轻量档或稍后再试，不必立刻去装 Cursor。',
+      },
+      {
+        title: '排错',
+        paragraphs: [
+          '下成 trae.ai：卸载后改从 trae.cn 重装。',
+          '登录验证码收不到：等 60 秒、查短信拦截。',
+          'AI 无响应：确认已登录、模型未欠费/限流、网络是否公司拦截。',
+        ],
       },
     ],
-    checklist: ['已登录', '会找设置填 Key', '改文件成功'],
-    refs: [{ label: 'Trae', url: 'https://www.trae.ai' }],
+    checklist: [
+      '安装包来自 trae.cn',
+      '国内方式登录成功',
+      '不翻墙完成一次改文件',
+    ],
+    refs: [{ label: 'Trae 国内版', url: 'https://www.trae.cn' }],
   },
 
   'claude-code': {
