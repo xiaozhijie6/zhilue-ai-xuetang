@@ -31,9 +31,9 @@ export function CourseDetail({
           <CourseCover
             id={course.id}
             category={course.category}
-            teacher={course.teacher}
             level={course.level}
             hot={course.hot}
+            title={course.title}
           />
         </div>
         <div className="course-detail__info">

@@ -9,10 +9,10 @@ export type CatNav = {
 }
 
 export const CAT_NAV: CatNav[] = [
-  { category: '下载与入门', title: '下载安装', keywords: '注册 · 第一次对话', icon: 'model' },
+  { category: '下载与入门', title: '下载安装', keywords: '注册 · 第一次对话', icon: 'download' },
   { category: 'AI编程工具', title: '编程工具', keywords: 'Cursor · 配置', icon: 'cursor' },
-  { category: '用AI做产品', title: '做作品', keywords: '网页 · 小程序 · App', icon: 'biz' },
-  { category: 'AI生图', title: '生图视觉', keywords: '海报 · 封面', icon: 'prompt' },
+  { category: '用AI做产品', title: '做作品', keywords: '网页 · 小程序 · App', icon: 'web' },
+  { category: 'AI生图', title: '生图视觉', keywords: '海报 · 封面', icon: 'image' },
   { category: '提示词工程', title: '提示词', keywords: '结构 · 模板', icon: 'prompt' },
   { category: 'API与配置', title: 'API', keywords: '密钥 · 域名', icon: 'openai' },
   { category: 'MCP与工具协议', title: 'MCP', keywords: '接工具', icon: 'mcp' },
@@ -32,7 +32,7 @@ export const FREE_TILES: FreeTile[] = [
     id: 'f1',
     title: '按系统下载常用 AI',
     desc: 'Windows / Mac 一步步截图级说明',
-    icon: 'model',
+    icon: 'download',
     courseId: 'ai-download-guide',
   },
   {
@@ -46,14 +46,14 @@ export const FREE_TILES: FreeTile[] = [
     id: 'f3',
     title: '一句话做出落地页',
     desc: '用 AI 从需求到可预览网页',
-    icon: 'biz',
+    icon: 'web',
     courseId: 'ai-build-website',
   },
   {
     id: 'f4',
     title: '小程序页面一次出齐',
     desc: '结构、文案、交互说明都能生成',
-    icon: 'agent',
+    icon: 'miniapp',
     courseId: 'ai-build-miniprogram',
   },
   {
@@ -67,7 +67,7 @@ export const FREE_TILES: FreeTile[] = [
     id: 'f6',
     title: 'AI 出海报与封面',
     desc: '提示词生图与改图流程',
-    icon: 'prompt',
+    icon: 'image',
     courseId: 'ai-image-gen',
   },
 ]

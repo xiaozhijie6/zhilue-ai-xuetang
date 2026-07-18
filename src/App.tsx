@@ -180,9 +180,9 @@ function CourseRow({
           <CourseCover
             id={item.id}
             category={item.category}
-            teacher={item.teacher}
             level={item.level}
             hot={item.hot}
+            title={item.title}
             compact
           />
         </div>
@@ -224,9 +224,9 @@ function CatalogCard({
       <CourseCover
         id={item.id}
         category={item.category}
-        teacher={item.teacher}
         level={item.level}
         hot={item.hot}
+        title={item.title}
       />
       <strong className="home-card__hook">{item.hook}</strong>
       <em className="home-card__title">{item.title}</em>
@@ -1030,9 +1030,9 @@ export default function App() {
                     <CourseCover
                       id={heroCourse.id}
                       category={heroCourse.category}
-                      teacher={heroCourse.teacher}
                       level={heroCourse.level}
                       hot={heroCourse.hot}
+                      title={heroCourse.title}
                     />
                   </div>
                 </button>
@@ -1079,20 +1079,32 @@ export default function App() {
               </div>
             </div>
             <div className="hook-feed__list">
-              {HOOK_FEED.map((feed) => (
-                <article key={feed.id} className="hook-card">
-                  <div className="hook-card__top">
-                    <i className="hook-card__tag">{feed.tag}</i>
-                    <i className={`hook-card__level hook-card__level--${feed.level}`}>{feed.level}</i>
-                  </div>
-                  <h3 className="hook-card__hook">{feed.hook}</h3>
-                  <p className="hook-card__result">{feed.result}</p>
-                  <p className="hook-card__proof">{feed.proof}</p>
-                  <button type="button" className="hook-card__cta" onClick={() => openCourse(feed.courseId)}>
-                    打开教程 →
-                  </button>
-                </article>
-              ))}
+              {HOOK_FEED.map((feed) => {
+                const course = getItem(feed.courseId)
+                return (
+                  <article key={feed.id} className="hook-card">
+                    <div className="hook-card__cover">
+                      <CourseCover
+                        id={feed.courseId}
+                        category={course?.category ?? '下载与入门'}
+                        level={feed.level}
+                        title={course?.title ?? feed.tag}
+                        compact
+                      />
+                    </div>
+                    <div className="hook-card__top">
+                      <i className="hook-card__tag">{feed.tag}</i>
+                      <i className={`hook-card__level hook-card__level--${feed.level}`}>{feed.level}</i>
+                    </div>
+                    <h3 className="hook-card__hook">{feed.hook}</h3>
+                    <p className="hook-card__result">{feed.result}</p>
+                    <p className="hook-card__proof">{feed.proof}</p>
+                    <button type="button" className="hook-card__cta" onClick={() => openCourse(feed.courseId)}>
+                      打开教程 →
+                    </button>
+                  </article>
+                )
+              })}
             </div>
           </section>
 
@@ -1149,9 +1161,9 @@ export default function App() {
                   <CourseCover
                     id={item.id}
                     category={item.category}
-                    teacher={item.teacher}
                     level={item.level}
                     hot={item.hot}
+                    title={item.title}
                   />
                   <strong className="home-card__hook">{item.hook}</strong>
                   <em className="home-card__title">{item.title}</em>
