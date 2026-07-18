@@ -13,6 +13,7 @@ import { GLOSSARY, GLOSSARY_CATEGORIES } from './data/glossary'
 import { ENDPOINT_GROUPS, ENDPOINTS, endpointsByGroup } from './data/endpoints'
 import { GUIDE_CATEGORIES, NEWBIE_GUIDES, guidesByCategory, type GuideCategory } from './data/newbie'
 import {
+  CAT_NAV,
   FREE_TILES,
   HERO_SLIDES,
   HOME_TRACK_CARDS,
@@ -33,6 +34,11 @@ type SortKey = 'hot' | 'new' | 'students'
 type RecTabId = (typeof REC_TABS)[number]['id']
 
 const TRACK_LEVELS: TrackId[] = ['基础', '工具', '进阶']
+
+function shortCourseLabel(item: KnowledgeItem) {
+  const head = item.title.split(/[：:]/)[0]?.trim() || item.title
+  return head.length > 18 ? `${head.slice(0, 18)}…` : head
+}
 
 type TabBanner = {
   eyebrow: string
@@ -393,7 +399,7 @@ export default function App() {
       lessons,
       terms: GLOSSARY.length,
       tools: KNOWLEDGE_LIBRARY.filter(
-        (c) => c.category === 'AI编程工具与智能体安装' || c.category === 'AI编程工具',
+        (c) => c.category === '工具安装' || c.category === '工具用法',
       ).length,
     }
   }, [])
@@ -433,12 +439,10 @@ export default function App() {
         list = list.filter((c) => c.level === '基础')
         break
       case 'tools':
-        list = list.filter(
-          (c) => c.category === 'AI编程工具与智能体安装' || c.category === 'AI编程工具',
-        )
+        list = list.filter((c) => c.category === '工具安装' || c.category === '工具用法')
         break
       case 'build':
-        list = list.filter((c) => c.category === '用AI做产品')
+        list = list.filter((c) => c.category === '前端 / JS' || c.category === '小程序与 App')
         break
       case 'image':
         list = list.filter((c) => c.category === 'AI生图')
@@ -1104,6 +1108,42 @@ export default function App() {
             </span>
           </div>
 
+          <section className="home-cat-mega" aria-label="教程总类">
+            <div className="home-cat-mega__head">
+              <h2>教程总类</h2>
+              <p>前端 / JS、工具、小程序等多列总类，点标题筛一类，点条目直接开课</p>
+            </div>
+            <div className="home-cat-mega__grid">
+              {CAT_NAV.map((nav) => {
+                const items = KNOWLEDGE_LIBRARY.filter((c) => c.category === nav.category)
+                return (
+                  <div key={nav.category} className="home-cat-mega__col">
+                    <button
+                      type="button"
+                      className="home-cat-mega__title"
+                      onClick={() =>
+                        openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })
+                      }
+                    >
+                      <span>{nav.title}</span>
+                      <i aria-hidden="true">›</i>
+                    </button>
+                    <ul className="home-cat-mega__list">
+                      {items.map((item) => (
+                        <li key={item.id}>
+                          <button type="button" onClick={() => openCourse(item.id)}>
+                            <em>{shortCourseLabel(item)}</em>
+                            {item.new ? <b>new</b> : null}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+
           <section className="home-hero home-hero--cinema" aria-label="本周精选">
             <div className="home-carousel">
               {heroCourse && (
@@ -1184,7 +1224,7 @@ export default function App() {
                     <div className="hook-card__cover">
                       <CourseCover
                         id={feed.courseId}
-                        category={course?.category ?? '下载与入门'}
+                        category={course?.category ?? '入门起步'}
                         level={feed.level}
                         title={course?.title ?? feed.tag}
                         compact

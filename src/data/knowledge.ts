@@ -31,22 +31,27 @@ export type KnowledgeItem = {
   trackStep?: number
 }
 
+/** 教程总类：多列导航按此顺序展示（前端相关靠前） */
 export const CATEGORIES = [
   '全部',
-  '下载与入门',
-  'AI编程工具与智能体安装',
-  'AI编程工具',
+  '入门起步',
+  '前端 / JS',
+  '小程序与 App',
+  '工具安装',
+  '工具用法',
   '提示词工程',
-  '用AI做产品',
-  'AI生图',
-  'API与配置',
-  'MCP与工具协议',
-  '安全合规',
   '办公提效',
+  'API与配置',
+  'MCP与Agent',
+  'AI生图',
+  '安全与成本',
 ] as const
 
+/** 顶部多列总类（不含「全部」），一列一类 */
+export const CATEGORY_COLUMNS = CATEGORIES.filter((c) => c !== '全部')
+
 /** 安装大类简称，便于文案引用 */
-export const INSTALL_CATEGORY = 'AI编程工具与智能体安装' as const
+export const INSTALL_CATEGORY = '工具安装' as const
 
 export const LEVELS: Array<Level | '全部'> = ['全部', '基础', '工具', '进阶']
 
@@ -104,14 +109,14 @@ function course(
 }
 
 export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
-  // ——— 基础：下载与入门 ———
+  // ——— 基础：入门起步 ———
   course(
     {
       id: 'ai-what-is',
       title: 'AI 是什么：对话、写文、改代码、生图各适合什么',
       hook: '5 分钟搞懂 AI 能帮你做什么，不再盲目跟风',
       outcome: '能按场景选对 AI 用法：聊天、办公、编程、做图各走哪条路',
-      category: '下载与入门',
+      category: '入门起步',
       level: '基础',
       desc: '用生活化语言讲清大模型能力边界，建立正确预期。',
       source: '自有资料',
@@ -133,7 +138,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '第一次有效对话：从打开页面到拿到可用回答',
       hook: '打开 AI 当天就能问出有用答案，而不是瞎聊',
       outcome: '完成第一次结构化提问，拿到能直接复制使用的回答',
-      category: '下载与入门',
+      category: '入门起步',
       level: '基础',
       desc: '注册后第一次对话的完整流程：选模型、写问题、追问、保存结果。',
       source: '自有资料',
@@ -156,7 +161,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Windows / Mac 下载安装常用 AI 全指南',
       hook: '国内优先：先网页版跑通，再决定要不要装客户端',
       outcome: '国内网页版能聊天；清楚海外客户端可跳过；知道编程去 Trae.cn / 通义灵码',
-      category: '下载与入门',
+      category: '入门起步',
       level: '基础',
       desc: '小白逐步：先豆包/Kimi；ChatGPT/Claude/Cursor 标为可选；编程指向 Trae 与灵码。',
       source: '自有资料',
@@ -183,7 +188,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '账号注册、登录与基础设置',
       hook: '手机号怎么点、邮件在哪找：注册一次就能继续学',
       outcome: '至少一个 AI 账号注册成功，会删对话、会记登录方式',
-      category: '下载与入门',
+      category: '入门起步',
       level: '基础',
       desc: '国内手机号逐步注册；ChatGPT/Claude 注册与登录方式陷阱；隐私三分钟设置。',
       source: '自有资料',
@@ -204,7 +209,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '7 天 AI 基础路径：从零到能独立使用',
       hook: '7 天自学计划：每天 30 分钟，从零到能提问、能办公、懂安全',
       outcome: '7 天清单全部打勾，能独立对话、写提示词、知道密钥不能乱贴',
-      category: '下载与入门',
+      category: '入门起步',
       level: '基础',
       desc: '按天拆分的自学路径，覆盖安装、提问、办公、安全底线。',
       source: '自有资料',
@@ -273,7 +278,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'API Key 安全：存储、轮换与泄露应对',
       hook: '别再泄露 API Key：一套密钥安全规范省几万账单',
       outcome: '密钥存储、轮换、泄露应急流程落地，pre-commit 扫描启用',
-      category: '安全合规',
+      category: '安全与成本',
       level: '基础',
       desc: '禁止提交仓库、环境变量、泄露应急 — 自学阶段就要懂的底线。',
       hot: true,
@@ -289,14 +294,14 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     ],
   ),
 
-  // ——— AI编程工具与智能体安装（每个工具一篇独立安装） ———
+  // ——— 工具安装（每个工具一篇独立安装） ———
   course(
     {
       id: 'tool-pick-compare',
       title: '先选再装：国内直连优先的工具地图',
       hook: '默认不翻墙：先 Trae 国内版 / 通义灵码，海外工具标成可选',
       outcome: '选出国内能直连的主工具；清楚哪些需要海外网络再决定要不要装',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '国内优先：Trae.cn、通义灵码、国内 API；海外 Cursor/Claude/Codex 标网络要求。',
       source: '自有资料',
@@ -318,7 +323,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Trae 国内版安装：不翻墙的 AI 编程 IDE',
       hook: '国内首选：trae.cn 直连下载，豆包/DeepSeek，手机号就能登',
       outcome: '从 trae.cn 装好并登录，不用翻墙完成第一次 AI 改文件',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '务必下国内版 trae.cn（不是 trae.ai）；登录；内置国产模型；可选自定义 API。',
       source: '自有资料',
@@ -342,7 +347,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '通义灵码安装：VS Code 国内插件',
       hook: '已有 VS Code？装通义灵码，阿里云登录，国内直连补全',
       outcome: 'VS Code 装好通义灵码并登录阿里云，补全/对话可用',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: 'lingma.aliyun.com；扩展市场装插件；阿里云账号登录；国内模型。',
       source: '自有资料',
@@ -364,7 +369,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'CC Switch 安装：国内中转 API Key 一键切换',
       hook: '要用 Claude Code/Codex 但不直连官方？用 CC Switch 填国内供应商 Key',
       outcome: '装好 CC Switch，会添加国内/合规供应商的 Base URL + API Key 并启用',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '先装好 CLI；再装 CC Switch；优先配可直连的国内 API 供应商，避免依赖翻墙。',
       source: '自有资料',
@@ -385,7 +390,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Cursor 安装（可选·常需海外网络）',
       hook: '可选：Cursor 能力强，但国内常要稳定海外网络，不翻墙请先用 Trae',
       outcome: '在网络可达时装好 Cursor；否则跳过改用 Trae 国内版',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '网络提示在前；官网下载；登录；API Key；第一次改文件。',
       source: '自有资料',
@@ -406,7 +411,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Claude Code 安装（可选·配合国内中转）',
       hook: '可选：终端强 Agent；官方登录常需海外网络，国内用 CC Switch + 中转 Key',
       outcome: '能安装 claude；用 CC Switch 配可直连供应商，不依赖翻墙官方站',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '网络说明；安装命令；国内路径用 CC Switch 填中转 API，少走官方 OAuth。',
       source: '自有资料',
@@ -426,7 +431,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'OpenAI Codex 安装（可选·配合国内中转）',
       hook: '可选：OpenAI 系 CLI；官方站点常需海外网络，国内用中转 Key',
       outcome: '能安装 codex；用 CC Switch 配可直连 OpenAI 兼容接口',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '网络说明；安装；国内用兼容 Base URL + Key，不强调官方 ChatGPT 登录。',
       source: '自有资料',
@@ -445,7 +450,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'GitHub Copilot 安装（可选·常需海外网络）',
       hook: '可选：GitHub 补全；国内登录/订阅常不稳，优先通义灵码',
       outcome: '网络可达时完成安装；否则改用通义灵码',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '网络提示；VS Code 扩展；国内替代指向通义灵码。',
       source: '自有资料',
@@ -462,7 +467,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Windsurf 安装（可选·常需海外网络）',
       hook: '可选：Cascade 很强，但国内网络不稳时请先用 Trae.cn',
       outcome: '网络可达再装；否则跳过',
-      category: 'AI编程工具与智能体安装',
+      category: '工具安装',
       level: '工具',
       desc: '网络提示在前；安装登录简述；国内替代 Trae。',
       source: '自有资料',
@@ -481,7 +486,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Cursor 用法：从 Chat 到 Agent 改项目',
       hook: 'Cursor 已装好？这篇专讲用法，不再重复安装步骤',
       outcome: '独立用 Cursor 完成多文件改码、Rules 配置与 Agent 任务拆解',
-      category: 'AI编程工具',
+      category: '工具用法',
       level: '工具',
       desc: 'Chat、Inline、Composer、Agent、@文件、Rules、MCP、模型配置 — 逐步讲透。',
       source: '自有资料',
@@ -508,7 +513,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Cursor Rules 深度：.mdc 与项目规范落地',
       hook: '一套 Rules 让 AI 编程助手不再乱改你的项目',
       outcome: '写出可执行的 .mdc Rules，Agent 稳定守规矩',
-      category: 'AI编程工具',
+      category: '工具用法',
       level: '工具',
       desc: 'Rules 语法、层级、与 System Prompt 分工。',
       source: '自有资料',
@@ -530,7 +535,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Claude Code 用法：仓库级任务与安全边界',
       hook: 'Claude Code 已装好？这篇讲怎么下指令、怎么控权限',
       outcome: '会写仓库级指令，知道何时批准危险操作',
-      category: 'AI编程工具',
+      category: '工具用法',
       level: '工具',
       desc: '安装见「Claude Code 安装」专篇；本篇专注用法与安全。',
     },
@@ -618,7 +623,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'MCP 是什么：模型上下文协议入门',
       hook: 'MCP 是什么：5 分钟搞懂 IDE 怎么接外部工具',
       outcome: '理解 Host/Client/Server 关系，Cursor 里 MCP 绿灯知道意味着什么',
-      category: 'MCP与工具协议',
+      category: 'MCP与Agent',
       level: '工具',
       desc: 'MCP 解决什么问题、和 Plugin / Function Calling 关系。',
       hot: true,
@@ -642,7 +647,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '在 Cursor 中安装与配置第一个 MCP',
       hook: 'Cursor 里装第一个 MCP：配置文件复制就能跑',
       outcome: 'mcp.json 配好第一个 Server，权限弹窗与失败排查会处理',
-      category: 'MCP与工具协议',
+      category: 'MCP与Agent',
       level: '工具',
       desc: 'mcp.json 配置、本地 Server 启动、权限弹窗处理。',
       hot: true,
@@ -703,7 +708,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Agent 工具调用：从 Function 到 MCP 闭环',
       hook: 'Agent 工具闭环：plan → tool → observe 一次跑通',
       outcome: '理解 tools 设计、执行循环、错误重试，知道 MCP 与 Function Calling 怎么选',
-      category: 'MCP与工具协议',
+      category: 'MCP与Agent',
       level: '工具',
       desc: '设计 tools、执行循环、错误重试、与 MCP 组合。',
       hot: true,
@@ -720,14 +725,14 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     ],
   ),
 
-  // ——— 进阶：用 AI 做产品 ———
+  // ——— 进阶：前端 / JS · 小程序与 App ———
   course(
     {
       id: 'ai-build-website',
       title: '从一句话需求到可预览网页',
       hook: '客户明天要链接，今晚先出一版能打开的页面',
       outcome: '独立完成一个多区块网页：布局、文案、样式、本地预览',
-      category: '用AI做产品',
+      category: '前端 / JS',
       level: '进阶',
       desc: 'HTML/CSS/JS 或 React 路线，Cursor Agent 驱动从零搭站。',
       source: '自有资料',
@@ -752,7 +757,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '落地页部署上线：拿到能分享的链接',
       hook: '页面做好了不够，还要有人点得开的地址',
       outcome: '落地页部署到 Vercel / Netlify / GitHub Pages，拿到可分享链接',
-      category: '用AI做产品',
+      category: '前端 / JS',
       level: '进阶',
       desc: '从设计稿描述到部署，免费托管一条龙。',
       hot: true,
@@ -774,7 +779,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '微信小程序三页骨架怎么生成',
       hook: '别从零画线框：首页、列表、详情一次铺开',
       outcome: '产出首页、列表、详情页结构与 wxml/wxss 草稿，可导入开发者工具',
-      category: '用AI做产品',
+      category: '小程序与 App',
       level: '进阶',
       desc: '页面结构、交互说明与可导入微信开发者工具的原型稿。',
       source: '自有资料',
@@ -798,7 +803,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'App 关键屏与流程说明稿',
       hook: '代码还没写，先把四个关键屏讲清楚',
       outcome: '信息架构、关键页 wireframe 描述、组件清单一次产出',
-      category: '用AI做产品',
+      category: '小程序与 App',
       level: '进阶',
       desc: 'React Native / Flutter 或 Figma 描述路线，面向可交付原型。',
       new: true,
@@ -866,7 +871,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '减少 AI 胡编：引用、拒答与复核',
       hook: 'AI 瞎编少一半：Grounding + 引用 + 拒答策略',
       outcome: '知道幻觉类型，会用引用格式与拒答话术，建立复核习惯',
-      category: '安全合规',
+      category: '安全与成本',
       level: '进阶',
       desc: '减少瞎编的系统方法：检索引用、低 temperature、人工复核。',
     },
@@ -883,7 +888,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '成本与限流：Token 账单与模型路由',
       hook: 'Agent 账单别再失控：Token 告警与模型路由一套配齐',
       outcome: '账单拆分、hard limit、模型路由直觉建立，429 有应对策略',
-      category: 'API与配置',
+      category: '安全与成本',
       level: '进阶',
       desc: '告警、hard limit、缓存、模型路由，避免 Agent 账单失控。',
       source: '自有资料',

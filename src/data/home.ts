@@ -1,5 +1,6 @@
 import type { IconKey } from '../components/AiIcon'
 import type { TrackId } from './tracks'
+import { CATEGORY_COLUMNS } from './knowledge'
 
 export type CatNav = {
   category: string
@@ -8,22 +9,29 @@ export type CatNav = {
   icon: IconKey
 }
 
-export const CAT_NAV: CatNav[] = [
-  { category: '下载与入门', title: '下载安装', keywords: '注册 · 第一次对话', icon: 'download' },
-  {
-    category: 'AI编程工具与智能体安装',
-    title: '工具安装',
-    keywords: 'Trae · 灵码 · 不翻墙',
-    icon: 'cursor',
-  },
-  { category: 'AI编程工具', title: '工具用法', keywords: 'Agent · Rules', icon: 'agent' },
-  { category: '用AI做产品', title: '做作品', keywords: '网页 · 小程序 · App', icon: 'web' },
-  { category: 'AI生图', title: '生图视觉', keywords: '海报 · 封面', icon: 'image' },
-  { category: '提示词工程', title: '提示词', keywords: '结构 · 模板', icon: 'prompt' },
-  { category: 'API与配置', title: 'API', keywords: '密钥 · 域名', icon: 'openai' },
-  { category: 'MCP与工具协议', title: 'MCP', keywords: '接工具', icon: 'mcp' },
-  { category: '安全合规', title: '安全', keywords: '脱敏 · 密钥', icon: 'security' },
-]
+/** 顶部多列总类导航文案（顺序跟 CATEGORY_COLUMNS 一致） */
+const CAT_META: Record<string, { title: string; keywords: string; icon: IconKey }> = {
+  入门起步: { title: '入门起步', keywords: '下载 · 注册 · 第一次对话', icon: 'download' },
+  '前端 / JS': { title: '前端 / JS', keywords: '网页 · 落地页 · HTML/React', icon: 'web' },
+  '小程序与 App': { title: '小程序与 App', keywords: '微信小程序 · 移动端', icon: 'miniapp' },
+  工具安装: { title: '工具安装', keywords: 'Trae · 灵码 · Cursor · 不翻墙', icon: 'cursor' },
+  工具用法: { title: '工具用法', keywords: 'Agent · Rules · 工作流', icon: 'agent' },
+  提示词工程: { title: '提示词工程', keywords: '结构 · 模板 · 系统提示', icon: 'prompt' },
+  办公提效: { title: '办公提效', keywords: '邮件 · 纪要 · PPT', icon: 'office' },
+  API与配置: { title: 'API与配置', keywords: '密钥 · 域名 · 网关', icon: 'openai' },
+  'MCP与Agent': { title: 'MCP与Agent', keywords: '接工具 · 多步调用', icon: 'mcp' },
+  AI生图: { title: 'AI生图', keywords: '海报 · 封面 · 品牌视觉', icon: 'image' },
+  安全与成本: { title: '安全与成本', keywords: '脱敏 · 密钥 · 账单', icon: 'security' },
+}
+
+export const CAT_NAV: CatNav[] = CATEGORY_COLUMNS.map((category) => {
+  const meta = CAT_META[category] ?? {
+    title: category,
+    keywords: '',
+    icon: 'default' as IconKey,
+  }
+  return { category, ...meta }
+})
 
 export type FreeTile = {
   id: string
@@ -120,7 +128,7 @@ export const HERO_SLIDES = [
   },
   {
     courseId: 'ai-build-website',
-    eyebrow: '能发出去的页面',
+    eyebrow: '前端 / JS',
     title: '客户明天要链接，你今晚先出一版',
     subtitle: '区块、文案、配色一起定，本地就能预览',
     cta: '去做网页',

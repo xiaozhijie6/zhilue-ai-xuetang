@@ -48,15 +48,17 @@ const COVER_GLYPHS: Record<string, string> = {
 }
 
 const CATEGORY_GLYPHS: Record<string, string> = {
-  下载与入门: '下载入门',
-  AI编程工具与智能体安装: '工具安装',
-  AI编程工具: '工具用法',
-  用AI做产品: '做作品',
+  入门起步: '入门起步',
+  '前端 / JS': '前端 JS',
+  '小程序与 App': '小程序',
+  工具安装: '工具安装',
+  工具用法: '工具用法',
   AI生图: 'AI 生图',
   提示词工程: '提示词',
+  办公提效: '办公提效',
   API与配置: 'API 配置',
-  MCP与工具协议: 'MCP 协议',
-  安全合规: '安全合规',
+  'MCP与Agent': 'MCP',
+  安全与成本: '安全成本',
 }
 
 /** Vite 打包后可引用的封面海报（由 scripts/generate-covers 生成） */
