@@ -68,7 +68,13 @@ const COVER_POSTERS: Record<string, string> = import.meta.glob('../assets/covers
 function coverPosterUrl(id: string): string | null {
   const hit = Object.entries(COVER_POSTERS).find(([path]) => {
     const base = path.split('/').pop() ?? ''
-    return base === `${id}.jpg` || base === `${id}.jpeg` || base === `${id}.png` || base === `${id}.webp`
+    return (
+      base === `${id}.webp` ||
+      base === `${id}.jpg` ||
+      base === `${id}.jpeg` ||
+      base === `${id}.png` ||
+      base === `${id}.jpg.webp`
+    )
   })
   return hit?.[1] ?? null
 }

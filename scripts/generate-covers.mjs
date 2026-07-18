@@ -16,7 +16,7 @@ const ROOT = path.resolve(__dirname, '..')
 const OUT_DIR = path.join(ROOT, 'src', 'assets', 'covers')
 
 const API_KEY = process.env.OPENAI_API_KEY || process.env.IMAGE2_API_KEY || ''
-const BASE_URL = (process.env.OPENAI_BASE_URL || process.env.IMAGE2_BASE_URL || 'https://api.apiyi.com/v1').replace(
+const BASE_URL = (process.env.OPENAI_BASE_URL || process.env.IMAGE2_BASE_URL || 'https://an520.xin/v1').replace(
   /\/$/,
   '',
 )
