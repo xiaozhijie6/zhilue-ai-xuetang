@@ -20,6 +20,7 @@ import {
 } from './data/home'
 import { HOOK_FEED } from './data/hooks'
 import { TRACKS, type TrackId } from './data/tracks'
+import { getTutorialBody } from './data/tutorialBodies'
 import { AmbientBackground } from './components/AmbientBackground'
 import { AiIcon } from './components/AiIcon'
 import { CourseCover } from './components/CourseCover'
@@ -586,6 +587,9 @@ export default function App() {
             <h1>{activeTrack.title}</h1>
             <p className="track-hero__hook">{activeTrack.hook}</p>
             <p className="track-hero__promise">{activeTrack.promise}</p>
+            <p className="track-hero__promise" style={{ opacity: 0.85 }}>
+              每一步下方附「跟做摘录」——不是空目录，点按钮进完整正文继续做。
+            </p>
             <span className="track-hero__days">{activeTrack.days}</span>
           </header>
 
@@ -611,6 +615,33 @@ export default function App() {
                     )
                   })}
                 </div>
+                {(() => {
+                  const cid = step.courseIds.find((id) => getTutorialBody(id))
+                  if (!cid) return null
+                  const body = getTutorialBody(cid)!
+                  const sec = body.sections[0]
+                  return (
+                    <div className="track-teach">
+                      <h4>跟做摘录 · {sec.title}</h4>
+                      {sec.paragraphs.slice(0, 2).map((p) => (
+                        <p key={p.slice(0, 28)}>{p}</p>
+                      ))}
+                      {sec.steps && (
+                        <ol className="teach-steps">
+                          {sec.steps.slice(0, 5).map((s) => (
+                            <li key={s}>{s}</li>
+                          ))}
+                        </ol>
+                      )}
+                      {sec.links?.[0] && (
+                        <p className="track-teach__url">官网：{sec.links[0].url}</p>
+                      )}
+                      <button type="button" className="btn btn--ghost-dark" onClick={() => openCourse(cid)}>
+                        打开完整正文（含逐步点击说明）→
+                      </button>
+                    </div>
+                  )
+                })()}
               </section>
             ))}
           </div>
@@ -649,9 +680,9 @@ export default function App() {
       {/* GLOSSARY */}
       {tab === 'glossary' && (
         <main className="gk-main gk-glossary">
-          <h2 className="gk-section-title">AI 术语与标准词典</h2>
+          <h2 className="gk-section-title">术语词典 · 概念怎么讲</h2>
           <p className="gk-section-desc">
-            统一团队沟通口径：从 LLM、Token、RAG 到 MCP、API 域名与工程合规术语（共 {GLOSSARY.length} 条）。
+            这里不是教程步骤，而是名词解释：LLM、Token、RAG、MCP、Base URL 等（共 {GLOSSARY.length} 条），含手把手理解与常见坑。
           </p>
           <div className="gk-filters">
             {GLOSSARY_CATEGORIES.map((c) => (
@@ -799,10 +830,10 @@ export default function App() {
       {/* GUIDE */}
       {tab === 'guide' && (
         <main className="gk-main gk-guide">
-          <h2 className="gk-section-title">避坑指南</h2>
+          <h2 className="gk-section-title">避坑指南 · 症状驱动排查</h2>
           <p className="gk-section-desc">
-            汇总高频踩坑：密钥管理、域名配置、提示词工程、Cursor/MCP 集成、幻觉控制与合规（共{' '}
-            {NEWBIE_GUIDES.length} 篇）。
+            和「学习路径 / 教程正文」不同：这里按故障现象入手——你遇到什么 → 为什么 → 逐步排查 → 最佳实践（共{' '}
+            {NEWBIE_GUIDES.length} 篇）。不会教你从零安装，专治翻车。
           </p>
           <div className="gk-filters">
             {GUIDE_CATEGORIES.map((c) => (
@@ -896,13 +927,14 @@ export default function App() {
                 )}
                 {guideItem.relatedCourses && guideItem.relatedCourses.length > 0 && (
                   <>
-                    <h3>推荐去学</h3>
+                    <h3>推荐去学（完整跟做正文）</h3>
                     <div className="gk-glossary__related">
                       {guideItem.relatedCourses.map((cid) => {
                         const c = getItem(cid)
+                        if (!c) return null
                         return (
                           <button key={cid} type="button" onClick={() => openCourse(cid)}>
-                            {c?.hook ?? c?.title ?? cid}
+                            {c.hook || c.title}
                           </button>
                         )
                       })}
@@ -914,8 +946,10 @@ export default function App() {
           </div>
 
           <section className="gk-endpoints" style={{ marginTop: '1.5rem' }}>
-            <h2 className="gk-section-title">配置时常用域名（速览）</h2>
-            <p className="gk-section-desc">完整说明在「术语词典」页底部；此处方便对照粘贴配置。</p>
+            <h2 className="gk-section-title">排查时常用域名（速贴）</h2>
+            <p className="gk-section-desc">
+              连不上 API 时先核对这些 Base URL；概念解释去「术语词典」，完整跟做步骤去对应教程正文。
+            </p>
             <div className="gk-endpoints__grid">
               {ENDPOINTS.slice(0, 6).map((ep) => (
                 <article key={ep.id} className="gk-endpoint-card">
@@ -939,8 +973,10 @@ export default function App() {
         <main className="gk-main gk-learn">
           <div className="gk-learn__bar">
             <div>
-              <h2>我的进度</h2>
-              <p>已登录 {maskPhone(phone)} · 进度保存在本机</p>
+              <h2>我的进度 · 继续跟做</h2>
+              <p>
+                已登录 {maskPhone(phone)} · 左侧勾选步骤，右侧直接读正文摘录（完整教学在点开教程后）
+              </p>
             </div>
             <button type="button" className="btn btn--ghost-dark" onClick={logout}>
               退出登录
@@ -970,11 +1006,36 @@ export default function App() {
                 去首页选更多
               </button>
             </aside>
-            <section>
+            <section className="gk-learn__read">
               <p className="gk-learn__hook">{learnCourse.hook}</p>
               <h1>{learnCourse.title}</h1>
               <p>{learnCourse.outcome || learnCourse.desc}</p>
-              <div className="gk-lessons">
+              <button type="button" className="btn btn--accent" style={{ margin: '0.75rem 0' }} onClick={() => openCourse(learnCourse.id)}>
+                打开完整跟做正文 →
+              </button>
+              {(() => {
+                const body = getTutorialBody(learnCourse.id)
+                if (!body) {
+                  return <p className="teach-tip">这篇还在补正文，请先打开「下载指南 / Cursor / 做网页」等已有完整教程。</p>
+                }
+                const sec = body.sections[0]
+                return (
+                  <div className="track-teach">
+                    <h4>{sec.title}</h4>
+                    {sec.paragraphs.slice(0, 2).map((p) => (
+                      <p key={p.slice(0, 32)}>{p}</p>
+                    ))}
+                    {sec.steps && (
+                      <ol className="teach-steps">
+                        {sec.steps.slice(0, 4).map((s) => (
+                          <li key={s}>{s}</li>
+                        ))}
+                      </ol>
+                    )}
+                  </div>
+                )
+              })()}
+              <div className="gk-lessons" style={{ marginTop: '1rem' }}>
                 {learnCourse.lessons.map((lesson, i) => {
                   const done = progressMap[learnCourse.id]?.includes(lesson.id)
                   return (
@@ -1003,8 +1064,55 @@ export default function App() {
         <main className="gk-main home home--mixed">
           <div className="home-promo home-promo--ink">
             <strong>怎么读</strong>
-            <span>卡住装软件看基础；要改代码看工具；要交页面或出图看进阶</span>
+            <span>
+              首页直接给跟做正文摘录；「学习路径」按基础→工具→进阶推进；「术语词典」讲概念；「避坑指南」按故障排查；点进任意教程有完整步骤
+            </span>
           </div>
+
+          <section className="home-teach-grid" aria-label="三线跟做">
+            {(
+              [
+                ['基础', 'ai-download-guide', '先把软件装稳'],
+                ['工具', 'cursor-install', '装好 Cursor 并改文件'],
+                ['进阶', 'ai-build-website', '用 AI 搭出可访问页面'],
+              ] as const
+            ).map(([level, id, blurb]) => {
+              const featured = getItem(id)
+              const body = getTutorialBody(id)
+              if (!featured || !body) return null
+              const sec = body.sections[0]
+              return (
+                <article key={id} className="home-teach">
+                  <p className="home-teach__level">{level} · {blurb}</p>
+                  <h2>{featured.title}</h2>
+                  <p className="home-teach__desc">{featured.hook}</p>
+                  <div className="home-teach__body">
+                    <p>
+                      <strong>{sec.title}</strong>
+                    </p>
+                    {sec.paragraphs.slice(0, 2).map((p) => (
+                      <p key={p.slice(0, 32)}>{p}</p>
+                    ))}
+                    {sec.steps && (
+                      <ol>
+                        {sec.steps.slice(0, 5).map((s) => (
+                          <li key={s}>{s}</li>
+                        ))}
+                      </ol>
+                    )}
+                    {sec.links && sec.links[0] && (
+                      <p className="home-teach__link">
+                        官网：{sec.links[0].url}
+                      </p>
+                    )}
+                  </div>
+                  <button type="button" className="btn btn--accent home-teach__cta" onClick={() => openCourse(id)}>
+                    打开完整正文 →
+                  </button>
+                </article>
+              )
+            })}
+          </section>
 
           <section className="home-hero home-hero--cinema" aria-label="本周精选">
             <div className="home-carousel">
