@@ -7,50 +7,80 @@ import {
   type BrandKey,
 } from './BrandMark'
 
-/** 非软件课：内容艺术字 */
+/** 封面艺术字：写全称，不截断 */
 const COVER_GLYPHS: Record<string, string> = {
-  'ai-what-is': '认知',
-  'ai-first-chat': '对话',
-  'ai-download-guide': '下载',
-  'ai-account-setup': '账号',
-  'newbie-first-week': '入门',
-  'prompt-basics': '提示',
-  'ai-daily-office': '办公',
-  'api-keys-security': '密钥',
-  'tool-pick-compare': '选型',
-  'prompt-system': '系统',
-  'rag-basics': '检索',
-  'agent-tools': '工具',
-  'ai-build-website': '网页',
-  'ai-landing-page': '落地',
-  'ai-build-miniprogram': '小程',
-  'ai-build-app': '应用',
-  'ai-image-gen': '生图',
-  'ai-image-brand': '品牌',
-  'hallucination-defense': '幻觉',
-  'cost-control': '成本',
+  'ai-what-is': 'AI 认知',
+  'ai-first-chat': '第一次对话',
+  'ai-download-guide': '下载安装',
+  'ai-account-setup': '账号注册',
+  'newbie-first-week': '第一周入门',
+  'prompt-basics': '提示词基础',
+  'ai-daily-office': 'AI 办公',
+  'api-keys-security': '密钥安全',
+  'tool-pick-compare': '工具选型',
+  'install-trae': 'Trae 安装',
+  'install-lingma': '通义灵码',
+  'install-cc-switch': 'CC Switch',
+  'cursor-install': 'Cursor 安装',
+  'install-claude-code': 'Claude Code',
+  'install-codex': 'Codex 安装',
+  'install-copilot': 'Copilot 安装',
+  'install-windsurf': 'Windsurf 安装',
+  cursor: 'Cursor 用法',
+  'cursor-rules': 'Cursor Rules',
+  'claude-code': 'Claude Code 用法',
+  'api-openai': 'OpenAI API',
+  'api-compatible': '兼容网关',
+  'domain-api-cheatsheet': '域名速查',
+  'mcp-intro': 'MCP 入门',
+  'mcp-install': 'MCP 安装',
+  'prompt-system': '系统提示词',
+  'rag-basics': 'RAG 检索',
+  'agent-tools': 'Agent 工具',
+  'ai-build-website': '做网页',
+  'ai-landing-page': '落地页',
+  'ai-build-miniprogram': '小程序',
+  'ai-build-app': '做 App',
+  'ai-image-gen': 'AI 生图',
+  'ai-image-brand': '品牌视觉',
+  'hallucination-defense': '防幻觉',
+  'cost-control': '控成本',
 }
 
 const CATEGORY_GLYPHS: Record<string, string> = {
-  下载与入门: '入门',
-  AI编程工具与智能体安装: '安装',
-  AI编程工具: '用法',
-  用AI做产品: '作品',
-  AI生图: '生图',
-  提示词工程: '提示',
-  API与配置: '接口',
-  MCP与工具协议: '协议',
-  安全合规: '安全',
+  下载与入门: '下载入门',
+  AI编程工具与智能体安装: '工具安装',
+  AI编程工具: '工具用法',
+  用AI做产品: '做作品',
+  AI生图: 'AI 生图',
+  提示词工程: '提示词',
+  API与配置: 'API 配置',
+  MCP与工具协议: 'MCP 协议',
+  安全合规: '安全合规',
+}
+
+/** Vite 打包后可引用的封面海报（由 scripts/generate-covers 生成） */
+const COVER_POSTERS: Record<string, string> = import.meta.glob('../assets/covers/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>
+
+function coverPosterUrl(id: string): string | null {
+  const hit = Object.entries(COVER_POSTERS).find(([path]) => {
+    const base = path.split('/').pop() ?? ''
+    return base === `${id}.jpg` || base === `${id}.jpeg` || base === `${id}.png` || base === `${id}.webp`
+  })
+  return hit?.[1] ?? null
 }
 
 function coverGlyph(id: string, category: string, title?: string): string {
   if (COVER_GLYPHS[id]) return COVER_GLYPHS[id]
   if (CATEGORY_GLYPHS[category]) return CATEGORY_GLYPHS[category]
   if (title) {
-    const cleaned = title.replace(/[（(].*$/, '').replace(/\s+/g, '')
-    if (cleaned.length >= 2) return cleaned.slice(0, 2)
+    const cleaned = title.replace(/[（(].*$/, '').trim()
+    if (cleaned.length >= 2) return cleaned.length > 8 ? cleaned.slice(0, 8) : cleaned
   }
-  return '知略'
+  return '知略学堂'
 }
 
 function variantIndex(id: string): number {
@@ -66,7 +96,7 @@ function brandCaption(brand: BrandKey, title?: string, category?: string) {
   }
 }
 
-/** 教程封面：软件课用官网图标，其余用内容艺术字 */
+/** 教程封面：优先海报图 → 软件品牌标 → 内容艺术字 */
 export function CourseCover({
   id,
   category,
@@ -83,6 +113,7 @@ export function CourseCover({
   compact?: boolean
   title?: string
 }) {
+  const poster = coverPosterUrl(id)
   const brand = resolveBrand(id)
   const icon = resolveIconKey(id, category)
   const bg = brand ? BRAND_BG[brand] : ICON_BG[icon]
@@ -92,11 +123,13 @@ export function CourseCover({
 
   return (
     <div
-      className={`course-cover ${brand ? 'course-cover--brand' : `course-cover--v${variant}`} ${compact ? 'course-cover--compact' : ''}`}
-      style={{ ['--cover' as string]: bg }}
+      className={`course-cover ${poster ? 'course-cover--poster' : brand ? 'course-cover--brand' : `course-cover--v${variant}`} ${compact ? 'course-cover--compact' : ''}`}
+      style={poster ? undefined : { ['--cover' as string]: bg }}
       aria-hidden={compact ? true : undefined}
     >
-      {brand ? (
+      {poster ? (
+        <img className="course-cover__poster" src={poster} alt="" loading="lazy" />
+      ) : brand ? (
         <div className="course-cover__brand">
           <span className="course-cover__logo-plate">
             <BrandMark

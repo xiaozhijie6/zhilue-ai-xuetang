@@ -909,6 +909,24 @@ button {
     );
 }
 
+.course-cover--poster {
+  background: #111;
+}
+
+.course-cover__poster {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.course-cover--poster .course-cover__caption {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
+}
+
 .course-cover__watermark {
   position: absolute;
   font-family: var(--display);
