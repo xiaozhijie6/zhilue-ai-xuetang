@@ -1,4 +1,6 @@
-/** 教程主题图标（完整 SVG，非空白占位） */
+import { BrandMark, BRAND_BG, type BrandKey } from './BrandMark'
+
+/** 教程主题图标（软件用品牌标，其余用语义图标） */
 
 export type IconKey =
   | 'cursor'
@@ -10,6 +12,9 @@ export type IconKey =
   | 'kimi'
   | 'vscode'
   | 'windsurf'
+  | 'trae'
+  | 'lingma'
+  | 'ccswitch'
   | 'download'
   | 'web'
   | 'miniapp'
@@ -24,16 +29,34 @@ export type IconKey =
   | 'model'
   | 'default'
 
+const BRAND_ICON_KEYS = new Set<IconKey>([
+  'cursor',
+  'claude',
+  'openai',
+  'gemini',
+  'copilot',
+  'mcp',
+  'kimi',
+  'vscode',
+  'windsurf',
+  'trae',
+  'lingma',
+  'ccswitch',
+])
+
 export const ICON_BG: Record<IconKey, string> = {
-  cursor: '#1a1a1a',
-  claude: '#d97757',
-  openai: '#10a37f',
-  gemini: '#4285f4',
-  copilot: '#7c3aed',
-  mcp: '#0f766e',
-  kimi: '#1e3a5f',
-  vscode: '#0078d4',
-  windsurf: '#0ea5e9',
+  cursor: BRAND_BG.cursor,
+  claude: BRAND_BG.claude,
+  openai: BRAND_BG.openai,
+  gemini: BRAND_BG.gemini,
+  copilot: BRAND_BG.copilot,
+  mcp: BRAND_BG.mcp,
+  kimi: BRAND_BG.kimi,
+  vscode: BRAND_BG.vscode,
+  windsurf: BRAND_BG.windsurf,
+  trae: BRAND_BG.trae,
+  lingma: BRAND_BG.lingma,
+  ccswitch: BRAND_BG.ccswitch,
   download: '#0f766e',
   web: '#ea580c',
   miniapp: '#07c160',
@@ -58,7 +81,10 @@ export const ICON_LABEL: Record<IconKey, string> = {
   mcp: 'MCP',
   kimi: 'Kimi',
   vscode: 'VS Code',
-  windsurf: 'IDE',
+  windsurf: 'Windsurf',
+  trae: 'Trae',
+  lingma: '通义灵码',
+  ccswitch: 'CC Switch',
   download: '下载安装',
   web: '做网页',
   miniapp: '小程序',
@@ -76,61 +102,6 @@ export const ICON_LABEL: Record<IconKey, string> = {
 
 function Mark({ k }: { k: IconKey }) {
   switch (k) {
-    case 'cursor':
-      return (
-        <path fill="#fff" d="M8 4.5 18 14.2l-4.2.7 2.4 5.6-2.6 1.1-2.4-5.5-3.7 3.5V4.5z" />
-      )
-    case 'claude':
-      return (
-        <path
-          fill="#fff"
-          d="M12 3.5c.6 2.8 2.2 5 4.6 6.4-2.4 1.3-4 3.5-4.6 6.6-.6-3.1-2.2-5.3-4.6-6.6C9.8 8.5 11.4 6.3 12 3.5z"
-        />
-      )
-    case 'openai':
-      return (
-        <path
-          fill="#fff"
-          d="M12 4.2a3.4 3.4 0 0 1 2.9 1.6 3.4 3.4 0 0 1 3.5 1.3 3.4 3.4 0 0 1 .6 3.7 3.4 3.4 0 0 1-1.6 2.9 3.4 3.4 0 0 1-1.3 3.5 3.4 3.4 0 0 1-3.7.6 3.4 3.4 0 0 1-2.9-1.6 3.4 3.4 0 0 1-3.5-1.3 3.4 3.4 0 0 1-.6-3.7 3.4 3.4 0 0 1 1.6-2.9 3.4 3.4 0 0 1 1.3-3.5 3.4 3.4 0 0 1 3.7-.6zm0 3.1a4.7 4.7 0 1 0 0 9.4 4.7 4.7 0 0 0 0-9.4z"
-        />
-      )
-    case 'gemini':
-      return (
-        <path
-          fill="#fff"
-          d="M12 3.2c.4 3.2 2.4 5.4 5.6 6-3.2.6-5.2 2.8-5.6 6-.4-3.2-2.4-5.4-5.6-6 3.2-.6 5.2-2.8 5.6-6z"
-        />
-      )
-    case 'copilot':
-      return (
-        <>
-          <circle cx="9" cy="10" r="2.2" fill="#fff" />
-          <circle cx="15" cy="10" r="2.2" fill="#fff" />
-          <path fill="#fff" d="M7.2 14.5c1.2 1.6 2.8 2.4 4.8 2.4s3.6-.8 4.8-2.4c-1.4.7-3 .9-4.8.9s-3.4-.2-4.8-.9z" />
-        </>
-      )
-    case 'mcp':
-      return (
-        <path
-          fill="#fff"
-          d="M8 5h3.2v3.2H8V5zm4.8 0H16v3.2h-3.2V5zM8 9.8h3.2V13H8V9.8zm4.8 0H16V13h-3.2V9.8zM11.2 13.8h1.6V16h-1.6v-2.2z"
-        />
-      )
-    case 'kimi':
-      return (
-        <text x="12" y="15.2" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="800" fontFamily="KaiTi, 楷体, STKaiti, serif">
-          K
-        </text>
-      )
-    case 'vscode':
-      return <path fill="#fff" d="M5.5 7.2 10 4.8v14.4l-4.5-2.4V7.2zm13 1.2L14 6.2v11.6l4.5-2.2V8.4zM11 5.5l7.5 3.8v5.4L11 18.5V5.5z" />
-    case 'windsurf':
-      return (
-        <path
-          fill="#fff"
-          d="M4.5 14c2.2-1.2 4-3.4 5.2-6.2C11 10.6 12.8 12.8 15 14c-2.4.4-4.4 1.4-6 3-1.6-1.6-3.6-2.6-6-3z"
-        />
-      )
     case 'download':
       return (
         <>
@@ -210,108 +181,18 @@ function Mark({ k }: { k: IconKey }) {
   }
 }
 
-/** 封面用大插画：带场景元素，避免只剩一个小图标 */
-export function CoverArt({ icon }: { icon: IconKey }) {
-  const accent = ICON_BG[icon]
-  return (
-    <svg className="course-cover__scene" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id={`cg-${icon}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#fff" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#fff" stopOpacity="0" />
-        </linearGradient>
-        <pattern id={`grid-${icon}`} width="24" height="24" patternUnits="userSpaceOnUse">
-          <path d="M24 0H0V24" fill="none" stroke="#fff" strokeOpacity="0.08" strokeWidth="1" />
-        </pattern>
-      </defs>
-      <rect width="320" height="200" fill={`url(#grid-${icon})`} />
-      <circle cx="268" cy="36" r="56" fill="#fff" fillOpacity="0.08" />
-      <circle cx="40" cy="168" r="48" fill="#fff" fillOpacity="0.06" />
-      <rect x="0" y="0" width="320" height="200" fill={`url(#cg-${icon})`} />
-
-      {icon === 'download' && (
-        <g transform="translate(108,42)">
-          <rect x="0" y="0" width="104" height="72" rx="10" fill="#fff" fillOpacity="0.95" />
-          <rect x="10" y="12" width="84" height="8" rx="4" fill={accent} opacity="0.25" />
-          <rect x="10" y="28" width="56" height="8" rx="4" fill={accent} opacity="0.18" />
-          <path d="M52 48v28M40 64l12 14 12-14" stroke={accent} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          <rect x="28" y="88" width="48" height="6" rx="3" fill="#fff" fillOpacity="0.9" />
-        </g>
-      )}
-      {icon === 'web' && (
-        <g transform="translate(70,36)">
-          <rect x="0" y="0" width="180" height="120" rx="12" fill="#fff" fillOpacity="0.96" />
-          <rect x="0" y="0" width="180" height="22" rx="12" fill={accent} />
-          <circle cx="14" cy="11" r="3" fill="#fff" opacity="0.9" />
-          <circle cx="24" cy="11" r="3" fill="#fff" opacity="0.55" />
-          <rect x="14" y="36" width="70" height="10" rx="4" fill={accent} opacity="0.85" />
-          <rect x="14" y="54" width="152" height="6" rx="3" fill={accent} opacity="0.2" />
-          <rect x="14" y="68" width="120" height="6" rx="3" fill={accent} opacity="0.15" />
-          <rect x="14" y="88" width="48" height="18" rx="6" fill={accent} />
-        </g>
-      )}
-      {icon === 'miniapp' && (
-        <g transform="translate(118,28)">
-          <rect x="0" y="0" width="84" height="144" rx="16" fill="#fff" fillOpacity="0.96" />
-          <rect x="10" y="18" width="64" height="88" rx="8" fill={accent} opacity="0.15" />
-          <rect x="18" y="30" width="48" height="8" rx="4" fill={accent} />
-          <rect x="18" y="46" width="48" height="28" rx="6" fill={accent} opacity="0.45" />
-          <rect x="18" y="82" width="30" height="6" rx="3" fill={accent} opacity="0.35" />
-          <circle cx="42" cy="128" r="5" fill={accent} />
-        </g>
-      )}
-      {icon === 'mobile' && (
-        <g transform="translate(112,24)">
-          <rect x="0" y="0" width="96" height="152" rx="18" fill="#fff" fillOpacity="0.96" />
-          <rect x="10" y="20" width="76" height="100" rx="8" fill={accent} opacity="0.2" />
-          <rect x="18" y="32" width="60" height="12" rx="4" fill={accent} />
-          <rect x="18" y="54" width="40" height="40" rx="8" fill={accent} opacity="0.5" />
-          <rect x="62" y="54" width="16" height="40" rx="6" fill={accent} opacity="0.3" />
-          <circle cx="48" cy="136" r="5" fill={accent} />
-        </g>
-      )}
-      {icon === 'image' && (
-        <g transform="translate(68,40)">
-          <rect x="0" y="10" width="100" height="90" rx="12" fill="#fff" fillOpacity="0.9" transform="rotate(-8 50 55)" />
-          <rect x="40" y="0" width="120" height="100" rx="12" fill="#fff" fillOpacity="0.98" />
-          <circle cx="78" cy="36" r="12" fill={accent} opacity="0.7" />
-          <path d="M48 88 78 52l22 20 18-16 24 32H48z" fill={accent} opacity="0.55" />
-        </g>
-      )}
-      {icon === 'cursor' && (
-        <g transform="translate(72,40)">
-          <rect x="0" y="0" width="176" height="112" rx="12" fill="#fff" fillOpacity="0.1" stroke="#fff" strokeOpacity="0.35" />
-          <rect x="12" y="14" width="72" height="84" rx="8" fill="#fff" fillOpacity="0.12" />
-          <rect x="96" y="14" width="68" height="36" rx="8" fill="#fff" fillOpacity="0.92" />
-          <path d="M118 28l22 18-8 2 5 12-6 3-5-11-8 7z" fill={accent} />
-          <rect x="96" y="60" width="68" height="8" rx="4" fill="#fff" fillOpacity="0.35" />
-          <rect x="96" y="76" width="48" height="8" rx="4" fill="#fff" fillOpacity="0.22" />
-        </g>
-      )}
-      {!['download', 'web', 'miniapp', 'mobile', 'image', 'cursor'].includes(icon) && (
-        <g transform="translate(112,52)">
-          <rect x="0" y="0" width="96" height="96" rx="24" fill="#fff" fillOpacity="0.95" />
-          <g transform="translate(24,24) scale(2)">
-            <Mark k={icon} />
-          </g>
-        </g>
-      )}
-    </svg>
-  )
-}
-
 export function resolveIconKey(id: string, category?: string): IconKey {
   const s = id.toLowerCase()
   if (s.includes('cursor')) return 'cursor'
   if (s.includes('claude') || s.includes('anthropic')) return 'claude'
-  if (s.includes('cc-switch') || s.includes('ccswitch')) return 'mcp'
-  if (s.includes('lingma') || s.includes('tongyi')) return 'openai'
+  if (s.includes('cc-switch') || s.includes('ccswitch')) return 'ccswitch'
+  if (s.includes('lingma') || s.includes('tongyi')) return 'lingma'
   if (s.includes('codex')) return 'openai'
   if (s.includes('openai') || s.startsWith('api-openai') || s.includes('domain-api')) return 'openai'
   if (s.includes('gemini')) return 'gemini'
   if (s.includes('copilot')) return 'copilot'
   if (s.includes('windsurf')) return 'windsurf'
-  if (s.includes('trae')) return 'cursor'
+  if (s.includes('trae')) return 'trae'
   if (s.includes('mcp')) return 'mcp'
   if (s.includes('kimi')) return 'kimi'
   if (s.includes('vscode') || s.includes('continue')) return 'vscode'
@@ -351,6 +232,7 @@ export function AiIcon({
   className?: string
   label?: string
 }) {
+  const isBrand = BRAND_ICON_KEYS.has(icon)
   return (
     <span
       className={`ai-icon ${className ?? ''}`}
@@ -359,9 +241,17 @@ export function AiIcon({
       aria-label={label}
       role={label ? 'img' : undefined}
     >
-      <svg viewBox="0 0 24 24" width={size * 0.58} height={size * 0.58}>
-        <Mark k={icon} />
-      </svg>
+      {isBrand ? (
+        <BrandMark
+          brand={icon as BrandKey}
+          fill={icon === 'vscode' ? undefined : '#fff'}
+          className="ai-icon__brand"
+        />
+      ) : (
+        <svg viewBox="0 0 24 24" width={size * 0.58} height={size * 0.58}>
+          <Mark k={icon} />
+        </svg>
+      )}
     </span>
   )
 }

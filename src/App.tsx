@@ -34,6 +34,71 @@ type RecTabId = (typeof REC_TABS)[number]['id']
 
 const TRACK_LEVELS: TrackId[] = ['基础', '工具', '进阶']
 
+type TabBanner = {
+  eyebrow: string
+  title: string
+  accent: string
+  lead: string
+  hintLabel: string
+  hint: string
+  stats: [string, string][]
+}
+
+const TAB_BANNERS: Record<Exclude<Tab, 'home'>, TabBanner> = {
+  track: {
+    eyebrow: '分阶段推进 · 可勾进度',
+    title: '学习路径',
+    accent: '装得上、改得动、做得出来',
+    lead: '基础装稳 → 工具能改文件 → 进阶做出作品。按结果选阶段，不靠堆课名。',
+    hintLabel: '怎么走',
+    hint: '先定阶段，再点进教程看完整跟做正文',
+    stats: [
+      ['3', '学习阶段'],
+      ['图文', '逐步跟做'],
+      ['国内', '优先直连'],
+    ],
+  },
+  glossary: {
+    eyebrow: '名词解释 · 含手把手与坑',
+    title: '术语词典',
+    accent: '听得懂、讲得清、用得对',
+    lead: 'LLM、Token、RAG、MCP、Base URL… 按词条查概念，不是安装步骤，也不是故障排查。',
+    hintLabel: '怎么查',
+    hint: '左侧点词条；右侧看短义、详解、相关术语',
+    stats: [
+      ['词条', '可检索'],
+      ['分类', '快速筛'],
+      ['关联', '串起来'],
+    ],
+  },
+  guide: {
+    eyebrow: '症状驱动 · 逐步排查',
+    title: '避坑指南',
+    accent: '对上症状、查清原因、修好翻车',
+    lead: '按故障现象入手：你遇到什么 → 为什么 → 怎么排。不教从零安装，专治装完却翻车。',
+    hintLabel: '怎么排',
+    hint: '先对症状，再按步骤排查，别一上来重装',
+    stats: [
+      ['症状', '对号入座'],
+      ['原因', '说人话'],
+      ['步骤', '可照做'],
+    ],
+  },
+  learn: {
+    eyebrow: '登录同步 · 勾选记进度',
+    title: '我的进度',
+    accent: '学到哪、勾到哪、接着做',
+    lead: '记下你跟做到哪一步；点开教程看完整正文，勾选完成的步骤，下次接着学。',
+    hintLabel: '怎么记',
+    hint: '登录后勾选步骤即可；换设备需同一手机号',
+    stats: [
+      ['进度', '本地记住'],
+      ['教程', '点开跟做'],
+      ['阶段', '可回路径'],
+    ],
+  },
+}
+
 function maskPhone(phone: string) {
   if (phone.length < 7) return phone
   return `${phone.slice(0, 3)}****${phone.slice(-4)}`
@@ -430,6 +495,17 @@ export default function App() {
     setPhone(null)
   }
 
+  const pageBanner = tab === 'home' ? null : TAB_BANNERS[tab]
+  const bannerStats: [string, string][] | null = pageBanner
+    ? tab === 'glossary'
+      ? [[String(stats.terms), '术语条目'], ...pageBanner.stats.slice(1)]
+      : tab === 'guide'
+        ? [[String(NEWBIE_GUIDES.length), '避坑条目'], ...pageBanner.stats.slice(1)]
+        : tab === 'track'
+          ? [[String(stats.courses), '图文教程'], ...pageBanner.stats.slice(1)]
+          : pageBanner.stats
+    : null
+
   return (
     <div className="gk">
       <AmbientBackground />
@@ -513,7 +589,7 @@ export default function App() {
         </div>
       )}
 
-      {tab !== 'home' && (
+      {pageBanner && bannerStats && (
         <div
           className="gk-banner gk-banner--result"
           onPointerMove={(e) => {
@@ -525,41 +601,60 @@ export default function App() {
         >
           <div className="gk-banner__inner">
             <div className="gk-banner__copy">
-              <p className="gk-banner__eyebrow">图文跟做 · 可勾进度</p>
+              <p className="gk-banner__eyebrow">{pageBanner.eyebrow}</p>
               <h1>
-                <span className="gk-banner__line">知略 AI 知识库</span>
-                <span className="gk-banner__line gk-banner__line--accent">装得上、改得动、做得出来</span>
+                <span className="gk-banner__line">{pageBanner.title}</span>
+                <span className="gk-banner__line gk-banner__line--accent">{pageBanner.accent}</span>
               </h1>
-              <p className="gk-banner__lead">
-                {stats.courses} 篇教程，覆盖安装入门、Cursor 等工具，以及网页 / 小程序 / App / 生图实操。
-              </p>
+              <p className="gk-banner__lead">{pageBanner.lead}</p>
               <div className="gk-chips" aria-label="快捷入口">
-                {TRACK_LEVELS.map((lv) => (
-                  <button key={lv} type="button" className="gk-chip" onClick={() => goToTrack(lv)}>
-                    {lv}
-                  </button>
-                ))}
+                {tab === 'track' &&
+                  TRACK_LEVELS.map((lv) => (
+                    <button key={lv} type="button" className="gk-chip" onClick={() => goToTrack(lv)}>
+                      {lv}
+                    </button>
+                  ))}
+                {tab === 'glossary' &&
+                  GLOSSARY_CATEGORIES.filter((c) => c !== '全部')
+                    .slice(0, 4)
+                    .map((c) => (
+                      <button key={c} type="button" className="gk-chip" onClick={() => setGCat(c)}>
+                        {c}
+                      </button>
+                    ))}
+                {tab === 'guide' &&
+                  GUIDE_CATEGORIES.filter((c) => c !== '全部')
+                    .slice(0, 4)
+                    .map((c) => (
+                      <button key={c} type="button" className="gk-chip" onClick={() => setGuideCat(c)}>
+                        {c}
+                      </button>
+                    ))}
+                {tab === 'learn' && (
+                  <>
+                    <button type="button" className="gk-chip" onClick={() => goToTrack('基础')}>
+                      回学习路径
+                    </button>
+                    <button type="button" className="gk-chip" onClick={() => setTab('glossary')}>
+                      查术语
+                    </button>
+                  </>
+                )}
                 <button type="button" className="gk-chip gk-chip--ghost" onClick={() => setTab('home')}>
                   返回首页 →
                 </button>
               </div>
             </div>
             <div className="gk-banner__panel">
-              <div className="gk-banner__stat">
-                <strong>{stats.courses}</strong>
-                <span>图文教程</span>
-              </div>
-              <div className="gk-banner__stat">
-                <strong>3</strong>
-                <span>学习阶段</span>
-              </div>
-              <div className="gk-banner__stat">
-                <strong>{stats.terms}</strong>
-                <span>术语条目</span>
-              </div>
+              {bannerStats.map(([value, label]) => (
+                <div key={label} className="gk-banner__stat">
+                  <strong>{value}</strong>
+                  <span>{label}</span>
+                </div>
+              ))}
               <div className="gk-banner__hint">
-                <em>跟着做</em>
-                <span>每篇写清：下载什么、点哪里、最后能做出什么</span>
+                <em>{pageBanner.hintLabel}</em>
+                <span>{pageBanner.hint}</span>
               </div>
             </div>
           </div>
@@ -653,10 +748,6 @@ export default function App() {
       {/* GLOSSARY */}
       {tab === 'glossary' && (
         <main className="gk-main gk-glossary">
-          <h2 className="gk-section-title">术语词典 · 概念怎么讲</h2>
-          <p className="gk-section-desc">
-            这里不是教程步骤，而是名词解释：LLM、Token、RAG、MCP、Base URL 等（共 {GLOSSARY.length} 条），含手把手理解与常见坑。
-          </p>
           <div className="gk-filters">
             {GLOSSARY_CATEGORIES.map((c) => (
               <button key={c} type="button" className={gCat === c ? 'is-on' : ''} onClick={() => setGCat(c)}>
@@ -803,11 +894,6 @@ export default function App() {
       {/* GUIDE */}
       {tab === 'guide' && (
         <main className="gk-main gk-guide">
-          <h2 className="gk-section-title">避坑指南 · 症状驱动排查</h2>
-          <p className="gk-section-desc">
-            和「学习路径 / 教程正文」不同：这里按故障现象入手——你遇到什么 → 为什么 → 逐步排查 → 最佳实践（共{' '}
-            {NEWBIE_GUIDES.length} 篇）。不会教你从零安装，专治翻车。
-          </p>
           <div className="gk-filters">
             {GUIDE_CATEGORIES.map((c) => (
               <button
