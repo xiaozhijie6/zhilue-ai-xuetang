@@ -33,6 +33,27 @@ export const CAT_NAV: CatNav[] = CATEGORY_COLUMNS.map((category) => {
   return { category, ...meta }
 })
 
+/** 悬停展开的总类面板：三列，排版对齐常见课程站 mega menu */
+export type MegaColumn = {
+  title: string
+  categories: string[]
+}
+
+export const MEGA_COLUMNS: MegaColumn[] = [
+  {
+    title: 'AI 编程工具',
+    categories: ['入门起步', '工具安装', '工具用法'],
+  },
+  {
+    title: '前端 / JS',
+    categories: ['前端 / JS', '小程序与 App', 'AI生图'],
+  },
+  {
+    title: '技术提升',
+    categories: ['提示词工程', '办公提效', 'API与配置', 'MCP与Agent', '安全与成本'],
+  },
+]
+
 export type FreeTile = {
   id: string
   title: string

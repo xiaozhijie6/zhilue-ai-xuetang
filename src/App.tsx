@@ -13,10 +13,10 @@ import { GLOSSARY, GLOSSARY_CATEGORIES } from './data/glossary'
 import { ENDPOINT_GROUPS, ENDPOINTS, endpointsByGroup } from './data/endpoints'
 import { GUIDE_CATEGORIES, NEWBIE_GUIDES, guidesByCategory, type GuideCategory } from './data/newbie'
 import {
-  CAT_NAV,
   FREE_TILES,
   HERO_SLIDES,
   HOME_TRACK_CARDS,
+  MEGA_COLUMNS,
   REC_TABS,
 } from './data/home'
 import { HOOK_FEED } from './data/hooks'
@@ -326,6 +326,7 @@ export default function App() {
   const [guideId, setGuideId] = useState<string>(NEWBIE_GUIDES[0]?.id ?? '')
   const [guideQuery, setGuideQuery] = useState('')
   const [endpointGroup, setEndpointGroup] = useState<(typeof ENDPOINT_GROUPS)[number]>('全部')
+  const [megaOpen, setMegaOpen] = useState(false)
   const [progressMap, setProgressMap] = useState(loadProgress)
   const [learnId, setLearnId] = useState<string>(FEATURED_IDS[0])
   const [heroIndex, setHeroIndex] = useState(0)
@@ -520,6 +521,65 @@ export default function App() {
           <button type="button" className="gk-logo" onClick={() => setTab('home')}>
             知略 <span>AI 学堂</span>
           </button>
+          <div
+            className={`gk-mega${megaOpen ? ' is-open' : ''}`}
+            onMouseEnter={() => setMegaOpen(true)}
+            onMouseLeave={() => setMegaOpen(false)}
+          >
+            <button
+              type="button"
+              className="gk-mega__trigger"
+              aria-expanded={megaOpen}
+              aria-haspopup="true"
+              onClick={() => {
+                setTab('home')
+                setMegaOpen((v) => !v)
+              }}
+            >
+              教程
+              <i aria-hidden="true">▾</i>
+            </button>
+            <div className="gk-mega__panel" hidden={!megaOpen}>
+              <div className="gk-mega__inner">
+                {MEGA_COLUMNS.map((col) => {
+                  const items = KNOWLEDGE_LIBRARY.filter((c) => col.categories.includes(c.category))
+                  return (
+                    <div key={col.title} className="gk-mega__col">
+                      <button
+                        type="button"
+                        className="gk-mega__title"
+                        onClick={() => {
+                          setMegaOpen(false)
+                          setTab('home')
+                          const first = col.categories[0] as (typeof CATEGORIES)[number]
+                          openCatalog({ category: first })
+                        }}
+                      >
+                        <i aria-hidden="true">›</i>
+                        <span>{col.title}</span>
+                      </button>
+                      <ul className="gk-mega__list">
+                        {items.map((item) => (
+                          <li key={item.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setMegaOpen(false)
+                                openCourse(item.id)
+                              }}
+                            >
+                              <em>{shortCourseLabel(item)}</em>
+                              {item.new ? <b>new</b> : null}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
           <nav className="gk-tabs" aria-label="主导航">
             {(
               [
@@ -539,6 +599,7 @@ export default function App() {
                     setLoginOpen(true)
                     return
                   }
+                  setMegaOpen(false)
                   setTab(id)
                 }}
               >
@@ -1107,42 +1168,6 @@ export default function App() {
               默认服务国内用户、不依赖翻墙：先 Trae.cn / 通义灵码。表面只作导览；完整步骤在点进教程后展开。「学习路径」推进，「术语」讲概念，「避坑」排查故障
             </span>
           </div>
-
-          <section className="home-cat-mega" aria-label="教程总类">
-            <div className="home-cat-mega__head">
-              <h2>教程总类</h2>
-              <p>前端 / JS、工具、小程序等多列总类，点标题筛一类，点条目直接开课</p>
-            </div>
-            <div className="home-cat-mega__grid">
-              {CAT_NAV.map((nav) => {
-                const items = KNOWLEDGE_LIBRARY.filter((c) => c.category === nav.category)
-                return (
-                  <div key={nav.category} className="home-cat-mega__col">
-                    <button
-                      type="button"
-                      className="home-cat-mega__title"
-                      onClick={() =>
-                        openCatalog({ category: nav.category as (typeof CATEGORIES)[number] })
-                      }
-                    >
-                      <span>{nav.title}</span>
-                      <i aria-hidden="true">›</i>
-                    </button>
-                    <ul className="home-cat-mega__list">
-                      {items.map((item) => (
-                        <li key={item.id}>
-                          <button type="button" onClick={() => openCourse(item.id)}>
-                            <em>{shortCourseLabel(item)}</em>
-                            {item.new ? <b>new</b> : null}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )
-              })}
-            </div>
-          </section>
 
           <section className="home-hero home-hero--cinema" aria-label="本周精选">
             <div className="home-carousel">
