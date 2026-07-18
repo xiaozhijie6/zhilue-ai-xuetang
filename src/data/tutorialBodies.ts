@@ -700,11 +700,17 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'cursor-install': {
     intro: [
-      'Cursor = 一个可以写代码的窗口 + 内置 AI。你不会编程也能跟做：我们只创建一个记事本一样的 txt 文件，让 AI 帮你改几个字。',
-      '官方文档写明：打开 https://cursor.com/download → 下载 → 安装 → 打开 → 登录。下面把每一步拆成「手点哪里」。',
-      '预计时间：下载网速正常约 10～20 分钟（含第一次登录）。',
+      'Cursor 擅长：日常写功能、多文件修改、可视化看 Diff——最适合新手当「主 AI 编程编辑器」。',
+      '本篇：官网下载 → 账号登录 →（可选）API Key → 第一次改文件。终端里的 Claude Code/Codex 密钥请另用《CC Switch 安装》管理。',
     ],
     sections: [
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：边看代码边改、Chat/Agent 改多文件、接受/拒绝 Diff。',
+          '不擅长替代：纯终端长任务可搭配 Claude Code；行内补全也可另装 Copilot（不必同时开太多）。',
+        ],
+      },
       {
         title: '下载前：先有 Cursor 账号（推荐）',
         paragraphs: [
@@ -812,17 +818,21 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
         tip: '第一次成功改文件，比学会十个名词重要。改成功后再去看「Cursor 用法」进阶篇。',
       },
       {
-        title: '设置里先认两样：模型与 Privacy',
+        title: '登录之后：配置 API Key（可选）',
         paragraphs: [
-          '打开 Cursor Settings：菜单 File → Preferences → Cursor Settings；或试 Ctrl+Shift+J。',
-          'Models：看当前默认模型名字，免费档可能有次数限制——超限就第二天再练或看官网套餐说明。',
-          'Privacy Mode：做公司项目建议打开（具体以 Cursor 隐私说明为准）。',
-          'API Key：新手先空着，用账号自带额度；以后要接国内模型再学「兼容接口」教程。',
+          '打开 Cursor Settings：File → Preferences → Cursor Settings（或 Ctrl+Shift+J）。',
+          'Models：先看默认模型；账号自带额度够用就先别填 Key。',
+          '自备 Key：在 Models 找到 OpenAI API Key / Override OpenAI Base URL（文案随版本可能微调）。',
+          '填入供应商文档中的 Base URL + 你的 API Key；模型名填该供应商要求的名字（不要混用）。',
+          'Privacy Mode：公司代码建议按政策开启。',
+          '说明：Cursor 的 Key 在 IDE 设置里管；Claude Code/Codex 的 Key 用《CC Switch 安装》统一切换，两套不要搅在一起。',
         ],
         steps: [
-          '打开过 Cursor Settings 一次。',
-          '记下默认模型名称到备忘录。',
+          '打开过 Cursor Settings → Models。',
+          '记下默认模型名；若填了 Key，用 Chat 发「只回复 ok」验证。',
+          '需要管终端 Agent 密钥时，去学 CC Switch。',
         ],
+        links: [{ label: 'CC Switch 官网', url: 'https://ccswitch.io' }],
       },
       {
         title: '装不上 / AI 不说话 — 排错',
@@ -2054,101 +2064,478 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'tool-pick-compare': {
     intro: [
-      '选工具先看任务形态：改多文件项目 → Cursor/同类 IDE；只在终端修仓库 → Claude Code；已有 VS Code 习惯 → 插件增强；纯聊天写文 → 网页即可。',
-      '没有「永远最强」：免费额度、网络、公司合规都会改变最优解。',
+      '【AI编程工具与智能体安装】里，每个软件一篇独立教程：先讲它擅长什么，再讲下载、登录、API Key。',
+      'Claude Code / Codex 等多 CLI 的密钥，推荐再用《CC Switch 安装》统一管理，避免手改一堆配置文件。',
     ],
     sections: [
       {
-        title: '一张对照表',
+        title: '每个工具主要擅长什么',
         paragraphs: [
-          'Cursor：AI 深度集成的编辑器；Chat/Agent/Rules/MCP 一条龙；适合每天写改代码。',
-          'VS Code + Copilot（或通义灵码等）：保留原编辑器生态；补全强，Agent 能力因插件而异。',
-          'Claude Code：终端 CLI Agent；适合「在仓库根目录下指令、跑命令、多步修改」；与 Cursor 可并存。',
-          '网页 Chat：零安装；看不到完整仓库，不适合大项目重构。',
+          'Cursor：日常写功能、多文件改动、可视化看 Diff；新手最容易上手的 AI IDE。',
+          'Claude Code：终端里长任务、仓库级重构、边跑命令边改；适合「丢给 Agent 干完再验收」。',
+          'Codex CLI：OpenAI 生态下的终端编程智能体；和 ChatGPT/OpenAI 账号体系更近。',
+          'GitHub Copilot：行内补全最快、GitHub 集成深；适合已有 VS Code、主要想加速敲代码。',
+          'Windsurf：Cascade 代理式改多文件，偏「让 AI 多走几步」。',
+          'Trae：中文场景友好的 AI IDE，国内用户常作 Cursor 替代选项之一。',
+          'CC Switch：不写代码，专管 Claude Code / Codex / Gemini CLI 等工具的供应商与 API Key 一键切换。',
+        ],
+        tip: '登录（订阅账号）和 API Key（按量密钥）是两条路：可以只走登录；额度不够或要用中转时再配 Key。',
+      },
+      {
+        title: '登录 vs API Key（别混）',
+        paragraphs: [
+          '登录：用 Google/GitHub/手机号进官方账号，适合个人订阅用户。',
+          'API Key：在平台控制台创建 sk-… 密钥，填进工具或 CC Switch；适合开发者、多供应商、中转站。',
+          '密钥=密码：不发微信群、不提交 Git、不截图完整 Key。',
         ],
         steps: [
-          '写下你本周真实任务：改现有仓库？从零建站？只写文案？',
-          '对号入座选主工具，另一款当备选即可。',
+          '先选定主工具并完成「能改一个文件」。',
+          '若要用自备 Key：先读《CC Switch 安装》（CLI）或工具内 Settings（IDE）。',
         ],
       },
       {
-        title: '决策树（跟做）',
-        paragraphs: ['若需要读本地多文件并落盘修改 → 装 Cursor（或同类）。若公司只允许 VS Code → 装官方认可插件。若喜欢命令行且已有 Anthropic 账号 → 试 Claude Code。'],
-        steps: [
-          '今天只装一款主工具，跟做完「安装 → 改一个文件」。',
-          '一周后再评估要不要加第二款，避免工具焦虑。',
+        title: '建议安装顺序',
+        paragraphs: [
+          '1）装主编程工具（如 Cursor 或 Claude Code）并验证能干活。',
+          '2）若主工具是 Claude Code / Codex：再装 CC Switch，把 API Key 收进去。',
+          '3）IDE（Cursor/Windsurf/Trae）优先用软件内登录；自备 OpenAI 兼容 Key 时在 Settings 填 Base URL + Key。',
         ],
-        tip: '自学者常见错：三款全装却一款都没用透。先把 Cursor 用到「会 Accept diff」。',
+        steps: [
+          '写下：主工具 = ____；是否需要 CC Switch = 是/否。',
+          '打开对应安装教程跟做。',
+        ],
       },
     ],
-    checklist: ['写出自己的主工具', '完成该工具一次真实改文件', '知道另两款各自擅长什么'],
+    checklist: ['能说出主工具擅长什么', '分清登录与 API Key', '需要时打开了 CC Switch 教程'],
     refs: [
-      { label: 'Cursor', url: 'https://cursor.com' },
-      { label: 'Claude Code 文档', url: 'https://code.claude.com/docs/en' },
+      { label: 'CC Switch 官网', url: 'https://ccswitch.io' },
+      { label: 'CC Switch GitHub', url: 'https://github.com/farion1231/cc-switch' },
+      { label: 'Cursor 下载', url: 'https://cursor.com/download' },
+      { label: 'Claude Code', url: 'https://code.claude.com/docs/en/overview' },
     ],
+  },
+
+  'install-cc-switch': {
+    intro: [
+      'CC Switch（官方站 https://ccswitch.io ，源码 https://github.com/farion1231/cc-switch）是桌面应用：集中管理 Claude Code、Codex、Gemini CLI 等工具的供应商与 API Key，一键切换，少改配置文件。',
+      '它不替代 Cursor/Claude Code 本身——先装好对应 CLI/工具，再用 CC Switch 管密钥。',
+    ],
+    sections: [
+      {
+        title: 'CC Switch 擅长什么',
+        paragraphs: [
+          '擅长：多供应商预设、一键启用、系统托盘切换、统一看用量（功能以当前版本为准）。',
+          '不擅长：替你写业务代码；也不能代替「先把 claude / codex 命令装好」。',
+          '官方支持工具包括：Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes 等（以 README 最新列表为准）。',
+        ],
+      },
+      {
+        title: '只从官方下载',
+        paragraphs: [
+          '官网：https://ccswitch.io',
+          '下载页：打开 https://github.com/farion1231/cc-switch/releases ，选最新 Release。',
+          'Windows：CC-Switch-v…-Windows.msi（安装版）或 Windows-Portable.zip（绿色版）。',
+          'macOS：推荐 brew install --cask cc-switch；或下载 macOS.dmg。',
+          'Linux：.deb / .rpm / AppImage 按发行版选。',
+          '不要从百度网盘「破解版」或陌生站点下。',
+        ],
+        steps: [
+          '浏览器打开 GitHub Releases 官方页。',
+          '按自己的系统下载对应安装包。',
+          '把 Releases 页加入书签。',
+        ],
+        links: [
+          { label: 'ccswitch.io', url: 'https://ccswitch.io' },
+          { label: 'GitHub Releases', url: 'https://github.com/farion1231/cc-switch/releases' },
+          { label: '中文 README', url: 'https://github.com/farion1231/cc-switch/blob/main/README_ZH.md' },
+        ],
+      },
+      {
+        title: 'Windows / Mac 安装',
+        paragraphs: [
+          'Windows：双击 .msi 按向导安装 → 开始菜单打开 CC Switch；或解压 Portable 运行 exe。',
+          'Mac Homebrew：终端执行 brew install --cask cc-switch；更新用 brew upgrade --cask cc-switch。',
+          'Mac dmg：拖进应用程序后打开（官方称已签名公证，一般可直接开）。',
+        ],
+        steps: [
+          '安装完成并能打开主界面。',
+          '若已装 Claude Code/Codex：首次可按提示导入现有配置作为默认供应商。',
+        ],
+      },
+      {
+        title: '登录与添加供应商（填 API Key）',
+        paragraphs: [
+          'CC Switch 本身主要是本地配置管理；「登录」通常指：让 Claude Code/Codex 走官方 OAuth，或在供应商里填 API Key。',
+          '添加供应商（主界面）：点「添加供应商」→ 选预设或自定义。',
+          '必填直觉：名称（自己认得）+ Base URL（供应商文档里的地址）+ API Key（sk-…，只显示一次要立刻保存到密码器）。',
+          '勾选要作用的工具（如 Claude Code、Codex）→ 保存。',
+          '在主界面选中该供应商 → 点「启用」；或从系统托盘点名称切换。',
+        ],
+        steps: [
+          '准备好一把有效 API Key（来自官方控制台或你信任的合规供应商）。',
+          '在 CC Switch 新增供应商并粘贴 Key（勿发给别人）。',
+          '点启用。',
+          '大多数工具需重启终端后再运行 claude 或 codex；Claude Code 当前支持热切换（以官方说明为准）。',
+        ],
+        tip: '想切回官方订阅登录：添加「官方登录」类预设并启用，再在 CLI 里走一遍 Log out / Log in。',
+      },
+      {
+        title: '验证是否生效',
+        paragraphs: [
+          '新开一个终端窗口（重要）。',
+          '进入练习目录，运行 claude 或 codex，发一句「只回复 ok」。',
+          '若仍走旧账号/报 Key 错误：确认启用的是目标供应商、Base URL 有无多余空格、Key 未过期。',
+        ],
+        steps: [
+          '重启终端后 CLI 能正常对话。',
+          '备忘录记下：当前启用的供应商名称（不要写完整 Key）。',
+        ],
+      },
+      {
+        title: '安全清单',
+        paragraphs: [
+          '只从 ccswitch.io / 官方 GitHub Releases 下载。',
+          'API Key 不进截图、不进公开仓库。',
+          '数据默认在本机 ~/.cc-switch/（见官方 README）；卸载软件一般不抹掉你对 CLI 的最小可用配置（官方强调最小侵入）。',
+        ],
+      },
+    ],
+    checklist: [
+      '从官方 Releases 安装成功',
+      '添加过至少一个含 API Key 的供应商',
+      '启用后新开终端验证 claude 或 codex',
+      '知道如何切回官方登录预设',
+    ],
+    refs: [
+      { label: '官网', url: 'https://ccswitch.io' },
+      { label: 'Releases', url: 'https://github.com/farion1231/cc-switch/releases' },
+      { label: '用户手册入口（仓库 docs）', url: 'https://github.com/farion1231/cc-switch' },
+    ],
+  },
+
+  'install-claude-code': {
+    intro: [
+      'Claude Code 擅长：终端里做仓库级任务——重构、修 Bug、跑测试、提交流程。可视化点选改文件更适合 Cursor。',
+      '本篇：安装 → 官方登录 →（可选）API Key / CC Switch。用法细节见「Claude Code 用法」。',
+    ],
+    sections: [
+      {
+        title: '擅长什么 / 不擅长什么',
+        paragraphs: [
+          '擅长：长程 Agent、跨文件改动、结合 git/命令行一次做完。',
+          '不擅长：当你只想「看界面点一下」——那时用 Cursor 更爽。',
+          '可与 Cursor 并存：日常 IDE 用 Cursor，重活丢给 Claude Code。',
+        ],
+      },
+      {
+        title: '官方安装（Windows / Mac）',
+        paragraphs: [
+          'Windows PowerShell：irm https://claude.ai/install.ps1 | iex',
+          'Mac/Linux：curl -fsSL https://claude.ai/install.sh | bash',
+          '备选：winget install Anthropic.ClaudeCode 或 brew install --cask claude-code',
+          '验证：新开终端 → claude --version',
+        ],
+        steps: [
+          '跑完安装命令。',
+          'claude --version 有版本号。',
+        ],
+        links: [
+          { label: 'Claude Code 概览', url: 'https://code.claude.com/docs/en/overview' },
+          { label: 'Setup', url: 'https://code.claude.com/docs/en/setup' },
+        ],
+        tip: 'Windows 建议同时装 Git for Windows，便于 Bash 工具。',
+      },
+      {
+        title: '登录：官方账号（OAuth）',
+        paragraphs: [
+          'cd 到练习目录 → 输入 claude',
+          '按提示用浏览器登录 Claude / Anthropic 账号（订阅或 Console，以官网政策为准）。',
+          '成功标准：能回答「用中文列出当前目录文件」。',
+        ],
+        steps: [
+          '完成浏览器登录。',
+          '完成一条只读验证。',
+        ],
+      },
+      {
+        title: '配置 API Key（两条路）',
+        paragraphs: [
+          '路 A — 继续只用官方登录：不必填 Key。',
+          '路 B — 使用 API Key / 中转：在 Anthropic Console 或你的供应商处创建密钥，再用 CC Switch「添加供应商」填入 Base URL + API Key，勾选 Claude Code 并启用。',
+          '不要把 Key 写进项目源代码。',
+        ],
+        steps: [
+          '若走 Key：先打开本站《CC Switch 安装》完成启用。',
+          '新开终端再运行 claude，确认走的是新供应商。',
+        ],
+        links: [{ label: 'CC Switch Releases', url: 'https://github.com/farion1231/cc-switch/releases' }],
+      },
+      {
+        title: '排错',
+        paragraphs: [
+          'PowerShell/CMD 命令搞混；claude 找不到 → 重开终端。',
+          '鉴权失败 → 重新登录或检查 CC Switch 当前启用的供应商与 Key。',
+          '切换供应商后无变化 → 重启终端（Claude Code 热切换以官方说明为准）。',
+        ],
+      },
+    ],
+    checklist: [
+      'claude --version 成功',
+      '官方登录或 CC Switch Key 至少一条通路可用',
+      '只读验证通过',
+    ],
+    refs: [
+      { label: 'Overview', url: 'https://code.claude.com/docs/en/overview' },
+      { label: 'CC Switch', url: 'https://ccswitch.io' },
+    ],
+  },
+
+  'install-codex': {
+    intro: [
+      'Codex CLI 擅长：在 OpenAI / ChatGPT 生态里用终端 Agent 改仓库、跑任务。和「网页 Codex」不是同一安装入口。',
+      '包名必须是 @openai/codex。装好后可官方登录，或用 CC Switch 管理 API Key。',
+    ],
+    sections: [
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：熟悉 GPT/OpenAI 工作流的开发者；CLI 自动化与仓库任务。',
+          '若你主要用 Claude 订阅：优先 Claude Code；两者可都装，按账号选。',
+        ],
+      },
+      {
+        title: '下载安装',
+        paragraphs: [
+          'Windows：powershell -ExecutionPolicy ByPass -c "irm https://chatgpt.com/codex/install.ps1 | iex"',
+          'Mac/Linux：curl -fsSL https://chatgpt.com/codex/install.sh | sh',
+          '或：brew install --cask codex；或 npm install -g @openai/codex（勿装错包名 codex）',
+        ],
+        steps: [
+          '安装后新开终端能运行 codex。',
+        ],
+        links: [{ label: 'openai/codex', url: 'https://github.com/openai/codex' }],
+      },
+      {
+        title: '登录',
+        paragraphs: [
+          'cd 练习目录 → 运行 codex → 按 CLI 提示完成 ChatGPT/OpenAI 登录或授权。',
+          '先发只读任务验证。',
+        ],
+        steps: ['登录成功并完成只读验证'],
+      },
+      {
+        title: 'API Key 与 CC Switch',
+        paragraphs: [
+          '需要 Key 时：打开 https://platform.openai.com/api-keys 创建密钥，立刻复制保存。',
+          '推荐：打开 CC Switch → 添加供应商 → 填 OpenAI 或兼容 Base URL + API Key → 勾选 Codex → 启用。',
+          '启用后新开终端再运行 codex（多数情况需重启终端）。',
+        ],
+        steps: [
+          '创建并安全保存 API Key。',
+          '用 CC Switch 启用到 Codex 并验证。',
+        ],
+        links: [
+          { label: 'OpenAI API Keys', url: 'https://platform.openai.com/api-keys' },
+          { label: 'CC Switch', url: 'https://ccswitch.io' },
+        ],
+      },
+      {
+        title: '排错',
+        paragraphs: [
+          '装错 npm 包名；命令不在 PATH；Key/账号无效；切换后未重启终端。',
+        ],
+      },
+    ],
+    checklist: [
+      '能启动 codex',
+      '登录或 API Key 通路可用',
+      '只读验证通过',
+    ],
+    refs: [
+      { label: 'Codex GitHub', url: 'https://github.com/openai/codex' },
+      { label: 'CC Switch Releases', url: 'https://github.com/farion1231/cc-switch/releases' },
+    ],
+  },
+
+  'install-copilot': {
+    intro: [
+      'GitHub Copilot 擅长：敲代码时的灰色行内补全、与 GitHub 仓库/PR 生态集成；Agent 能力因版本而异，整体偏「加速输入」而非「终端长任务」。',
+      '主路径是 GitHub 账号登录订阅，一般不经过 CC Switch（CC Switch 主要管 Claude Code/Codex 等 CLI 配置）。',
+    ],
+    sections: [
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：补全函数、写样板代码、在 VS Code 里低摩擦用 AI。',
+          '若你要强 Agent 改整仓：同时装 Cursor 或 Claude Code。',
+        ],
+      },
+      {
+        title: '安装 VS Code + Copilot 扩展',
+        paragraphs: [
+          'VS Code：https://code.visualstudio.com/',
+          '扩展市场搜 GitHub Copilot（发行者 GitHub）→ Install。',
+        ],
+        steps: ['VS Code 与 Copilot 扩展均显示已安装'],
+        links: [{ label: 'VS Code', url: 'https://code.visualstudio.com/' }],
+      },
+      {
+        title: '登录 GitHub',
+        paragraphs: [
+          '按弹窗 Sign in to GitHub → 浏览器授权。',
+          '订阅说明见 https://github.com/features/copilot',
+        ],
+        steps: ['状态栏显示已登录且无错误'],
+        links: [{ label: 'Copilot', url: 'https://github.com/features/copilot' }],
+      },
+      {
+        title: 'API Key？',
+        paragraphs: [
+          '个人用户通常不需要手填 API Key，登录即用。',
+          '企业/自备模型若产品提供「自带密钥」入口，按 VS Code 设置页说明填写；与 CC Switch 无必须关系。',
+          '终端里的 Claude Code/Codex 密钥仍用《CC Switch 安装》管理。',
+        ],
+      },
+      {
+        title: '验证与排错',
+        paragraphs: [
+          '新建文件看灰色补全，Tab 接受；打开 Copilot Chat 问一句。',
+          '无补全：查订阅、网络、是否被其他 AI 扩展抢焦点。',
+        ],
+        steps: ['补全或 Chat 至少一种验证通过'],
+      },
+    ],
+    checklist: ['扩展已装', 'GitHub 已登录', '补全或 Chat 可用'],
+  },
+
+  'install-windsurf': {
+    intro: [
+      'Windsurf 擅长：Cascade 代理式、多步骤改项目，偏「让 AI 多自主走几步」的 AI IDE。',
+      '安装后先账号登录验证；模型/API Key 在软件 Settings 里配（界面文案以当前版本为准）。CLI 密钥仍用 CC Switch。',
+    ],
+    sections: [
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：Cascade 工作流、快速原型、Agent 风格编辑。',
+          '和 Cursor 同属 AI IDE，二选一作主力即可，避免同时开两套抢快捷键。',
+        ],
+      },
+      {
+        title: '下载、安装、登录',
+        paragraphs: [
+          '打开 https://windsurf.com/download 下载对应系统包并安装。',
+          '首次启动用 GitHub/Google/邮箱登录（以产品选项为准）。',
+        ],
+        steps: ['能打开主界面且已登录'],
+        links: [{ label: 'Windsurf 下载', url: 'https://windsurf.com/download' }],
+      },
+      {
+        title: '配置模型 / API Key',
+        paragraphs: [
+          '打开 Settings / 模型相关页：优先用账号自带额度。',
+          '若提供「自备 API Key / OpenAI 兼容」：填 Base URL + Key，保存后新开 Cascade 再试。',
+          '不要把 Key 写进项目仓库。',
+        ],
+        steps: [
+          '找到设置里的模型或 API 入口并保存一次（哪怕暂用官方额度）。',
+          'Cascade 完成一次改文件验证。',
+        ],
+      },
+      {
+        title: '和 CC Switch',
+        paragraphs: [
+          'Windsurf 是 IDE，密钥在 IDE 设置；CC Switch 主要服务 Claude Code/Codex 等 CLI。',
+          '两套可同时存在，各管各的。',
+        ],
+      },
+    ],
+    checklist: ['已登录', '知道 Key/模型在哪配', 'Cascade 验证通过'],
+  },
+
+  'install-trae': {
+    intro: [
+      'Trae 擅长：中文界面与国内网络环境下的 AI 编程 IDE 体验，适合把 Cursor 当备选对比的用户。',
+      '本篇：下载 → 登录 → 在设置里配模型/API Key → 改文件验证。',
+    ],
+    sections: [
+      {
+        title: '擅长什么',
+        paragraphs: [
+          '擅长：中文提示、本土化上手；完成「打开文件夹 + AI 改文件」闭环。',
+          '深度 Agent/CLI：仍可另装 Claude Code + CC Switch。',
+        ],
+      },
+      {
+        title: '下载安装与登录',
+        paragraphs: [
+          '官网 https://www.trae.ai → Download → 安装 → 按引导登录（手机号/第三方以产品为准）。',
+        ],
+        steps: ['Trae 打开且登录稳定'],
+        links: [{ label: 'Trae', url: 'https://www.trae.ai' }],
+      },
+      {
+        title: '配置 API Key / 模型',
+        paragraphs: [
+          '打开设置（齿轮）：找到模型提供商、API Key 或「自定义服务商」一类入口。',
+          '填写供应商提供的 Base URL（若需要）与 API Key → 保存。',
+          '先用官方默认模型能聊天，再换成自备 Key，方便排查。',
+        ],
+        steps: [
+          '设置页保存成功。',
+          'AI 面板能回复「只回答 ok」。',
+        ],
+      },
+      {
+        title: '验证改文件 + 与 CC Switch',
+        paragraphs: [
+          'Open Folder → 让 AI 改 trae-ok.txt 一行内容并接受。',
+          'CC Switch 不管 Trae IDE 内部设置；只在你同时用 Claude Code/Codex 时再装。',
+        ],
+        steps: ['完成一次改文件验证'],
+      },
+    ],
+    checklist: ['已登录', '会找设置填 Key', '改文件成功'],
+    refs: [{ label: 'Trae', url: 'https://www.trae.ai' }],
   },
 
   'claude-code': {
     intro: [
-      'Claude Code 是 Anthropic 的终端编程 Agent：在项目目录运行 `claude`，可用自然语言改文件、跑命令、管理仓库任务。',
-      '和 Cursor 分工：Cursor 是可视化 IDE；Claude Code 偏 CLI 工作流。可以两套都装，按场景切换。',
+      '假设你已完成《Claude Code 安装》。本篇讲怎么下指令、怎么控权限，不再重复安装命令。',
     ],
     sections: [
       {
-        title: '官方安装（Native 推荐）',
+        title: '和 Cursor 怎么分工',
         paragraphs: [
-          'macOS / Linux / WSL：`curl -fsSL https://claude.ai/install.sh | bash`',
-          'Windows PowerShell：`irm https://claude.ai/install.ps1 | iex`',
-          'Windows CMD：按官方文档用 install.cmd；原生 Windows 建议安装 Git for Windows，便于 Bash 工具。',
-          '也可：`winget install Anthropic.ClaudeCode` 或 macOS `brew install --cask claude-code`（Homebrew/WinGet 需手动升级）。',
-        ],
-        steps: [
-          '安装后运行 `claude --version` 应打印版本号。',
-          '可选：`claude doctor` 做环境自检。',
-        ],
-        links: [
-          { label: 'Claude Code 概览', url: 'https://code.claude.com/docs/en/overview' },
-          { label: '安装与高级设置', url: 'https://code.claude.com/docs/en/setup' },
-        ],
-      },
-      {
-        title: '首次登录与启动',
-        paragraphs: [
-          '进入你的项目：`cd your-project` 然后运行 `claude`。',
-          '首次会提示登录 Anthropic / Claude 账号，按浏览器流程完成。',
-          '登录成功后可直接用自然语言下任务，例如：「列出最近改动的文件并总结风险」。',
-        ],
-        steps: [
-          '用一个小练习仓库跑通登录。',
-          '让它创建一个 README 草稿，再你自己确认内容。',
+          'Cursor：可视化编辑器里点选、看 diff、改多文件。',
+          'Claude Code：终端里长任务、仓库级重构、边跑命令边改。',
+          '可以两套都装：日常用 Cursor，重活丢给 Claude Code。',
         ],
       },
       {
         title: '仓库级指令写法',
         paragraphs: [
-          '好指令：范围清晰 + 验收标准。「修复 src/auth.ts 里登录失败时未提示的问题；加测试；不要改无关文件。」',
-          '坏指令：「把项目变好」——范围无限，难验收。',
+          '好指令：范围清晰 + 验收标准。「修复 src/auth.ts 登录失败无提示的问题；加测试；不要改无关文件。」',
+          '坏指令：「把项目变好」——无法验收。',
         ],
         steps: [
-          '选一个真实小 Bug 或文案错误试一次。',
-          '要求它先 plan 再改，你确认 plan 后再继续。',
+          '选一个真实小问题试一次。',
+          '要求它先 plan，你确认后再改。',
         ],
       },
       {
         title: '权限与危险操作',
         paragraphs: [
-          'CLI Agent 可能执行删除、推送、装包等命令——务必看清确认提示。',
-          '敏感仓库：先在副本目录练习；生产凭证不要放进对话。',
-          '公司环境：确认是否允许把代码发到云端模型。',
+          '删除、强制推送、改生产配置：默认你自己做，或严格确认提示后再批。',
+          '敏感仓库先在副本目录练习。',
         ],
-        tip: '任何涉及 `rm`、强制推送、改生产配置的操作，默认人工执行。',
+        tip: '任何 rm / force push，默认拒绝，改由人工执行。',
       },
     ],
     checklist: [
-      'claude --version 成功',
-      '在项目目录完成一次登录会话',
-      '完成一次小范围文件修改并人工验收',
-      '知道何时该拒绝危险命令',
+      '会写带验收标准的指令',
+      '做过一次 plan 后确认',
+      '知道何时拒绝危险命令',
     ],
     refs: [{ label: 'Quickstart', url: 'https://code.claude.com/docs/en/quickstart' }],
   },

@@ -10,7 +10,13 @@ export type CatNav = {
 
 export const CAT_NAV: CatNav[] = [
   { category: '下载与入门', title: '下载安装', keywords: '注册 · 第一次对话', icon: 'download' },
-  { category: 'AI编程工具', title: '编程工具', keywords: 'Cursor · 配置', icon: 'cursor' },
+  {
+    category: 'AI编程工具与智能体安装',
+    title: '工具安装',
+    keywords: 'Cursor · CC Switch · Key',
+    icon: 'cursor',
+  },
+  { category: 'AI编程工具', title: '工具用法', keywords: 'Agent · Rules', icon: 'agent' },
   { category: '用AI做产品', title: '做作品', keywords: '网页 · 小程序 · App', icon: 'web' },
   { category: 'AI生图', title: '生图视觉', keywords: '海报 · 封面', icon: 'image' },
   { category: '提示词工程', title: '提示词', keywords: '结构 · 模板', icon: 'prompt' },
@@ -91,7 +97,7 @@ export type RecTab = {
 export const REC_TABS: RecTab[] = [
   { id: 'hot', label: '大家都在看', filter: 'hot' },
   { id: 'basic', label: '刚接触 AI', filter: 'basic' },
-  { id: 'tools', label: '写代码用的', filter: 'tools' },
+  { id: 'tools', label: '工具与安装', filter: 'tools' },
   { id: 'build', label: '网页与 App', filter: 'build' },
   { id: 'image', label: '出图相关', filter: 'image' },
   { id: 'new', label: '刚更新', filter: 'new' },

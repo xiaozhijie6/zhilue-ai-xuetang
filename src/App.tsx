@@ -327,7 +327,9 @@ export default function App() {
       courses: KNOWLEDGE_LIBRARY.length,
       lessons,
       terms: GLOSSARY.length,
-      tools: KNOWLEDGE_LIBRARY.filter((c) => c.category === 'AI编程工具').length,
+      tools: KNOWLEDGE_LIBRARY.filter(
+        (c) => c.category === 'AI编程工具与智能体安装' || c.category === 'AI编程工具',
+      ).length,
     }
   }, [])
 
@@ -366,7 +368,9 @@ export default function App() {
         list = list.filter((c) => c.level === '基础')
         break
       case 'tools':
-        list = list.filter((c) => c.category === 'AI编程工具')
+        list = list.filter(
+          (c) => c.category === 'AI编程工具与智能体安装' || c.category === 'AI编程工具',
+        )
         break
       case 'build':
         list = list.filter((c) => c.category === '用AI做产品')
