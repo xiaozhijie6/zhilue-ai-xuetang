@@ -527,7 +527,7 @@ export default function App() {
                 <span className="gk-banner__line gk-banner__line--accent">基础下载 → 工具详解 → 做出网页 / App / 生图</span>
               </h1>
               <p className="gk-banner__lead">
-                {stats.courses} 篇图文教程 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 照着步骤做，不是买直播课。
+                {stats.courses} 篇图文教程 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 从下载到做出网页 / App / 生图。
               </p>
               <div className="gk-chips" aria-label="快捷入口">
                 {TRACK_LEVELS.map((lv) => (
