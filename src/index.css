@@ -93,13 +93,6 @@ button {
   opacity: 0.85;
 }
 
-.ambient__canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .ambient__mesh {
   position: absolute;
   inset: -10%;
@@ -108,7 +101,6 @@ button {
     radial-gradient(ellipse 38% 36% at 88% 12%, rgba(56, 189, 248, 0.1), transparent 52%),
     radial-gradient(ellipse 34% 30% at 72% 88%, rgba(134, 239, 172, 0.08), transparent 55%),
     radial-gradient(ellipse 28% 26% at 18% 82%, rgba(253, 186, 116, 0.07), transparent 50%);
-  animation: mesh-drift 28s var(--ease) infinite alternate;
   mix-blend-mode: multiply;
 }
 
@@ -127,15 +119,6 @@ button {
   inset: 0;
   opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-@keyframes mesh-drift {
-  from {
-    transform: translate(0, 0) scale(1);
-  }
-  to {
-    transform: translate(-1%, 2%) scale(1.03);
-  }
 }
 
 .gk {
@@ -3778,10 +3761,6 @@ button.home-slide {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ambient__mesh {
-    animation: none;
-  }
-
   * {
     transition: none !important;
     animation: none !important;
