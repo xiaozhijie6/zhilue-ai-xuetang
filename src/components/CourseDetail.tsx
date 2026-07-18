@@ -23,7 +23,7 @@ export function CourseDetail({
   return (
     <main className="gk-main course-detail">
       <button type="button" className="course-detail__back" onClick={onBack}>
-        ← 返回
+        ← 返回知识库
       </button>
 
       <div className="course-detail__hero">
@@ -42,33 +42,32 @@ export function CourseDetail({
             <span>{course.category}</span>
             {course.hot && <i className="tag tag--hot">热门</i>}
             {course.new && <i className="tag tag--new">上新</i>}
-            {course.source === '自有资料' && <i className="tag">自有资料</i>}
+            {course.source === '自有资料' && <i className="tag">图文教程</i>}
           </div>
           <p className="course-detail__hook">{course.hook}</p>
           <p className="course-detail__outcome">
-            <span className="course-detail__outcome-label">学完你能</span>
+            <span className="course-detail__outcome-label">跟做后你能</span>
             {course.outcome}
           </p>
           <h1 className="course-detail__title">{course.title}</h1>
           <p className="course-detail__desc">{course.desc}</p>
           <div className="course-detail__meta">
-            <span>{course.teacher}</span>
-            <span>{course.lessons.length} 讲</span>
-            <span>{course.students.toLocaleString()} 人学过</span>
+            <span>整理：{course.teacher}</span>
+            <span>{course.lessons.length} 个步骤</span>
             <span>{course.duration}</span>
-            <span className="course-detail__progress">已学 {progress}%</span>
+            <span className="course-detail__progress">进度 {progress}%</span>
           </div>
           <div className="course-detail__actions">
             <button type="button" className="btn btn--accent" onClick={onStart}>
-              {phone ? '开始学习' : '登录后学习'}
+              {phone ? '开始跟做' : '登录后记录进度'}
             </button>
             <button type="button" className="btn btn--ghost-dark" onClick={onBack}>
               返回列表
             </button>
           </div>
           <div className="course-detail__trust">
-            <span>✓ 学完有产出</span>
-            <span>✓ 可试听</span>
+            <span>✓ 图文步骤</span>
+            <span>✓ 可勾选进度</span>
             <span>✓ 持续更新</span>
           </div>
         </div>
@@ -76,14 +75,14 @@ export function CourseDetail({
 
       <div className="course-detail__body">
         <section className="course-detail__left">
-          <h2>这门课带你做出</h2>
+          <h2>这篇带你做出</h2>
           <ul className="course-detail__list">
             {course.highlights.map((h) => (
               <li key={h}>{h}</li>
             ))}
           </ul>
 
-          <h2>课程大纲</h2>
+          <h2>内容概览</h2>
           <ol className="course-detail__list">
             {course.outline.map((o) => (
               <li key={o}>{o}</li>
@@ -93,9 +92,9 @@ export function CourseDetail({
 
         <section className="course-detail__right">
           <h2>
-            课时目录
+            步骤清单
             <em>
-              {doneCount}/{course.lessons.length} 已完成
+              {doneCount}/{course.lessons.length} 已勾选
             </em>
           </h2>
           <div className="gk-lessons">
@@ -111,7 +110,7 @@ export function CourseDetail({
                   <em>{String(i + 1).padStart(2, '0')}</em>
                   <strong>{lesson.title}</strong>
                   <span>
-                    {lesson.type} · {lesson.mins} 分钟
+                    {lesson.type} · 约 {lesson.mins} 分钟
                   </span>
                 </button>
               )

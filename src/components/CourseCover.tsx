@@ -10,7 +10,7 @@ function teacherLabel(teacher: string) {
   return teacher.replace(/^知略\s*[·•]\s*/, '').trim() || teacher
 }
 
-/** 课程封面：品牌色场 + 工具图标 + 主讲头像位（占位） */
+/** 教程封面：品牌色场 + 工具图标 + 整理者（占位） */
 export function CourseCover({
   id,
   category,
@@ -49,7 +49,7 @@ export function CourseCover({
         <span className="course-cover__avatar">{face}</span>
         <span>
           <strong>{name}</strong>
-          <i>主讲</i>
+          <i>整理</i>
         </span>
       </div>
     </div>

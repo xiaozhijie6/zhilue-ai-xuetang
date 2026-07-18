@@ -28,14 +28,11 @@ import './index.css'
 
 const PHONE_KEY = 'zhilue_phone'
 const PROGRESS_KEY = 'zhilue_progress'
-const MONEY_ID_RE =
-  /viral|money|private|overnight|knowledge-ip|live-script|prompt-to-product|content-matrix|douyin/
-
 type Tab = 'home' | 'track' | 'glossary' | 'guide' | 'learn'
 type SortKey = 'hot' | 'new' | 'students'
 type RecTabId = (typeof REC_TABS)[number]['id']
 
-const TRACK_LEVELS: TrackId[] = ['新手', '熟练', '老手']
+const TRACK_LEVELS: TrackId[] = ['基础', '工具', '进阶']
 
 function maskPhone(phone: string) {
   if (phone.length < 7) return phone
@@ -201,14 +198,13 @@ function CourseRow({
           <div className="gk-row__meta">
             <span>{item.title}</span>
             <span>{item.teacher}</span>
-            <span>{item.lessons.length} 讲</span>
-            <span>{item.students.toLocaleString()} 人学过</span>
-            {progress > 0 && <span className="gk-row__pct">已学 {progress}%</span>}
+            <span>{item.lessons.length} 步</span>
+            {progress > 0 && <span className="gk-row__pct">已完成 {progress}%</span>}
           </div>
         </div>
       </button>
       <button type="button" className="gk-row__cta" onClick={onOpen}>
-        查看课程
+        查看教程
       </button>
     </article>
   )
@@ -235,7 +231,7 @@ function CatalogCard({
       <strong className="home-card__hook">{item.hook}</strong>
       <em className="home-card__title">{item.title}</em>
       <span className="home-card__outcome">
-        {item.outcome} · {item.level} · {item.students.toLocaleString()} 人学过
+        {item.outcome} · {item.level}
       </span>
       {progress > 0 && <span className="home-card__progress">已学 {progress}%</span>}
     </button>
@@ -244,7 +240,7 @@ function CatalogCard({
 
 export default function App() {
   const [tab, setTab] = useState<Tab>('home')
-  const [trackLevel, setTrackLevel] = useState<TrackId>('新手')
+  const [trackLevel, setTrackLevel] = useState<TrackId>('基础')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [glossaryId, setGlossaryId] = useState<string | null>(GLOSSARY[0]?.id ?? null)
   const [phone, setPhone] = useState<string | null>(() => sessionStorage.getItem(PHONE_KEY))
@@ -366,18 +362,17 @@ export default function App() {
     const tabMeta = REC_TABS.find((t) => t.id === recTab) ?? REC_TABS[0]
     let list = [...KNOWLEDGE_LIBRARY]
     switch (tabMeta.filter) {
-      case 'money':
-        list = list.filter((c) => c.category === '商业落地' || MONEY_ID_RE.test(c.id))
-        list.sort((a, b) => b.students - a.students)
-        break
-      case 'newbie':
-        list = list.filter((c) => c.level === '新手')
+      case 'basic':
+        list = list.filter((c) => c.level === '基础')
         break
       case 'tools':
         list = list.filter((c) => c.category === 'AI编程工具')
         break
-      case 'auto':
-        list = list.filter((c) => c.category === 'Agent与自动化')
+      case 'build':
+        list = list.filter((c) => c.category === '用AI做产品')
+        break
+      case 'image':
+        list = list.filter((c) => c.category === 'AI生图')
         break
       case 'new':
         list = list.filter((c) => c.new || c.hot).sort((a, b) => Number(!!b.new) - Number(!!a.new))
@@ -445,10 +440,10 @@ export default function App() {
             {(
               [
                 ['home', '首页'],
-                ['track', '进阶路线'],
+                ['track', '学习路径'],
                 ['glossary', '术语词典'],
                 ['guide', '避坑指南'],
-                ['learn', '学习中心'],
+                ['learn', '我的进度'],
               ] as const
             ).map(([id, label]) => (
               <button
@@ -476,7 +471,7 @@ export default function App() {
                     ? '搜索术语…'
                     : tab === 'guide'
                       ? '搜索避坑问题、最佳实践…'
-                      : '搜索课程、能力、工具…'
+                      : '搜索教程、工具、做网页…'
                 }
                 value={tab === 'glossary' ? gQuery : tab === 'guide' ? guideQuery : query}
                 onChange={(e) => {
@@ -526,18 +521,18 @@ export default function App() {
         >
           <div className="gk-banner__inner">
             <div className="gk-banner__copy">
-              <p className="gk-banner__eyebrow">AI 实战知识库</p>
+              <p className="gk-banner__eyebrow">AI 图文知识库</p>
               <h1>
                 <span className="gk-banner__line">知略 AI 知识库</span>
-                <span className="gk-banner__line gk-banner__line--accent">新手 → 熟练 → 老手，一步步把能力做出来</span>
+                <span className="gk-banner__line gk-banner__line--accent">基础下载 → 工具详解 → 做出网页 / App / 生图</span>
               </h1>
               <p className="gk-banner__lead">
-                {stats.courses} 门实战课 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 覆盖编程、自动化与变现落地。
+                {stats.courses} 篇图文教程 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 照着步骤做，不是买直播课。
               </p>
               <div className="gk-chips" aria-label="快捷入口">
                 {TRACK_LEVELS.map((lv) => (
                   <button key={lv} type="button" className="gk-chip" onClick={() => goToTrack(lv)}>
-                    {lv}路线
+                    {lv}
                   </button>
                 ))}
                 <button type="button" className="gk-chip gk-chip--ghost" onClick={() => setTab('home')}>
@@ -548,19 +543,19 @@ export default function App() {
             <div className="gk-banner__panel">
               <div className="gk-banner__stat">
                 <strong>{stats.courses}</strong>
-                <span>实战课程</span>
+                <span>图文教程</span>
               </div>
               <div className="gk-banner__stat">
                 <strong>3</strong>
-                <span>进阶轨道</span>
+                <span>学习阶段</span>
               </div>
               <div className="gk-banner__stat">
                 <strong>{stats.terms}</strong>
-                <span>标准术语</span>
+                <span>术语条目</span>
               </div>
               <div className="gk-banner__hint">
-                <em>学完能做什么</em>
-                <span>每门课都写清：你能独立完成哪一类产出</span>
+                <em>跟着做</em>
+                <span>每篇写清：下载什么、点哪里、最后能做出什么</span>
               </div>
             </div>
           </div>
@@ -623,27 +618,27 @@ export default function App() {
           <aside className="track-progression">
             <p>
               <strong>循序渐进：</strong>
-              新手做出第一条内容 → 熟练搭好交付流水线 → 老手把变现与自动化跑稳
+              基础装好 AI → 工具会改项目 → 进阶做出网页 / 小程序 / 生图作品
             </p>
             <div className="track-progression__actions">
-              {trackLevel !== '新手' && (
-                <button type="button" className="btn btn--ghost-dark" onClick={() => goToTrack('新手')}>
-                  ← 回到新手村
+              {trackLevel !== '基础' && (
+                <button type="button" className="btn btn--ghost-dark" onClick={() => goToTrack('基础')}>
+                  ← 回到基础
                 </button>
               )}
-              {trackLevel !== '熟练' && trackLevel === '新手' && (
-                <button type="button" className="btn btn--accent" onClick={() => goToTrack('熟练')}>
-                  下一步：熟练工 →
+              {trackLevel !== '工具' && trackLevel === '基础' && (
+                <button type="button" className="btn btn--accent" onClick={() => goToTrack('工具')}>
+                  下一步：工具 →
                 </button>
               )}
-              {trackLevel === '熟练' && (
-                <button type="button" className="btn btn--accent" onClick={() => goToTrack('老手')}>
-                  下一步：老手局 →
+              {trackLevel === '工具' && (
+                <button type="button" className="btn btn--accent" onClick={() => goToTrack('进阶')}>
+                  下一步：进阶 →
                 </button>
               )}
-              {trackLevel === '老手' && (
+              {trackLevel === '进阶' && (
                 <button type="button" className="btn btn--ghost-dark" onClick={() => openCatalog()}>
-                  浏览全部课程 →
+                  浏览全部教程 →
                 </button>
               )}
             </div>
@@ -920,7 +915,7 @@ export default function App() {
 
           <section className="gk-endpoints" style={{ marginTop: '1.5rem' }}>
             <h2 className="gk-section-title">配置时常用域名（速览）</h2>
-            <p className="gk-section-desc">完整说明在「术语词典」页底部；此处方便新手对照粘贴。</p>
+            <p className="gk-section-desc">完整说明在「术语词典」页底部；此处方便对照粘贴配置。</p>
             <div className="gk-endpoints__grid">
               {ENDPOINTS.slice(0, 6).map((ep) => (
                 <article key={ep.id} className="gk-endpoint-card">
@@ -944,7 +939,7 @@ export default function App() {
         <main className="gk-main gk-learn">
           <div className="gk-learn__bar">
             <div>
-              <h2>学习中心</h2>
+              <h2>我的进度</h2>
               <p>已登录 {maskPhone(phone)} · 进度保存在本机</p>
             </div>
             <button type="button" className="btn btn--ghost-dark" onClick={logout}>
@@ -953,7 +948,7 @@ export default function App() {
           </div>
           <div className="gk-learn__grid">
             <aside>
-              <p className="gk-learn__label">我的课程</p>
+              <p className="gk-learn__label">正在跟做</p>
               {FEATURED_IDS.map((id) => {
                 const c = getItem(id)
                 if (!c) return null
@@ -1008,7 +1003,7 @@ export default function App() {
         <main className="gk-main home">
           <div className="home-promo home-promo--result">
             <strong>循序进阶</strong>
-            <span>按新手 → 熟练 → 老手学习，每门课写清学完你能做出什么</span>
+            <span>按基础 → 工具 → 进阶学习，每篇教程写清学完你能做出什么</span>
           </div>
 
           <section className="home-hero" aria-label="本周精选">
@@ -1025,9 +1020,9 @@ export default function App() {
                     <h2>{heroSlide.title}</h2>
                     <p>{heroSlide.subtitle}</p>
                     <div className="home-slide__meta">
-                      <span>{heroCourse.lessons.length} 讲</span>
+                      <span>{heroCourse.lessons.length} 步</span>
                       <span>{heroCourse.level}</span>
-                      <span>{heroCourse.students.toLocaleString()} 人学过</span>
+                      <span>{heroCourse.duration}</span>
                     </div>
                     <span className="home-slide__cta">{heroSlide.cta}</span>
                   </div>
@@ -1080,7 +1075,7 @@ export default function App() {
             <div className="home-block-head">
               <div>
                 <h2>学完你能做到</h2>
-                <p className="home-block-desc">每门课对应一种可交付的能力，点进去按步骤练</p>
+                <p className="home-block-desc">每篇对应一种能做出来的东西，点进去按步骤跟做</p>
               </div>
             </div>
             <div className="hook-feed__list">
@@ -1094,7 +1089,7 @@ export default function App() {
                   <p className="hook-card__result">{feed.result}</p>
                   <p className="hook-card__proof">{feed.proof}</p>
                   <button type="button" className="hook-card__cta" onClick={() => openCourse(feed.courseId)}>
-                    进入课程 →
+                    打开教程 →
                   </button>
                 </article>
               ))}
@@ -1105,10 +1100,10 @@ export default function App() {
             <div className="home-block-head">
               <div>
                 <h2>快速上手</h2>
-                <p className="home-block-desc">从高频能力切入，练会一项再系统进阶</p>
+                <p className="home-block-desc">从下载与工具切入，会一项再往下做作品</p>
               </div>
               <button type="button" onClick={() => openCatalog()}>
-                全部课程 →
+                全部教程 →
               </button>
             </div>
             <div className="home-free__grid">
@@ -1133,7 +1128,7 @@ export default function App() {
             <div className="home-block-head">
               <div>
                 <h2>重点推荐</h2>
-                <p className="home-block-desc">按变现、新手、工具、自动化等方向筛选课程</p>
+                <p className="home-block-desc">按基础下载、编程工具、做作品、生图等方向筛选教程</p>
               </div>
             </div>
             <div className="home-rec__tabs">
@@ -1161,7 +1156,7 @@ export default function App() {
                   <strong className="home-card__hook">{item.hook}</strong>
                   <em className="home-card__title">{item.title}</em>
                   <span>
-                    {item.outcome} · {item.students.toLocaleString()} 人学过
+                    {item.outcome} · {item.level}
                   </span>
                 </button>
               ))}
@@ -1171,9 +1166,9 @@ export default function App() {
           <section className="home-list-block" id="course-catalog">
             <div className="home-block-head">
               <div>
-                <h2>完整课程目录</h2>
+                <h2>全部教程</h2>
                 <p className="home-block-desc">
-                  {stats.courses} 门课已收录，可按分类、难度筛选，或直接搜索能力关键词
+                  {stats.courses} 篇已收录，可按分类、阶段筛选，或搜索「下载 / Cursor / 网页 / 生图」
                 </p>
               </div>
               <div className="gk-sort">
@@ -1223,7 +1218,7 @@ export default function App() {
               </div>
             </div>
 
-            <p className="home-catalog-count">当前显示 {filtered.length} 门课程</p>
+            <p className="home-catalog-count">当前显示 {filtered.length} 篇教程</p>
 
             <div className="home-catalog-grid">
               {filtered.map((item) => (
@@ -1236,7 +1231,7 @@ export default function App() {
               ))}
             </div>
             {filtered.length === 0 && (
-              <p className="gk-empty">没有匹配课程，试试换分类或清空搜索。</p>
+              <p className="gk-empty">没有匹配教程，试试换分类或清空搜索。</p>
             )}
           </section>
         </main>
@@ -1259,7 +1254,7 @@ export default function App() {
       )}
 
       <footer className="gk-footer">
-        <div>知略 AI 学堂 · 新手到老手的 AI 实战知识库</div>
+        <div>知略 AI 知识库 · 自学教程与步骤拆解</div>
         <div>
           {stats.courses} 课 · {stats.terms} 术语 · 电话登录
         </div>

@@ -3437,17 +3437,17 @@ button.home-slide {
   color: var(--muted);
 }
 
-.hook-card__level--新手 {
+.hook-card__level--基础 {
   background: #f0fdfa;
   color: #0f766e;
 }
 
-.hook-card__level--熟练 {
+.hook-card__level--工具 {
   background: var(--accent-soft);
   color: var(--accent-dark);
 }
 
-.hook-card__level--老手 {
+.hook-card__level--进阶 {
   background: #fffbeb;
   color: #b45309;
 }
@@ -3662,17 +3662,17 @@ button.home-slide {
   font-weight: 700;
 }
 
-.level-badge--新手 {
+.level-badge--基础 {
   background: #f0fdfa !important;
   color: #0f766e !important;
 }
 
-.level-badge--熟练 {
+.level-badge--工具 {
   background: var(--accent-soft) !important;
   color: var(--accent-dark) !important;
 }
 
-.level-badge--老手 {
+.level-badge--进阶 {
   background: #fffbeb !important;
   color: #b45309 !important;
 }
