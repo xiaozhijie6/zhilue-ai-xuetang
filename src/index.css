@@ -18,8 +18,8 @@
   --red-soft: #fef2f2;
   --green: #16a34a;
   --green-soft: #f0fdf4;
-  --font: "DM Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
-  --display: "Syne", "Noto Sans SC", "PingFang SC", sans-serif;
+  --font: "KaiTi", "楷体", "STKaiti", "Kaiti SC", "BiauKai", serif;
+  --display: "KaiTi", "楷体", "STKaiti", "Kaiti SC", "BiauKai", serif;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --radius-sm: 8px;
   --radius: 12px;
@@ -39,6 +39,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: "KaiTi", "楷体", "STKaiti", "Kaiti SC", "BiauKai", serif;
 }
 
 body {
@@ -1284,7 +1285,7 @@ button {
   font-size: 0.85rem;
   word-break: break-all;
   color: var(--ink);
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--font);
 }
 
 .gk-glossary__domains a {
@@ -2969,7 +2970,7 @@ button.home-slide {
   font-size: 0.82rem;
   word-break: break-all;
   color: var(--ink);
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-family: var(--font);
 }
 
 .gk-endpoint-card p {

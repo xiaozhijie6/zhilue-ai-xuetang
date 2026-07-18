@@ -118,7 +118,7 @@ function Mark({ k }: { k: IconKey }) {
       )
     case 'kimi':
       return (
-        <text x="12" y="15.2" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="800" fontFamily="system-ui">
+        <text x="12" y="15.2" textAnchor="middle" fill="#fff" fontSize="9" fontWeight="800" fontFamily="KaiTi, 楷体, STKaiti, serif">
           K
         </text>
       )
