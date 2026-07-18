@@ -27,46 +27,47 @@ export type FreeTile = {
   courseId: string
 }
 
+/** 每条标题句式故意不同，避免读起来像同一模板 */
 export const FREE_TILES: FreeTile[] = [
   {
     id: 'f1',
-    title: '按系统下载常用 AI',
-    desc: 'Windows / Mac 一步步截图级说明',
+    title: 'Win / Mac 装 AI，别再到处找下载页',
+    desc: '官方入口、安装勾选项、第一次打开',
     icon: 'download',
     courseId: 'ai-download-guide',
   },
   {
     id: 'f2',
-    title: '装好 Cursor 开始改代码',
-    desc: '安装、登录、第一次对话改文件',
+    title: '今晚就把 Cursor 跑起来',
+    desc: '登录、选模型、改掉第一个文件',
     icon: 'cursor',
     courseId: 'cursor-install',
   },
   {
     id: 'f3',
-    title: '一句话做出落地页',
-    desc: '用 AI 从需求到可预览网页',
+    title: '明天能发出去的落地页长什么样？',
+    desc: '需求一句话，布局文案一起出',
     icon: 'web',
     courseId: 'ai-build-website',
   },
   {
     id: 'f4',
-    title: '小程序页面一次出齐',
-    desc: '结构、文案、交互说明都能生成',
+    title: '微信小程序三页骨架直接生成',
+    desc: '首页 · 列表 · 详情，带着交互说明',
     icon: 'miniapp',
     courseId: 'ai-build-miniprogram',
   },
   {
     id: 'f5',
-    title: '提示词四段式',
-    desc: '问得清楚，答得能用',
+    title: '同一句话，为什么别人问得更准',
+    desc: '角色、目标、约束、格式拆开写',
     icon: 'prompt',
     courseId: 'prompt-basics',
   },
   {
     id: 'f6',
-    title: 'AI 出海报与封面',
-    desc: '提示词生图与改图流程',
+    title: '封面图别再找设计师排期了',
+    desc: '出图、改图、统一风格怎么写',
     icon: 'image',
     courseId: 'ai-image-gen',
   },
@@ -75,10 +76,10 @@ export const FREE_TILES: FreeTile[] = [
 export const COMMUNITY_TOPICS = [
   { tag: '下载', text: 'Cursor 安装包官方地址在哪？Mac 权限怎么开' },
   { tag: '工具', text: 'Agent 模式改多文件，Rules 怎么写才稳' },
-  { tag: '网页', text: '用 AI 做的落地页怎么部署到免费域名' },
-  { tag: '小程序', text: '生成的页面结构怎么接到微信开发者工具' },
-  { tag: '生图', text: '同一角色多张图风格统一怎么写提示词' },
-  { tag: '避坑', text: 'API Key 别写进前端和公开仓库' },
+  { tag: '网页', text: '落地页部署到免费域名踩过哪些坑' },
+  { tag: '小程序', text: '生成的结构怎么接到微信开发者工具' },
+  { tag: '生图', text: '同一角色多张图，风格老是飘怎么办' },
+  { tag: '避坑', text: 'API Key 写进仓库，账单一夜翻倍的真实案例' },
 ]
 
 export type RecTab = {
@@ -88,42 +89,42 @@ export type RecTab = {
 }
 
 export const REC_TABS: RecTab[] = [
-  { id: 'hot', label: '热门精选', filter: 'hot' },
-  { id: 'basic', label: '基础下载', filter: 'basic' },
-  { id: 'tools', label: '编程工具', filter: 'tools' },
-  { id: 'build', label: '做网页/App', filter: 'build' },
-  { id: 'image', label: 'AI 生图', filter: 'image' },
-  { id: 'new', label: '最近更新', filter: 'new' },
+  { id: 'hot', label: '大家都在看', filter: 'hot' },
+  { id: 'basic', label: '刚接触 AI', filter: 'basic' },
+  { id: 'tools', label: '写代码用的', filter: 'tools' },
+  { id: 'build', label: '网页与 App', filter: 'build' },
+  { id: 'image', label: '出图相关', filter: 'image' },
+  { id: 'new', label: '刚更新', filter: 'new' },
 ]
 
 export const HERO_SLIDES = [
   {
     courseId: 'ai-download-guide',
-    eyebrow: '基础',
-    title: '照着做：把常用 AI 下载安装到电脑上',
-    subtitle: '浏览器版、客户端、账号注册，一步步写清楚',
-    cta: '查看下载指南',
+    eyebrow: '今天就能装好',
+    title: '别再卡在「下载哪个」这一步',
+    subtitle: '浏览器版、客户端、注册流程分开写清楚',
+    cta: '去看安装步骤',
   },
   {
     courseId: 'cursor',
-    eyebrow: '工具详解',
-    title: 'Cursor 从安装到改项目，整页讲透',
-    subtitle: 'Chat、Agent、Rules、接模型——不会代码也能上手',
-    cta: '打开工具教程',
+    eyebrow: '编程助手',
+    title: 'Cursor 不是聊天窗口，是改项目的工作台',
+    subtitle: 'Chat、Agent、Rules、接模型，按场景用',
+    cta: '打开 Cursor 教程',
   },
   {
     courseId: 'ai-build-website',
-    eyebrow: '进阶作品',
-    title: '用 AI 做出能给人看的网页',
-    subtitle: '从一句话需求到布局、文案、可预览页面',
-    cta: '开始做网页',
+    eyebrow: '能发出去的页面',
+    title: '客户明天要链接，你今晚先出一版',
+    subtitle: '区块、文案、配色一起定，本地就能预览',
+    cta: '去做网页',
   },
   {
     courseId: 'ai-image-gen',
-    eyebrow: '进阶视觉',
-    title: '用 AI 做出海报、封面与产品图',
-    subtitle: '提示词结构、改图、风格统一一次学会',
-    cta: '开始生图',
+    eyebrow: '视觉物料',
+    title: '海报和封面，提示词写对就不翻车',
+    subtitle: '主体、构图、风格统一，多图一套带走',
+    cta: '去练生图',
   },
 ]
 
@@ -134,7 +135,7 @@ export type HomeTrackCard = {
 }
 
 export const HOME_TRACK_CARDS: HomeTrackCard[] = [
-  { level: '基础', hook: '下载、注册、第一次对话——从零装好 AI', cta: '进入基础' },
-  { level: '工具', hook: 'AI 编程工具详解：装好就会改项目', cta: '进入工具' },
-  { level: '进阶', hook: '做网页 / 小程序 / App / 生图，拿出作品', cta: '进入进阶' },
+  { level: '基础', hook: '连安装都卡壳？先把常用 AI 装稳', cta: '先过基础' },
+  { level: '工具', hook: '想改项目文件，别只会复制粘贴对话', cta: '去看工具' },
+  { level: '进阶', hook: '网页、小程序、App、图——拿出能给人看的东西', cta: '去做作品' },
 ]

@@ -521,13 +521,13 @@ export default function App() {
         >
           <div className="gk-banner__inner">
             <div className="gk-banner__copy">
-              <p className="gk-banner__eyebrow">AI 图文知识库</p>
+              <p className="gk-banner__eyebrow">图文跟做 · 可勾进度</p>
               <h1>
                 <span className="gk-banner__line">知略 AI 知识库</span>
-                <span className="gk-banner__line gk-banner__line--accent">基础下载 → 工具详解 → 做出网页 / App / 生图</span>
+                <span className="gk-banner__line gk-banner__line--accent">装得上、改得动、做得出来</span>
               </h1>
               <p className="gk-banner__lead">
-                {stats.courses} 篇图文教程 · {stats.tools} 个工具专题 · {stats.terms} 条术语 · 从下载到做出网页 / App / 生图。
+                {stats.courses} 篇教程，覆盖安装入门、Cursor 等工具，以及网页 / 小程序 / App / 生图实操。
               </p>
               <div className="gk-chips" aria-label="快捷入口">
                 {TRACK_LEVELS.map((lv) => (
@@ -617,8 +617,8 @@ export default function App() {
 
           <aside className="track-progression">
             <p>
-              <strong>循序渐进：</strong>
-              基础装好 AI → 工具会改项目 → 进阶做出网页 / 小程序 / 生图作品
+              <strong>怎么往下走：</strong>
+              装不稳先补基础；会装了再啃工具；要交活再进作品线
             </p>
             <div className="track-progression__actions">
               {trackLevel !== '基础' && (
@@ -1000,13 +1000,13 @@ export default function App() {
 
       {/* HOME */}
       {tab === 'home' && (
-        <main className="gk-main home">
-          <div className="home-promo home-promo--result">
-            <strong>循序进阶</strong>
-            <span>按基础 → 工具 → 进阶学习，每篇教程写清学完你能做出什么</span>
+        <main className="gk-main home home--mixed">
+          <div className="home-promo home-promo--ink">
+            <strong>怎么读</strong>
+            <span>卡住装软件看基础；要改代码看工具；要交页面或出图看进阶</span>
           </div>
 
-          <section className="home-hero" aria-label="本周精选">
+          <section className="home-hero home-hero--cinema" aria-label="本周精选">
             <div className="home-carousel">
               {heroCourse && (
                 <button
@@ -1071,11 +1071,11 @@ export default function App() {
             })}
           </section>
 
-          <section className="hook-feed" aria-label="学完你能做到">
+          <section className="hook-feed" aria-label="先挑卡住的点">
             <div className="home-block-head">
               <div>
-                <h2>学完你能做到</h2>
-                <p className="home-block-desc">每篇对应一种能做出来的东西，点进去按步骤跟做</p>
+                <h2>先挑一个你现在卡的点</h2>
+                <p className="home-block-desc">标题各写各的，点进对应教程按步骤跟</p>
               </div>
             </div>
             <div className="hook-feed__list">
@@ -1111,8 +1111,8 @@ export default function App() {
           <section className="home-free">
             <div className="home-block-head">
               <div>
-                <h2>快速上手</h2>
-                <p className="home-block-desc">从下载与工具切入，会一项再往下做作品</p>
+                <h2>六条捷径</h2>
+                <p className="home-block-desc">安装、Cursor、网页、小程序、提示词、生图，各走各的</p>
               </div>
               <button type="button" onClick={() => openCatalog()}>
                 全部教程 →
@@ -1139,8 +1139,8 @@ export default function App() {
           <section className="home-rec">
             <div className="home-block-head">
               <div>
-                <h2>重点推荐</h2>
-                <p className="home-block-desc">按基础下载、编程工具、做作品、生图等方向筛选教程</p>
+                <h2>按心情翻</h2>
+                <p className="home-block-desc">刚接触、写代码、做页面、出图——标签点一下就行</p>
               </div>
             </div>
             <div className="home-rec__tabs">

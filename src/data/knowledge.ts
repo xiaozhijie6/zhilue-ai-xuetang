@@ -579,8 +579,8 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'ai-build-website',
-      title: '用 AI 做出能给人看的网页',
-      hook: '用 AI 从一句话需求到可预览网页',
+      title: '从一句话需求到可预览网页',
+      hook: '客户明天要链接，今晚先出一版能打开的页面',
       outcome: '独立完成一个多区块网页：布局、文案、样式、本地预览',
       category: '用AI做产品',
       level: '进阶',
@@ -604,8 +604,8 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'ai-landing-page',
-      title: '用 AI 做出能上线预览的落地页',
-      hook: '用 AI 做出能上线预览的落地页',
+      title: '落地页部署上线：拿到能分享的链接',
+      hook: '页面做好了不够，还要有人点得开的地址',
       outcome: '落地页部署到 Vercel / Netlify / GitHub Pages，拿到可分享链接',
       category: '用AI做产品',
       level: '进阶',
@@ -626,8 +626,8 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'ai-build-miniprogram',
-      title: '用 AI 搭微信小程序页面结构',
-      hook: '小程序首页到详情页，结构一次生成',
+      title: '微信小程序三页骨架怎么生成',
+      hook: '别从零画线框：首页、列表、详情一次铺开',
       outcome: '产出首页、列表、详情页结构与 wxml/wxss 草稿，可导入开发者工具',
       category: '用AI做产品',
       level: '进阶',
@@ -650,8 +650,8 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'ai-build-app',
-      title: '用 AI 出 App 界面稿与交互说明',
-      hook: '不会 UI 设计也能出 App 关键页与流程说明',
+      title: 'App 关键屏与流程说明稿',
+      hook: '代码还没写，先把四个关键屏讲清楚',
       outcome: '信息架构、关键页 wireframe 描述、组件清单一次产出',
       category: '用AI做产品',
       level: '进阶',
@@ -673,8 +673,8 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'ai-image-gen',
-      title: 'AI 生图入门：提示词出图与改图',
-      hook: '用 AI 做出海报、封面与产品图',
+      title: '生图提示词：海报、封面怎么写才稳',
+      hook: '出图老是「差不多」？把主体和风格写死',
       outcome: 'Midjourney / DALL·E / 国内生图工具各练通，能出可用图',
       category: 'AI生图',
       level: '进阶',
