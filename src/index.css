@@ -749,16 +749,22 @@ button {
 }
 
 .gk-row__cover-wrap {
-  width: 96px;
-  height: 96px;
+  width: 112px;
+  height: 75px;
   flex-shrink: 0;
   border-radius: var(--radius);
   overflow: hidden;
 }
 
 .gk-row__cover-wrap .course-cover {
-  min-height: 96px;
+  min-height: 0;
+  height: 100%;
   border-radius: var(--radius);
+}
+
+.gk-row__cover-wrap .course-cover--poster {
+  aspect-ratio: auto;
+  min-height: 0;
 }
 
 .gk-row__body h3 {
@@ -910,7 +916,12 @@ button {
 }
 
 .course-cover--poster {
-  background: #111;
+  aspect-ratio: 3 / 2;
+  min-height: 0;
+  width: 100%;
+  background:
+    linear-gradient(180deg, #f3efe6 0%, #e8e0d2 100%);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
 }
 
 .course-cover__poster {
@@ -919,12 +930,14 @@ button {
   z-index: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   display: block;
 }
 
-.course-cover--poster .course-cover__caption {
-  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72));
+.course-cover--compact.course-cover--poster {
+  aspect-ratio: 3 / 2;
+  min-height: 0;
 }
 
 .course-cover__watermark {
@@ -942,11 +955,15 @@ button {
 .course-cover__glyph {
   position: relative;
   z-index: 1;
+  max-width: 92%;
   font-family: var(--display);
-  font-size: clamp(2.35rem, 7vw, 3.6rem);
+  font-size: clamp(1.65rem, 5.5vw, 2.85rem);
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.18em;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+  text-align: center;
+  white-space: normal;
+  word-break: keep-all;
   color: rgba(255, 255, 255, 0.96);
   text-shadow:
     0 1px 0 rgba(255, 255, 255, 0.2),
@@ -1905,10 +1922,15 @@ button.home-slide {
 }
 
 .home-slide__visual .course-cover {
-  height: 100%;
-  min-height: 240px;
+  height: auto;
+  min-height: 0;
+  width: 100%;
   border-radius: var(--radius);
   box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45);
+}
+
+.home-slide__visual .course-cover--poster {
+  aspect-ratio: 3 / 2;
 }
 
 .home-slide__glow {
@@ -2580,12 +2602,16 @@ button.home-slide {
 }
 
 .home-card .course-cover {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.45rem;
   transition: transform 0.3s var(--ease);
 }
 
-.home-card:hover .course-cover {
+.home-card:hover .course-cover:not(.course-cover--poster) {
   transform: scale(1.02);
+}
+
+.home-card .course-cover--poster {
+  margin-bottom: 0.55rem;
 }
 
 .home-card > strong {
@@ -2622,7 +2648,11 @@ button.home-slide {
 }
 
 .home-card--catalog .course-cover {
-  min-height: 140px;
+  min-height: 0;
+}
+
+.home-card--catalog .course-cover--poster {
+  aspect-ratio: 3 / 2;
 }
 
 .home-card__progress {
@@ -3229,9 +3259,14 @@ button.home-slide {
 }
 
 .course-detail__visual .course-cover {
-  min-height: 240px;
+  min-height: 0;
   border-radius: var(--radius);
   box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.2);
+}
+
+.course-detail__visual .course-cover--poster {
+  aspect-ratio: 3 / 2;
+  max-height: min(420px, 48vh);
 }
 
 .course-detail__info {
@@ -3850,12 +3885,17 @@ button.home-slide {
 }
 
 .hook-card__cover {
-  min-height: 120px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .hook-card__cover .course-cover {
-  min-height: 120px;
+  min-height: 0;
   border-radius: 0;
+}
+
+.hook-card__cover .course-cover--poster {
+  aspect-ratio: 3 / 2;
 }
 
 .hook-card__cover .course-cover__tags,
@@ -3865,7 +3905,7 @@ button.home-slide {
 }
 
 .hook-card__cover .course-cover__glyph {
-  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-size: clamp(1.5rem, 4.5vw, 2.1rem);
 }
 
 .hook-card__top,

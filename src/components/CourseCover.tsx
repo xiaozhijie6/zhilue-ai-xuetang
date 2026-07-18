@@ -127,14 +127,29 @@ export function CourseCover({
   const variant = variantIndex(id)
   const caption = brand ? brandCaption(brand, title, category) : { name: glyph, sub: title || category }
 
+  // 海报图自带标题排版，不再叠 tags/caption，避免遮挡与裁切
+  const showChrome = !poster && !compact
+
   return (
     <div
-      className={`course-cover ${poster ? 'course-cover--poster' : brand ? 'course-cover--brand' : `course-cover--v${variant}`} ${compact ? 'course-cover--compact' : ''}`}
+      className={[
+        'course-cover',
+        poster ? 'course-cover--poster' : brand ? 'course-cover--brand' : `course-cover--v${variant}`,
+        compact ? 'course-cover--compact' : '',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       style={poster ? undefined : { ['--cover' as string]: bg }}
       aria-hidden={compact ? true : undefined}
     >
       {poster ? (
-        <img className="course-cover__poster" src={poster} alt="" loading="lazy" />
+        <img
+          className="course-cover__poster"
+          src={poster}
+          alt={title || glyph}
+          loading="lazy"
+          decoding="async"
+        />
       ) : brand ? (
         <div className="course-cover__brand">
           <span className="course-cover__logo-plate">
@@ -152,7 +167,7 @@ export function CourseCover({
           {!compact && <span className="course-cover__en">{category}</span>}
         </div>
       )}
-      {!compact && (
+      {showChrome && (
         <>
           <div className="course-cover__tags">
             {hot && <em className="course-cover__hot">热门</em>}
