@@ -62,13 +62,13 @@ export const MEGA_COLUMNS: MegaColumn[] = [
   {
     id: '入门',
     badge: '01 入门',
-    tagline: '装稳',
+    tagline: '会用',
     courseIds: [
       'ai-what-is',
       'ai-first-chat',
       'ai-download-guide',
-      'prompt-basics',
-      'api-keys-security',
+      'install-claude-code',
+      'install-codex',
     ],
   },
   {
@@ -87,7 +87,7 @@ export const MEGA_COLUMNS: MegaColumn[] = [
     id: '精通',
     badge: '04 精通',
     tagline: '接得住',
-    courseIds: ['api-openai', 'mcp-intro', 'rag-basics', 'agent-tools'],
+    courseIds: ['api-openai', 'mcp-install', 'rag-basics', 'agent-tools'],
   },
 ]
 
@@ -101,7 +101,7 @@ export const MEGA_GLOSSARY = [
 /** 避坑悬停：3 列 × 2 条精华 */
 export const MEGA_GUIDES = [
   { category: '账号与密钥', guideIds: ['key-leak', 'cost-shock'] },
-  { category: '编程工具', guideIds: ['cursor-agent-mode', 'first-week-path'] },
+  { category: '提示词', guideIds: ['first-week-path', 'context-overflow'] },
   { category: '幻觉与质量', guideIds: ['hallucination-code', 'rag-vs-finetune'] },
 ] as const
 
@@ -194,10 +194,10 @@ export const REC_TABS: RecTab[] = [
 
 export const HERO_SLIDES = [
   {
-    courseId: 'ai-download-guide',
-    eyebrow: '01 入门 · 先跑通',
-    title: '别再卡在「下载哪个」这一步',
-    subtitle: '先网页版、再客户端、不必翻墙',
+    courseId: 'ai-what-is',
+    eyebrow: '01 入门 · 先会问',
+    title: '先搞懂 AI 能帮你什么，再谈下载安装',
+    subtitle: '心智模型 → 第一次有效对话 → 登录下载',
     cta: '去看入门台阶',
   },
   {
@@ -231,7 +231,7 @@ export type HomeTrackCard = {
 
 /** 文字样板统一：hook=痛点疑问一句；cta=「去X台阶」 */
 export const HOME_TRACK_CARDS: HomeTrackCard[] = [
-  { level: '入门', hook: '连安装都卡壳？先把常用 AI 装稳', cta: '去入门台阶' },
+  { level: '入门', hook: '不会问、不会装？对话 + Trae/Claude Code/Codex 都在第二步', cta: '去入门台阶' },
   { level: '工具', hook: '想改项目文件？先装 Trae / 灵码，不必翻墙', cta: '去工具台阶' },
   { level: '作品', hook: '要做给人看的东西？网页、小程序、App、图', cta: '去作品台阶' },
   { level: '精通', hook: '会改文件了？往下接 API、Agent 与成本', cta: '去精通台阶' },

@@ -975,7 +975,7 @@ export const GLOSSARY: GlossaryItem[] = [
       '不校验 tool 返回，模型基于 error message 幻觉继续。',
       '把 Agent 当 RAG 替代品，简单 QA 也用 5 步 workflow。',
     ],
-    related: ['function-calling', 'react', 'planning', 'memory', 'mcp'],
+    related: ['function-calling', 'react-agent', 'planning', 'memory', 'mcp'],
   },
   {
     id: 'function-calling',
@@ -1138,7 +1138,7 @@ export const GLOSSARY: GlossaryItem[] = [
     related: ['mcp', 'mcp-client', 'cursor-rules', 'agent'],
   },
   {
-    id: 'react',
+    id: 'react-agent',
     term: 'ReAct',
     en: 'ReAct',
     category: 'Agent与工具',
@@ -1185,7 +1185,7 @@ export const GLOSSARY: GlossaryItem[] = [
       'planner 与 executor 用不同 model，tool schema 理解不一致。',
       '无 dependency 解析，并行执行有 race condition。',
     ],
-    related: ['agent', 'react', 'memory'],
+    related: ['agent', 'react-agent', 'memory'],
   },
   {
     id: 'memory',
@@ -1388,13 +1388,15 @@ export const GLOSSARY: GlossaryItem[] = [
     term: 'Webhook',
     en: 'Webhook',
     category: '工程与API',
-    short: '事件发生时平台 HTTP POST 回调你的 URL，用于异步通知与集成。',
+    short: '事件发生时平台 HTTP POST 回调你的 URL；也用于企微/飞书/钉钉机器人收消息。',
     detail:
       'Webhook 在 LLM 生态常见于：Batch job 完成、Fine-tune 完成、支付、或自建 orchestrator 通知下游。与 polling 相比更实时省资源。接收端需 verify signature（HMAC secret）、idempotent 处理 duplicate delivery、快速 200 ack 再 async 处理重活。\n\n' +
+      '即时通讯机器人（企微/飞书/钉钉）同样用回调 URL：平台把用户消息 POST 到你的公网 HTTPS 服务，你在后端调大模型后再通过平台 API 回复。个人微信无官方 Bot API。群聊多需 @ 机器人；注意频率限制与内容审核。\n\n' +
       'OpenAI Batch 可 webhook 或 poll；自研 Agent pipeline 可在 long task 完成后 POST 结果到 Slack webhook（incoming webhook URL）——注意 Slack webhook 也是 outbound HTTP。\n\n' +
       '安全：HTTPS only、rotate signing secret、IP allowlist（若 vendor 公布）、replay attack 用 timestamp tolerance。',
     howto: [
-      '暴露 POST /webhooks/openai，raw body 验签后再 JSON parse。',
+      '暴露 POST /webhooks/...，raw body 验签后再 JSON parse。',
+      '企微/飞书：按开放平台配置回调 URL 与 Token，本地用 ngrok 等 HTTPS 隧道联调。',
       'store processed event id，duplicate 直接 200。',
       'queue worker 消费 webhook payload，避免 handler 超时 vendor 重发。',
       'local dev 用 ngrok/cloudflared 暴露 HTTPS tunnel 测试。',

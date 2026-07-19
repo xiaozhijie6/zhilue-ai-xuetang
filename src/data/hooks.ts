@@ -54,8 +54,8 @@ export const HOOK_FEED: HookFeedItem[] = [
   },
   {
     id: 'h5',
-    hook: '官网首页空白？先让 AI 铺一版结构',
-    result: '首屏、卖点、案例、页脚可预览',
+    hook: '从零到可预览落地页（含装 Node）',
+    result: '首屏、卖点、案例、页脚可在本机打开',
     proof: '网页',
     level: '作品',
     courseId: 'ai-build-website',
@@ -103,7 +103,7 @@ export const HOOK_FEED: HookFeedItem[] = [
     result: 'MCP 绿灯亮、完成一次工具调用',
     proof: 'MCP',
     level: '精通',
-    courseId: 'mcp-intro',
+    courseId: 'mcp-install',
     tag: 'MCP',
   },
 ]

@@ -60,7 +60,7 @@ const TAB_BANNERS: Record<Exclude<Tab, 'home'>, TabBanner> = {
     eyebrow: '四级递进 · 入门 → 工具 → 作品 → 精通',
     title: '学习路径',
     accent: '装得上、改得动、做出来、接得住',
-    lead: '入门装稳 → 工具能改 → 作品能交 → 精通可控。按结果选台阶，不靠堆课名。',
+    lead: '入门会用 → 工具能改 → 作品能交 → 精通可控。按结果选台阶，不靠堆课名。',
     hintLabel: '怎么走',
     hint: '先定台阶，再点进教程看完整跟做正文',
     stats: [
@@ -86,7 +86,7 @@ const TAB_BANNERS: Record<Exclude<Tab, 'home'>, TabBanner> = {
     eyebrow: '症状驱动 · 逐步排查',
     title: '避坑指南',
     accent: '对上症状、查清原因、修好翻车',
-    lead: '按故障现象入手：你遇到什么 → 为什么 → 怎么排。不教从零安装，专治装完翻车。',
+    lead: '按故障现象入手：你遇到什么 → 为什么 → 怎么排。以装完翻车与配置踩坑为主，少数条目含从零跟做清单。',
     hintLabel: '怎么排',
     hint: '先对症状，再按步骤排查，别一上来重装',
     stats: [
@@ -997,7 +997,7 @@ export default function App() {
           <aside className="track-progression">
             <p>
               <strong>怎么往下走：</strong>
-              装不稳先补入门；会改文件再进作品；要接 API / Agent 进精通
+              还不会问、登不进先补入门；会改文件再进作品；要接 API / Agent 进精通
             </p>
             <div className="track-progression__actions">
               {trackLevel !== '入门' && (
@@ -1385,7 +1385,7 @@ export default function App() {
           <div className="home-promo home-promo--ink">
             <strong>怎么走</strong>
             <span>
-              入门装稳 → 工具能改 → 作品能交 → 精通可控。先定台阶，再点进教程跟做；术语讲概念，避坑查故障。
+              入门会用 → 工具能改 → 作品能交 → 精通可控。先定台阶，再点进教程跟做；术语讲概念，避坑查故障。
             </span>
           </div>
 

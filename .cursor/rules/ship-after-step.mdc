@@ -1,0 +1,35 @@
+---
+description: 每完成一步改动必须 commit 并 npm run deploy 上线
+alwaysApply: true
+---
+
+# 改完一步必须上传部署
+
+本仓库上线方式：**推送到 `main` → GitHub Actions 构建并发布 GitHub Pages**。
+
+## 硬性流程（每完成一个可交付步骤后立刻执行）
+
+1. `npm run build` 确认能过（`npm run deploy` 已内含 build，可直接走 2–3）
+2. `git add` 相关文件并 `git commit`（用户已要求「改完就部署」时视为已授权提交）
+3. **只准用这一条命令推送**（已写死在 `package.json`）：
+
+```bash
+npm run deploy
+```
+
+等价于：先 `npm run build`，再无代理推送到 `origin` 的 `main`：
+
+```bash
+git -c http.proxy= -c https.proxy= push origin HEAD:main
+```
+
+## 禁止
+
+- 改完内容只停在本地、不 commit、不 push
+- 使用会走坏代理的裸 `git push`（本机代理常导致 GitHub 443 失败）
+- 使用 `--no-verify` / force push 到 main（除非用户明确要求）
+
+## 成功标准
+
+- `git status` 显示与 `origin/main` 同步（无 ahead）
+- 站点：https://xiaozhijie6.github.io/zhilue-ai-xuetang/

@@ -237,6 +237,29 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
         tip: '下错成 trae.ai 海外版就卸载重来。Cursor 专篇标为可选。',
       },
       {
+        title: '跟做 F：Claude Code / Codex / Cursor（编程专用，按需）',
+        paragraphs: [
+          '聊天客户端（ChatGPT / Claude App）和「编程 Agent」不是同一类东西：Claude Code、OpenAI Codex、Cursor 用来改本地代码仓库。',
+          '国内建议顺序：① 先装 Trae.cn 或通义灵码（上一步）→ ② 要用终端 Agent 再装 Claude Code / Codex，并配合《CC Switch》配国内中转 Key → ③ 有稳定海外网络再装 Cursor。',
+          '本页只点明入口；逐步点击、命令行与排错见对应专篇（入门第二步已挂出）：',
+          '· Claude Code → 教程「Claude Code 安装」',
+          '· OpenAI Codex → 教程「OpenAI Codex 安装」',
+          '· Cursor → 教程「Cursor 安装」',
+          '· 中转 Key 面板 → 教程「CC Switch 安装」',
+        ],
+        steps: [
+          '先确认：你是要「网页聊天」还是「改电脑里的项目文件」。后者才需要装本节工具。',
+          '国内默认：Trae / 灵码装通后，再决定要不要上 Claude Code / Codex。',
+          '打开入门台阶 STEP 02 里对应专篇跟做；不要搜「Claude Code 破解版」。',
+        ],
+        tip: '官方 Claude / OpenAI 登录常需海外网络；国内用 CC Switch + 兼容 API Key 更稳。',
+        links: [
+          { label: 'Claude Code 文档', url: 'https://docs.anthropic.com/en/docs/claude-code' },
+          { label: 'OpenAI Codex', url: 'https://chatgpt.com/codex' },
+          { label: 'Cursor 下载', url: 'https://cursor.com/download' },
+        ],
+      },
+      {
         title: '装不上？对照这张排错表',
         paragraphs: [
           '网页一直转圈 / 打不开：换手机热点试；公司网可能拦截；海外站点需合规可用的网络环境。',
@@ -271,7 +294,8 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
       '至少一个国内官网（豆包/Kimi/通义）能登录并发消息',
       '浏览器已收藏官方地址，不再靠搜索点广告',
       '（可选）ChatGPT/Claude 客户端或网页能用',
-      '（可选）Cursor 从 cursor.com/download 安装并登录',
+      '（写代码）Trae.cn 或通义灵码已装并能改文件',
+      '（可选）Claude Code / Codex / Cursor 已按专篇装通',
       '没下载任何「破解版」「绿色版」',
     ],
     refs: [
@@ -1466,9 +1490,10 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
 
   'ai-build-website': {
     intro: [
-      '目标：今晚在电脑浏览器里打开你自己的一页宣传站（有大标题、卖点、问答、页脚）。不会写代码也行——命令复制粘贴，页面交给 Cursor AI 改。',
-      '你需要已经会：① 打开 Cursor ② Open Folder。不会的先做完「Cursor 安装」教程。',
-      '还要装一个叫 Node.js 的运行环境（像「让网页项目能启动的引擎」）。下面从官网下载开始手把手写。',
+      '目标：今晚在电脑浏览器里打开你自己的一页宣传站（有大标题、卖点、问答、页脚）。不会写代码也行——命令复制粘贴，页面交给 AI IDE 改。',
+      '前置：会打开任一 AI 编程工具并 Open Folder 即可——推荐国内优先 Trae / 通义灵码，也可 Cursor。不会装的先做对应安装教程。',
+      '还要装 Node.js（让网页项目能启动的引擎）。下面从官网下载开始；生成页面时把提示词贴进 Agent / 对话面板即可（Cursor 常用 Ctrl+I，Trae/灵码用其 AI 对话入口）。',
+      '已有 Vite 项目、只想改首页：跳到「第 4 步」，在 Agent 里粘贴落地页提示词即可。',
     ],
     sections: [
       {
@@ -1515,13 +1540,13 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
         ],
       },
       {
-        title: '第 3 步：用 Cursor 打开这个项目',
+        title: '第 3 步：用 AI IDE 打开这个项目',
         paragraphs: [
-          '① 打开 Cursor → 菜单 File → Open Folder。',
-          '② 选中 my-landing 这一层（进去能看见 package.json 文件的那一层，不要只选到 ai-practice 上层）。',
+          '① 打开 Trae / 通义灵码 / Cursor → 菜单「打开文件夹 / Open Folder」。',
+          '② 选中 my-landing 这一层（进去能看见 package.json 的那一层，不要只选到 ai-practice 上层）。',
           '③ 左侧应出现 src、package.json 等。',
-          '④ 在 Cursor 里按 Ctrl+`（反引号，Esc 下面）打开下方终端；如需再次启动网站，输入 npm run dev。',
-          '⑤ 按 Ctrl+I 打开 Agent，发送：「用中文列出这个项目主要文件夹和文件，各一行说明。」确认 AI 能读到你的项目。',
+          '④ 打开内置终端（常见快捷键 Ctrl+`）；如需再次启动网站，输入 npm run dev。',
+          '⑤ 打开 AI Agent / 对话面板（Cursor 常用 Ctrl+I；Trae/灵码点侧边 AI 入口），发送：「用中文列出这个项目主要文件夹和文件，各一行说明。」确认 AI 能读到你的项目。',
         ],
         steps: [
           'Open Folder 打开 my-landing 根目录。',
@@ -1532,7 +1557,7 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
       {
         title: '第 4 步：整段复制给 AI，生成落地页',
         paragraphs: [
-          '在 Cursor Agent（Ctrl+I）里粘贴下面整段（可把【知识付费课程平台】改成你的产品名），发送后等待它改文件，出现 Accept 就点接受：',
+          '在 AI Agent / 对话面板里粘贴下面整段（可把【知识付费课程平台】改成你的产品名），发送后等待它改文件，出现 Accept 就点接受：',
           '「为【知识付费课程平台】做一页落地页。技术栈：现有 Vite React TS，不要新增 UI 组件库。请修改 src/App.tsx，并在 src/components/ 创建组件：Hero（大标题+副标题+主按钮）、Features（3 个卖点）、Pricing（三档价格占位）、FAQ（4 个常见问题）、Footer（版权）。配色：背景 #0f172a，强调色 #e8891c。文案中文。手机宽度单列。改完用列表告诉我动了哪些文件。」',
         ],
         steps: [

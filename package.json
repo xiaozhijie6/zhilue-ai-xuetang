@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "deploy": "git -c http.proxy= -c https.proxy= push"
+    "deploy": "npm run build && git -c http.proxy= -c https.proxy= push origin HEAD:main"
   },
   "dependencies": {
     "react": "^19.2.7",
