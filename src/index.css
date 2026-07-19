@@ -2753,20 +2753,29 @@ button.home-slide {
 .gk-mega__inner {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.75rem 3rem;
-  padding: 1.5rem 1.75rem 1.65rem;
-  border-radius: 4px;
+  gap: 1.75rem 2.75rem;
+  padding: 1.6rem 1.85rem 1.75rem;
+  border-radius: 10px;
   background: #fff;
   border: 1px solid rgba(15, 23, 42, 0.06);
   box-shadow:
-    0 12px 40px rgba(15, 23, 42, 0.1),
+    0 16px 48px rgba(15, 23, 42, 0.12),
     0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
 @media (min-width: 720px) {
+  .gk-mega__panel {
+    min-width: min(920px, calc(100vw - 2rem));
+  }
+
   .gk-mega__inner {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem 3.5rem;
+    gap: 1.6rem 2.75rem;
+  }
+
+  /* 04 精通落在第二行左侧，与截图一致 */
+  .gk-mega__col:nth-child(4) {
+    grid-column: 1;
   }
 }
 
@@ -2775,30 +2784,22 @@ button.home-slide {
 }
 
 .gk-mega__title {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  margin: 0 0 0.85rem;
+  display: block;
+  margin: 0 0 0.9rem;
   padding: 0;
   border: 0;
   background: none;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.98rem;
   font-weight: 700;
   color: #ff7a00;
   cursor: pointer;
   letter-spacing: 0.01em;
+  text-align: left;
 }
 
 .gk-mega__title:hover {
   color: #e56b00;
-}
-
-.gk-mega__title i {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 0.95rem;
-  line-height: 1;
 }
 
 .gk-mega__list {
@@ -2806,14 +2807,14 @@ button.home-slide {
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0.55rem;
+  gap: 0.5rem;
 }
 
 .gk-mega__list button {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.35rem;
   padding: 0;
   border: 0;
   background: none;
@@ -2821,6 +2822,15 @@ button.home-slide {
   font: inherit;
   color: #333;
   cursor: pointer;
+}
+
+.gk-mega__list button > i {
+  flex-shrink: 0;
+  width: 0.7rem;
+  font-style: normal;
+  font-weight: 700;
+  color: #ff7a00;
+  line-height: 1;
 }
 
 .gk-mega__list button:hover em {
@@ -2836,6 +2846,7 @@ button.home-slide {
 
 .gk-mega__list b {
   flex-shrink: 0;
+  margin-left: 0.15rem;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.02em;

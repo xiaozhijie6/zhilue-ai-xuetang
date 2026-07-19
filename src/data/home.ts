@@ -1,6 +1,5 @@
 import type { IconKey } from '../components/AiIcon'
 import type { TrackId } from './tracks'
-import { CATEGORY_COLUMNS } from './knowledge'
 
 export type CatNav = {
   category: string
@@ -9,52 +8,115 @@ export type CatNav = {
   icon: IconKey
 }
 
-/** 顶部多列总类导航文案（顺序跟 CATEGORY_COLUMNS 一致） */
-const CAT_META: Record<string, { title: string; keywords: string; icon: IconKey }> = {
-  入门起步: { title: '入门起步', keywords: '下载 · 注册 · 第一次对话', icon: 'download' },
-  '前端 / JS': { title: '前端 / JS', keywords: '网页 · 落地页 · HTML/React', icon: 'web' },
-  '小程序与 App': { title: '小程序与 App', keywords: '微信小程序 · 移动端', icon: 'miniapp' },
-  工具安装: { title: '工具安装', keywords: 'Trae · 灵码 · Cursor · 不翻墙', icon: 'cursor' },
-  工具用法: { title: '工具用法', keywords: 'Agent · Rules · 工作流', icon: 'agent' },
-  提示词工程: { title: '提示词工程', keywords: '结构 · 模板 · 系统提示', icon: 'prompt' },
-  办公提效: { title: '办公提效', keywords: '邮件 · 纪要 · PPT', icon: 'office' },
-  API与配置: { title: 'API与配置', keywords: '密钥 · 域名 · 网关', icon: 'openai' },
-  'MCP与Agent': { title: 'MCP与Agent', keywords: '接工具 · 多步调用', icon: 'mcp' },
-  AI生图: { title: 'AI生图', keywords: '海报 · 封面 · 品牌视觉', icon: 'image' },
-  安全与成本: { title: '安全与成本', keywords: '脱敏 · 密钥 · 账单', icon: 'security' },
+/** 目录面板短标题（整洁可读，不塞长课名） */
+export const MEGA_LABELS: Record<string, string> = {
+  'ai-what-is': 'AI 是什么',
+  'ai-first-chat': '第一次有效对话',
+  'ai-download-guide': 'Windows / Mac 下载安装',
+  'ai-account-setup': '账号注册与基础设置',
+  'newbie-first-week': '7 天 AI 基础路径',
+  'prompt-basics': '提示词入门',
+  'ai-daily-office': '办公提效',
+  'api-keys-security': 'API Key 安全',
+  'tool-pick-compare': '工具怎么选',
+  'install-trae': 'Trae 国内版安装',
+  'install-lingma': '通义灵码安装',
+  'install-cc-switch': 'CC Switch 装与用',
+  'cursor-install': 'Cursor 安装（需海外网络）',
+  'install-claude-code': 'Claude Code 安装',
+  'install-codex': 'OpenAI Codex 安装',
+  'install-copilot': 'GitHub Copilot 安装',
+  'install-windsurf': 'Windsurf 安装',
+  cursor: 'Cursor 用法',
+  'cursor-rules': 'Cursor Rules 深度',
+  'claude-code': 'Claude Code 用法',
+  'tool-localize': 'AI 软件汉化',
+  'ai-build-website': '一句话需求到可预览网页',
+  'ai-landing-page': '落地页部署上线',
+  'ai-build-miniprogram': '微信小程序三页骨架',
+  'ai-build-app': 'App 关键屏与流程说明稿',
+  'ai-image-gen': '生图提示词怎么写',
+  'ai-image-brand': 'AI 品牌视觉统一',
+  'api-openai': 'OpenAI API 配置',
+  'api-compatible': '兼容网关对照',
+  'domain-api-cheatsheet': '域名与接口速查',
+  'mcp-intro': 'MCP 是什么',
+  'mcp-install': 'MCP 怎么装',
+  'prompt-system': '系统提示词',
+  'rag-basics': 'RAG 入门',
+  'agent-tools': 'Agent 工具调用',
+  'hallucination-defense': '防幻觉核查',
+  'cost-control': '控成本与限流',
 }
 
-export const CAT_NAV: CatNav[] = CATEGORY_COLUMNS.map((category) => {
-  const meta = CAT_META[category] ?? {
-    title: category,
-    keywords: '',
-    icon: 'default' as IconKey,
-  }
-  return { category, ...meta }
-})
-
-/** 悬停展开的总类面板：四列对齐四级递进 */
+/** 悬停目录：四阶分列，跟学习路径一致 */
 export type MegaColumn = {
-  title: string
-  categories: string[]
+  id: TrackId
+  badge: string
+  tagline: string
+  courseIds: string[]
 }
 
+/** 目录四列精选（不把所有课塞进一列，保持整洁） */
 export const MEGA_COLUMNS: MegaColumn[] = [
   {
-    title: '01 入门 · 装稳',
-    categories: ['入门起步'],
+    id: '入门',
+    badge: '01 入门',
+    tagline: '装稳',
+    courseIds: [
+      'ai-what-is',
+      'ai-first-chat',
+      'ai-download-guide',
+      'ai-account-setup',
+      'newbie-first-week',
+    ],
   },
   {
-    title: '02 工具 · 改文件',
-    categories: ['工具安装', '工具用法'],
+    id: '工具',
+    badge: '02 工具',
+    tagline: '改文件',
+    courseIds: [
+      'install-trae',
+      'install-lingma',
+      'install-cc-switch',
+      'cursor-install',
+      'install-claude-code',
+      'install-codex',
+      'install-copilot',
+      'install-windsurf',
+      'cursor',
+      'cursor-rules',
+      'claude-code',
+      'tool-localize',
+    ],
   },
   {
-    title: '03 作品 · 出成品',
-    categories: ['前端 / JS', '小程序与 App', 'AI生图'],
+    id: '作品',
+    badge: '03 作品',
+    tagline: '出成品',
+    courseIds: [
+      'ai-build-website',
+      'ai-landing-page',
+      'ai-build-miniprogram',
+      'ai-build-app',
+      'ai-image-gen',
+      'ai-image-brand',
+    ],
   },
   {
-    title: '04 精通 · 接得住',
-    categories: ['提示词工程', '办公提效', 'API与配置', 'MCP与Agent', '安全与成本'],
+    id: '精通',
+    badge: '04 精通',
+    tagline: '接得住',
+    courseIds: [
+      'prompt-basics',
+      'ai-daily-office',
+      'api-keys-security',
+      'api-openai',
+      'domain-api-cheatsheet',
+      'mcp-intro',
+      'rag-basics',
+      'agent-tools',
+    ],
   },
 ]
 
@@ -66,51 +128,47 @@ export type FreeTile = {
   courseId: string
 }
 
-/**
- * 文字样板（全页面统一）：
- * - title：场景痛点一句（≤18 字）
- * - desc：动作清单，顿号分隔
- */
+/** 每条标题句式故意不同，避免读起来像同一模板 */
 export const FREE_TILES: FreeTile[] = [
   {
     id: 'f1',
-    title: '装 AI 老是下到假站？先认准官方入口',
-    desc: '认入口、按系统装、第一次打开',
+    title: 'Win / Mac 装 AI，别再到处找下载页',
+    desc: '官方入口、安装勾选项、第一次打开',
     icon: 'download',
     courseId: 'ai-download-guide',
   },
   {
     id: 'f2',
-    title: '不翻墙也想改代码？今晚先把 Trae 装上',
-    desc: '认 trae.cn、手机号登、改第一个文件',
+    title: '不翻墙，今晚就把 Trae 跑起来',
+    desc: 'trae.cn 下载、手机号登录、改掉第一个文件',
     icon: 'cursor',
     courseId: 'install-trae',
   },
   {
     id: 'f3',
-    title: '客户明天要链接？今晚先铺一版网页',
-    desc: '定区块、写文案、本地预览',
+    title: '明天能发出去的落地页长什么样？',
+    desc: '需求一句话，布局文案一起出',
     icon: 'web',
     courseId: 'ai-build-website',
   },
   {
     id: 'f4',
-    title: '小程序别从零画？三页骨架一次铺开',
-    desc: '首页、列表、详情、带交互',
+    title: '微信小程序三页骨架直接生成',
+    desc: '首页 · 列表 · 详情，带着交互说明',
     icon: 'miniapp',
     courseId: 'ai-build-miniprogram',
   },
   {
     id: 'f5',
-    title: '问完还是废话？提示词少了四件套',
+    title: '同一句话，为什么别人问得更准',
     desc: '角色、目标、约束、格式拆开写',
     icon: 'prompt',
     courseId: 'prompt-basics',
   },
   {
     id: 'f6',
-    title: '出图老是差不多？把主体和风格写死',
-    desc: '主体、风格、比例、负面词',
+    title: '封面图别再找设计师排期了',
+    desc: '出图、改图、统一风格怎么写',
     icon: 'image',
     courseId: 'ai-image-gen',
   },

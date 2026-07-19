@@ -17,6 +17,7 @@ import {
   HERO_SLIDES,
   HOME_TRACK_CARDS,
   MEGA_COLUMNS,
+  MEGA_LABELS,
   REC_TABS,
 } from './data/home'
 import { HOOK_FEED } from './data/hooks'
@@ -35,8 +36,9 @@ type RecTabId = (typeof REC_TABS)[number]['id']
 
 const TRACK_LEVELS: TrackId[] = ['入门', '工具', '作品', '精通']
 
-function shortCourseLabel(item: KnowledgeItem) {
-  const head = item.title.split(/[：:]/)[0]?.trim() || item.title
+function megaLabel(id: string, fallbackTitle?: string) {
+  if (MEGA_LABELS[id]) return MEGA_LABELS[id]
+  const head = (fallbackTitle ?? id).split(/[：:]/)[0]?.trim() || id
   return head.length > 18 ? `${head.slice(0, 18)}…` : head
 }
 
@@ -437,18 +439,10 @@ export default function App() {
     let list = [...KNOWLEDGE_LIBRARY]
     switch (tabMeta.filter) {
       case '入门':
-        list = list.filter((c) => c.level === '入门')
-        break
       case '工具':
-        list = list.filter((c) => c.category === '工具安装' || c.category === '工具用法')
-        break
       case '作品':
-        list = list.filter((c) => c.category === '前端 / JS' || c.category === '小程序与 App' || c.category === 'AI生图')
-        break
       case '精通':
-        list = list.filter(
-          (c) => c.category === 'API与配置' || c.category === 'MCP与Agent' || c.category === '安全与成本',
-        )
+        list = list.filter((c) => c.level === tabMeta.filter)
         break
       case 'new':
         list = list.filter((c) => c.new || c.hot).sort((a, b) => Number(!!b.new) - Number(!!a.new))
@@ -534,51 +528,52 @@ export default function App() {
               aria-expanded={megaOpen}
               aria-haspopup="true"
               onClick={() => {
-                setTab('home')
+                setTab('track')
                 setMegaOpen((v) => !v)
               }}
             >
-              教程
+              目录
               <i aria-hidden="true">▾</i>
             </button>
             <div className="gk-mega__panel" hidden={!megaOpen}>
               <div className="gk-mega__inner">
-                {MEGA_COLUMNS.map((col) => {
-                  const items = KNOWLEDGE_LIBRARY.filter((c) => col.categories.includes(c.category))
-                  return (
-                    <div key={col.title} className="gk-mega__col">
-                      <button
-                        type="button"
-                        className="gk-mega__title"
-                        onClick={() => {
-                          setMegaOpen(false)
-                          setTab('home')
-                          const first = col.categories[0] as (typeof CATEGORIES)[number]
-                          openCatalog({ category: first })
-                        }}
-                      >
-                        <i aria-hidden="true">›</i>
-                        <span>{col.title}</span>
-                      </button>
-                      <ul className="gk-mega__list">
-                        {items.map((item) => (
-                          <li key={item.id}>
+                {MEGA_COLUMNS.map((col) => (
+                  <div key={col.id} className="gk-mega__col">
+                    <button
+                      type="button"
+                      className="gk-mega__title"
+                      onClick={() => {
+                        setMegaOpen(false)
+                        goToTrack(col.id)
+                      }}
+                    >
+                      <span>
+                        {col.badge} · {col.tagline}
+                      </span>
+                    </button>
+                    <ul className="gk-mega__list">
+                      {col.courseIds.map((cid) => {
+                        const item = getItem(cid)
+                        if (!item) return null
+                        return (
+                          <li key={cid}>
                             <button
                               type="button"
                               onClick={() => {
                                 setMegaOpen(false)
-                                openCourse(item.id)
+                                openCourse(cid)
                               }}
                             >
-                              <em>{shortCourseLabel(item)}</em>
+                              <i aria-hidden="true">·</i>
+                              <em>{megaLabel(cid, item.title)}</em>
                               {item.new ? <b>new</b> : null}
                             </button>
                           </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )
-                })}
+                        )
+                      })}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -586,10 +581,10 @@ export default function App() {
             {(
               [
                 ['home', '首页'],
-                ['track', '学习路径'],
-                ['glossary', '术语词典'],
-                ['guide', '避坑指南'],
-                ['learn', '我的进度'],
+                ['track', '学习台阶'],
+                ['glossary', '术语'],
+                ['guide', '避坑'],
+                ['learn', '进度'],
               ] as const
             ).map(([id, label]) => (
               <button
@@ -1350,7 +1345,7 @@ export default function App() {
               <div>
                 <h2>全部教程</h2>
                 <p className="home-block-desc">
-                  {stats.courses} 篇已收录，可按分类、阶段筛选，或搜索「下载 / Cursor / 网页 / 生图」
+                  {stats.courses} 篇已收录 · 按四阶筛选：入门 / 工具 / 作品 / 精通
                 </p>
               </div>
               <div className="gk-sort">
@@ -1375,26 +1370,17 @@ export default function App() {
 
             <div className="gk-toolbar gk-toolbar--compact home-catalog-toolbar">
               <div className="gk-filters gk-filters--sm">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    type="button"
-                    className={category === cat ? 'is-on' : ''}
-                    onClick={() => setCategory(cat as (typeof CATEGORIES)[number])}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-              <div className="gk-filters gk-filters--sm">
                 {LEVELS.map((lv) => (
                   <button
                     key={lv}
                     type="button"
                     className={level === lv ? 'is-on' : ''}
-                    onClick={() => setLevel(lv as Level | '全部')}
+                    onClick={() => {
+                      setLevel(lv as Level | '全部')
+                      setCategory('全部')
+                    }}
                   >
-                    {lv}
+                    {lv === '全部' ? '全部' : `${lv}`}
                   </button>
                 ))}
               </div>
