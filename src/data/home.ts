@@ -57,68 +57,56 @@ export type MegaColumn = {
   courseIds: string[]
 }
 
-/** 目录四列精选（不把所有课塞进一列，保持整洁） */
+/** 目录四列：每列只放精华，完整列表进对应页 */
 export const MEGA_COLUMNS: MegaColumn[] = [
   {
     id: '入门',
     badge: '01 入门',
     tagline: '装稳',
-    courseIds: [
-      'ai-what-is',
-      'ai-first-chat',
-      'ai-download-guide',
-      'ai-account-setup',
-      'newbie-first-week',
-    ],
+    courseIds: ['ai-what-is', 'ai-download-guide', 'ai-first-chat', 'newbie-first-week'],
   },
   {
     id: '工具',
     badge: '02 工具',
     tagline: '改文件',
-    courseIds: [
-      'install-trae',
-      'install-lingma',
-      'install-cc-switch',
-      'cursor-install',
-      'install-claude-code',
-      'install-codex',
-      'install-copilot',
-      'install-windsurf',
-      'cursor',
-      'cursor-rules',
-      'claude-code',
-      'tool-localize',
-    ],
+    courseIds: ['install-trae', 'install-lingma', 'cursor-install', 'cursor', 'tool-localize'],
   },
   {
     id: '作品',
     badge: '03 作品',
     tagline: '出成品',
-    courseIds: [
-      'ai-build-website',
-      'ai-landing-page',
-      'ai-build-miniprogram',
-      'ai-build-app',
-      'ai-image-gen',
-      'ai-image-brand',
-    ],
+    courseIds: ['ai-build-website', 'ai-build-miniprogram', 'ai-image-gen'],
   },
   {
     id: '精通',
     badge: '04 精通',
     tagline: '接得住',
-    courseIds: [
-      'prompt-basics',
-      'ai-daily-office',
-      'api-keys-security',
-      'api-openai',
-      'domain-api-cheatsheet',
-      'mcp-intro',
-      'rag-basics',
-      'agent-tools',
-    ],
+    courseIds: ['prompt-basics', 'api-keys-security', 'mcp-intro', 'rag-basics'],
   },
 ]
+
+/** 术语悬停：3 列 × 3 条精华 */
+export const MEGA_GLOSSARY = [
+  { category: '模型基础', termIds: ['llm', 'token', 'context-window'] },
+  { category: 'Agent与工具', termIds: ['agent', 'mcp', 'function-calling'] },
+  { category: '工程与API', termIds: ['api-key', 'base-url', 'rate-limit'] },
+] as const
+
+/** 避坑悬停：3 列 × 2 条精华 */
+export const MEGA_GUIDES = [
+  { category: '账号与密钥', guideIds: ['key-leak', 'cost-shock'] },
+  { category: '编程工具', guideIds: ['cursor-agent-mode', 'first-week-path'] },
+  { category: '幻觉与质量', guideIds: ['hallucination-code', 'rag-vs-finetune'] },
+] as const
+
+/** 进度悬停：最多 5 条 */
+export const MEGA_LEARN_IDS = [
+  'install-trae',
+  'ai-download-guide',
+  'cursor',
+  'ai-build-website',
+  'tool-localize',
+] as const
 
 export type FreeTile = {
   id: string

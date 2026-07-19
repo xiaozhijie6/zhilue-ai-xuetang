@@ -17,7 +17,10 @@ import {
   HERO_SLIDES,
   HOME_TRACK_CARDS,
   MEGA_COLUMNS,
+  MEGA_GLOSSARY,
+  MEGA_GUIDES,
   MEGA_LABELS,
+  MEGA_LEARN_IDS,
   REC_TABS,
 } from './data/home'
 import { HOOK_FEED } from './data/hooks'
@@ -582,6 +585,17 @@ export default function App() {
                       </ul>
                     </div>
                   ))}
+                  <p className="gk-mega__more">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMegaKey(null)
+                        setTab('track')
+                      }}
+                    >
+                      打开学习台阶看全部 →
+                    </button>
+                  </p>
                 </div>
               </div>
             </div>
@@ -602,31 +616,32 @@ export default function App() {
               >
                 术语
               </button>
-              <div className="gk-mega__panel gk-mega__panel--wide" hidden={megaKey !== 'glossary'}>
-                <div className="gk-mega__inner gk-mega__inner--dense">
-                  {GLOSSARY_CATEGORIES.filter((c) => c !== '全部').map((cat) => {
-                    const terms = GLOSSARY.filter((g) => g.category === cat).slice(0, 6)
-                    return (
-                      <div key={cat} className="gk-mega__col">
-                        <button
-                          type="button"
-                          className="gk-mega__title"
-                          onClick={() => {
-                            setMegaKey(null)
-                            setGCat(cat)
-                            setTab('glossary')
-                          }}
-                        >
-                          {cat}
-                        </button>
-                        <ul className="gk-mega__list">
-                          {terms.map((g) => (
+              <div className="gk-mega__panel" hidden={megaKey !== 'glossary'}>
+                <div className="gk-mega__inner">
+                  {MEGA_GLOSSARY.map((col) => (
+                    <div key={col.category} className="gk-mega__col">
+                      <button
+                        type="button"
+                        className="gk-mega__title"
+                        onClick={() => {
+                          setMegaKey(null)
+                          setGCat(col.category)
+                          setTab('glossary')
+                        }}
+                      >
+                        {col.category}
+                      </button>
+                      <ul className="gk-mega__list">
+                        {col.termIds.map((id) => {
+                          const g = GLOSSARY.find((x) => x.id === id)
+                          if (!g) return null
+                          return (
                             <li key={g.id}>
                               <button
                                 type="button"
                                 onClick={() => {
                                   setMegaKey(null)
-                                  setGCat(cat)
+                                  setGCat(col.category)
                                   setGlossaryId(g.id)
                                   setTab('glossary')
                                 }}
@@ -635,11 +650,23 @@ export default function App() {
                                 <em>{g.term}</em>
                               </button>
                             </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                  })}
+                          )
+                        })}
+                      </ul>
+                    </div>
+                  ))}
+                  <p className="gk-mega__more">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMegaKey(null)
+                        setGCat('全部')
+                        setTab('glossary')
+                      }}
+                    >
+                      查看全部术语 →
+                    </button>
+                  </p>
                 </div>
               </div>
             </div>
@@ -660,44 +687,57 @@ export default function App() {
               >
                 避坑
               </button>
-              <div className="gk-mega__panel gk-mega__panel--wide" hidden={megaKey !== 'guide'}>
-                <div className="gk-mega__inner gk-mega__inner--dense">
-                  {GUIDE_CATEGORIES.filter((c) => c !== '全部').map((cat) => {
-                    const guides = NEWBIE_GUIDES.filter((g) => g.category === cat).slice(0, 5)
-                    return (
-                      <div key={cat} className="gk-mega__col">
-                        <button
-                          type="button"
-                          className="gk-mega__title"
-                          onClick={() => {
-                            setMegaKey(null)
-                            setGuideCat(cat)
-                            setTab('guide')
-                          }}
-                        >
-                          {cat}
-                        </button>
-                        <ul className="gk-mega__list">
-                          {guides.map((g) => (
+              <div className="gk-mega__panel" hidden={megaKey !== 'guide'}>
+                <div className="gk-mega__inner">
+                  {MEGA_GUIDES.map((col) => (
+                    <div key={col.category} className="gk-mega__col">
+                      <button
+                        type="button"
+                        className="gk-mega__title"
+                        onClick={() => {
+                          setMegaKey(null)
+                          setGuideCat(col.category)
+                          setTab('guide')
+                        }}
+                      >
+                        {col.category}
+                      </button>
+                      <ul className="gk-mega__list">
+                        {col.guideIds.map((id) => {
+                          const g = NEWBIE_GUIDES.find((x) => x.id === id)
+                          if (!g) return null
+                          return (
                             <li key={g.id}>
                               <button
                                 type="button"
                                 onClick={() => {
                                   setMegaKey(null)
-                                  setGuideCat(cat)
+                                  setGuideCat(col.category)
                                   setGuideId(g.id)
                                   setTab('guide')
                                 }}
                               >
                                 <i aria-hidden="true">·</i>
-                                <em>{g.title.length > 16 ? `${g.title.slice(0, 16)}…` : g.title}</em>
+                                <em>{g.title.length > 18 ? `${g.title.slice(0, 18)}…` : g.title}</em>
                               </button>
                             </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )
-                  })}
+                          )
+                        })}
+                      </ul>
+                    </div>
+                  ))}
+                  <p className="gk-mega__more">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMegaKey(null)
+                        setGuideCat('全部')
+                        setTab('guide')
+                      }}
+                    >
+                      查看全部避坑 →
+                    </button>
+                  </p>
                 </div>
               </div>
             </div>
@@ -737,7 +777,7 @@ export default function App() {
                       我的进度
                     </button>
                     <ul className="gk-mega__list">
-                      {FEATURED_IDS.slice(0, 8).map((cid) => {
+                      {MEGA_LEARN_IDS.map((cid) => {
                         const item = getItem(cid)
                         if (!item) return null
                         const pct = courseProgress(cid)
