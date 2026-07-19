@@ -168,21 +168,30 @@ button {
 
 .gk-tabs {
   display: none;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.15rem;
   margin-left: 0.5rem;
 }
 
-.gk-tabs button {
+.gk-tabs > button,
+.gk-tabs .gk-mega__trigger {
   padding: 0.5rem 0.85rem;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--muted);
   border-radius: 999px;
+  border: 0;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 
-.gk-tabs button.is-on,
-.gk-tabs button:hover {
+.gk-tabs > button.is-on,
+.gk-tabs > button:hover,
+.gk-tabs .gk-mega__trigger.is-on,
+.gk-tabs .gk-mega.is-open .gk-mega__trigger,
+.gk-tabs .gk-mega__trigger:hover {
   color: var(--ink);
   background: rgba(15, 23, 42, 0.05);
 }
@@ -2705,45 +2714,20 @@ button.home-slide {
   flex-shrink: 0;
 }
 
-.gk-mega__trigger {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  min-height: 36px;
-  padding: 0.45rem 0.85rem;
-  border-radius: 999px;
-  border: 0;
-  background: transparent;
-  font: inherit;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--muted);
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
-.gk-mega__trigger i {
-  font-style: normal;
-  font-size: 0.7rem;
-  opacity: 0.75;
-}
-
-.gk-mega.is-open .gk-mega__trigger,
-.gk-mega__trigger:hover {
-  color: var(--ink);
-  background: rgba(15, 23, 42, 0.05);
-}
-
 .gk-mega__panel {
   position: absolute;
   top: 100%;
   left: 0;
   z-index: 60;
-  min-width: min(860px, calc(100vw - 2rem));
+  min-width: min(420px, calc(100vw - 2rem));
   padding: 0.55rem 0 0;
   background: transparent;
   border: 0;
   box-shadow: none;
+}
+
+.gk-mega__panel--wide {
+  min-width: min(920px, calc(100vw - 2rem));
 }
 
 .gk-mega__panel[hidden] {
@@ -2764,19 +2748,53 @@ button.home-slide {
 }
 
 @media (min-width: 720px) {
-  .gk-mega__panel {
-    min-width: min(920px, calc(100vw - 2rem));
-  }
-
   .gk-mega__inner {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.6rem 2.75rem;
   }
 
-  /* 04 精通落在第二行左侧，与截图一致 */
-  .gk-mega__col:nth-child(4) {
+  .gk-mega__panel--wide .gk-mega__inner {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .gk-mega__panel--wide .gk-mega__inner--dense {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.35rem 1.75rem;
+  }
+
+  .gk-mega__inner--learn {
+    grid-template-columns: 1.4fr 1fr;
+  }
+
+  /* 学习台阶：04 精通落在第二行左侧 */
+  .gk-mega__panel--wide .gk-mega__inner:not(.gk-mega__inner--dense):not(.gk-mega__inner--learn)
+    .gk-mega__col:nth-child(4) {
     grid-column: 1;
   }
+}
+
+.gk-mega__hint {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.gk-mega__cta {
+  min-height: 38px;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  border: 0;
+  background: #ff7a00;
+  color: #fff;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gk-mega__cta:hover {
+  background: #e56b00;
 }
 
 .gk-mega__col {

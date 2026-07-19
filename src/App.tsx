@@ -328,7 +328,7 @@ export default function App() {
   const [guideId, setGuideId] = useState<string>(NEWBIE_GUIDES[0]?.id ?? '')
   const [guideQuery, setGuideQuery] = useState('')
   const [endpointGroup, setEndpointGroup] = useState<(typeof ENDPOINT_GROUPS)[number]>('全部')
-  const [megaOpen, setMegaOpen] = useState(false)
+  const [megaKey, setMegaKey] = useState<null | 'track' | 'glossary' | 'guide' | 'learn'>(null)
   const [progressMap, setProgressMap] = useState(loadProgress)
   const [learnId, setLearnId] = useState<string>(FEATURED_IDS[0])
   const [heroIndex, setHeroIndex] = useState(0)
@@ -517,92 +517,270 @@ export default function App() {
           <button type="button" className="gk-logo" onClick={() => setTab('home')}>
             知略 <span>AI 学堂</span>
           </button>
-          <div
-            className={`gk-mega${megaOpen ? ' is-open' : ''}`}
-            onMouseEnter={() => setMegaOpen(true)}
-            onMouseLeave={() => setMegaOpen(false)}
-          >
+          <nav className="gk-tabs" aria-label="主导航">
             <button
               type="button"
-              className="gk-mega__trigger"
-              aria-expanded={megaOpen}
-              aria-haspopup="true"
+              className={tab === 'home' ? 'is-on' : ''}
               onClick={() => {
-                setTab('track')
-                setMegaOpen((v) => !v)
+                setMegaKey(null)
+                setTab('home')
               }}
             >
-              目录
-              <i aria-hidden="true">▾</i>
+              首页
             </button>
-            <div className="gk-mega__panel" hidden={!megaOpen}>
-              <div className="gk-mega__inner">
-                {MEGA_COLUMNS.map((col) => (
-                  <div key={col.id} className="gk-mega__col">
+
+            <div
+              className={`gk-mega${megaKey === 'track' ? ' is-open' : ''}`}
+              onMouseEnter={() => setMegaKey('track')}
+              onMouseLeave={() => setMegaKey(null)}
+            >
+              <button
+                type="button"
+                className={`gk-mega__trigger${tab === 'track' ? ' is-on' : ''}`}
+                aria-expanded={megaKey === 'track'}
+                onClick={() => {
+                  setTab('track')
+                  setMegaKey((k) => (k === 'track' ? null : 'track'))
+                }}
+              >
+                学习台阶
+              </button>
+              <div className="gk-mega__panel gk-mega__panel--wide" hidden={megaKey !== 'track'}>
+                <div className="gk-mega__inner">
+                  {MEGA_COLUMNS.map((col) => (
+                    <div key={col.id} className="gk-mega__col">
+                      <button
+                        type="button"
+                        className="gk-mega__title"
+                        onClick={() => {
+                          setMegaKey(null)
+                          goToTrack(col.id)
+                        }}
+                      >
+                        {col.badge} · {col.tagline}
+                      </button>
+                      <ul className="gk-mega__list">
+                        {col.courseIds.map((cid) => {
+                          const item = getItem(cid)
+                          if (!item) return null
+                          return (
+                            <li key={cid}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setMegaKey(null)
+                                  openCourse(cid)
+                                }}
+                              >
+                                <i aria-hidden="true">·</i>
+                                <em>{megaLabel(cid, item.title)}</em>
+                                {item.new ? <b>new</b> : null}
+                              </button>
+                            </li>
+                          )
+                        })}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`gk-mega${megaKey === 'glossary' ? ' is-open' : ''}`}
+              onMouseEnter={() => setMegaKey('glossary')}
+              onMouseLeave={() => setMegaKey(null)}
+            >
+              <button
+                type="button"
+                className={`gk-mega__trigger${tab === 'glossary' ? ' is-on' : ''}`}
+                aria-expanded={megaKey === 'glossary'}
+                onClick={() => {
+                  setTab('glossary')
+                  setMegaKey((k) => (k === 'glossary' ? null : 'glossary'))
+                }}
+              >
+                术语
+              </button>
+              <div className="gk-mega__panel gk-mega__panel--wide" hidden={megaKey !== 'glossary'}>
+                <div className="gk-mega__inner gk-mega__inner--dense">
+                  {GLOSSARY_CATEGORIES.filter((c) => c !== '全部').map((cat) => {
+                    const terms = GLOSSARY.filter((g) => g.category === cat).slice(0, 6)
+                    return (
+                      <div key={cat} className="gk-mega__col">
+                        <button
+                          type="button"
+                          className="gk-mega__title"
+                          onClick={() => {
+                            setMegaKey(null)
+                            setGCat(cat)
+                            setTab('glossary')
+                          }}
+                        >
+                          {cat}
+                        </button>
+                        <ul className="gk-mega__list">
+                          {terms.map((g) => (
+                            <li key={g.id}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setMegaKey(null)
+                                  setGCat(cat)
+                                  setGlossaryId(g.id)
+                                  setTab('glossary')
+                                }}
+                              >
+                                <i aria-hidden="true">·</i>
+                                <em>{g.term}</em>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`gk-mega${megaKey === 'guide' ? ' is-open' : ''}`}
+              onMouseEnter={() => setMegaKey('guide')}
+              onMouseLeave={() => setMegaKey(null)}
+            >
+              <button
+                type="button"
+                className={`gk-mega__trigger${tab === 'guide' ? ' is-on' : ''}`}
+                aria-expanded={megaKey === 'guide'}
+                onClick={() => {
+                  setTab('guide')
+                  setMegaKey((k) => (k === 'guide' ? null : 'guide'))
+                }}
+              >
+                避坑
+              </button>
+              <div className="gk-mega__panel gk-mega__panel--wide" hidden={megaKey !== 'guide'}>
+                <div className="gk-mega__inner gk-mega__inner--dense">
+                  {GUIDE_CATEGORIES.filter((c) => c !== '全部').map((cat) => {
+                    const guides = NEWBIE_GUIDES.filter((g) => g.category === cat).slice(0, 5)
+                    return (
+                      <div key={cat} className="gk-mega__col">
+                        <button
+                          type="button"
+                          className="gk-mega__title"
+                          onClick={() => {
+                            setMegaKey(null)
+                            setGuideCat(cat)
+                            setTab('guide')
+                          }}
+                        >
+                          {cat}
+                        </button>
+                        <ul className="gk-mega__list">
+                          {guides.map((g) => (
+                            <li key={g.id}>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setMegaKey(null)
+                                  setGuideCat(cat)
+                                  setGuideId(g.id)
+                                  setTab('guide')
+                                }}
+                              >
+                                <i aria-hidden="true">·</i>
+                                <em>{g.title.length > 16 ? `${g.title.slice(0, 16)}…` : g.title}</em>
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`gk-mega${megaKey === 'learn' ? ' is-open' : ''}`}
+              onMouseEnter={() => setMegaKey('learn')}
+              onMouseLeave={() => setMegaKey(null)}
+            >
+              <button
+                type="button"
+                className={`gk-mega__trigger${tab === 'learn' ? ' is-on' : ''}`}
+                aria-expanded={megaKey === 'learn'}
+                onClick={() => {
+                  if (!phone) {
+                    setLoginOpen(true)
+                    return
+                  }
+                  setTab('learn')
+                  setMegaKey((k) => (k === 'learn' ? null : 'learn'))
+                }}
+              >
+                进度
+              </button>
+              <div className="gk-mega__panel" hidden={megaKey !== 'learn'}>
+                <div className="gk-mega__inner gk-mega__inner--learn">
+                  <div className="gk-mega__col">
                     <button
                       type="button"
                       className="gk-mega__title"
                       onClick={() => {
-                        setMegaOpen(false)
-                        goToTrack(col.id)
+                        setMegaKey(null)
+                        if (!phone) setLoginOpen(true)
+                        else setTab('learn')
                       }}
                     >
-                      <span>
-                        {col.badge} · {col.tagline}
-                      </span>
+                      我的进度
                     </button>
                     <ul className="gk-mega__list">
-                      {col.courseIds.map((cid) => {
+                      {FEATURED_IDS.slice(0, 8).map((cid) => {
                         const item = getItem(cid)
                         if (!item) return null
+                        const pct = courseProgress(cid)
                         return (
                           <li key={cid}>
                             <button
                               type="button"
                               onClick={() => {
-                                setMegaOpen(false)
-                                openCourse(cid)
+                                setMegaKey(null)
+                                if (!phone) {
+                                  setLoginOpen(true)
+                                  return
+                                }
+                                setLearnId(cid)
+                                setTab('learn')
                               }}
                             >
                               <i aria-hidden="true">·</i>
                               <em>{megaLabel(cid, item.title)}</em>
-                              {item.new ? <b>new</b> : null}
+                              {pct > 0 ? <b>{pct}%</b> : null}
                             </button>
                           </li>
                         )
                       })}
                     </ul>
                   </div>
-                ))}
+                  <div className="gk-mega__col">
+                    <p className="gk-mega__hint">登录后可勾选步骤、接着上次学；点条目进入「进度」页跟做。</p>
+                    <button
+                      type="button"
+                      className="gk-mega__cta"
+                      onClick={() => {
+                        setMegaKey(null)
+                        if (!phone) setLoginOpen(true)
+                        else setTab('learn')
+                      }}
+                    >
+                      {phone ? '打开进度页' : '登录看进度'}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <nav className="gk-tabs" aria-label="主导航">
-            {(
-              [
-                ['home', '首页'],
-                ['track', '学习台阶'],
-                ['glossary', '术语'],
-                ['guide', '避坑'],
-                ['learn', '进度'],
-              ] as const
-            ).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                className={tab === id ? 'is-on' : ''}
-                onClick={() => {
-                  if (id === 'learn' && !phone) {
-                    setLoginOpen(true)
-                    return
-                  }
-                  setMegaOpen(false)
-                  setTab(id)
-                }}
-              >
-                {label}
-              </button>
-            ))}
           </nav>
           <div className="gk-top__right">
             <div className="gk-search">
