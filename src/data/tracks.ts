@@ -33,12 +33,12 @@ export const TRACKS: TrackDef[] = [
     steps: [
       {
         title: '先建立正确预期',
-        result: '懂心智模型、选对国内主力工具、会第一次有效对话',
+        result: '懂心智模型、会第一次有效对话',
         courseIds: ['ai-what-is', 'ai-first-chat', 'newbie-first-week'],
       },
       {
         title: '登录与安装跑通',
-        result: '官网登录稳定；知道编程去 Trae / 灵码',
+        result: '官网登录稳定；需要时再装编程 IDE',
         courseIds: ['ai-download-guide', 'ai-account-setup'],
       },
       {
