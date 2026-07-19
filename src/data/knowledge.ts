@@ -37,7 +37,8 @@ export const CATEGORIES = [
   '入门起步',
   '前端 / JS',
   '小程序与 App',
-  '工具安装',
+  '国产软件',
+  '外国软件',
   '工具用法',
   '提示词工程',
   '办公提效',
@@ -50,8 +51,10 @@ export const CATEGORIES = [
 /** 顶部多列总类（不含「全部」），一列一类 */
 export const CATEGORY_COLUMNS = CATEGORIES.filter((c) => c !== '全部')
 
-/** 安装大类简称，便于文案引用 */
-export const INSTALL_CATEGORY = '工具安装' as const
+/** 国产 / 外国软件大类（原「工具安装」已拆分） */
+export const DOMESTIC_SOFTWARE_CATEGORY = '国产软件' as const
+export const FOREIGN_SOFTWARE_CATEGORY = '外国软件' as const
+export const INSTALL_CATEGORY = DOMESTIC_SOFTWARE_CATEGORY
 
 export const LEVELS: Array<Level | '全部'> = ['全部', '入门', '工具', '作品', '精通']
 
@@ -293,36 +296,36 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
     ],
   ),
 
-  // ——— 工具安装（每个工具一篇独立安装） ———
+  // ——— 国产软件 ———
   course(
     {
       id: 'tool-pick-compare',
-      title: '先选再装：国内直连优先的工具地图',
-      hook: '默认不翻墙：先 Trae 国内版 / 通义灵码，海外工具标成可选',
-      outcome: '选出国内能直连的主工具；清楚哪些需要海外网络再决定要不要装',
-      category: '工具安装',
+      title: '国产 vs 外国：先分清再装',
+      hook: '国产软件默认直连；外国软件常需海外网络或中转 Key',
+      outcome: '能说出哪些是国产、哪些是外国；选定自己的主工具',
+      category: '国产软件',
       level: '工具',
-      desc: '国内优先：Trae.cn、通义灵码、国内 API；海外 Cursor/Claude/Codex 标网络要求。',
+      desc: '国产：Trae.cn、通义灵码、CC Switch；外国：Cursor、Claude Code、Codex、Copilot、Windsurf。',
       source: '自有资料',
       hot: true,
       trackStep: 0,
     },
     [
-      ['本站默认：国内用户、不依赖翻墙', 10, '图文'],
-      ['国内直连首选：Trae 国内版 vs 通义灵码', 15, '模板'],
-      ['每个工具擅长什么 + 网络要求对照表', 15, '模板'],
-      ['登录 vs 国内 API Key：两条路', 12, '图文'],
-      ['CC Switch：给 Claude Code/Codex 配国内中转 Key', 12, '图文'],
-      ['决策树：零基础只装国内 → 有需要再碰海外', 15, '步骤'],
+      ['两类怎么分：厂商归属 + 网络/登录是否依赖海外', 10, '图文'],
+      ['国产软件清单：Trae 国内版、通义灵码、CC Switch', 12, '模板'],
+      ['外国软件清单：Cursor、Claude Code、Codex、Copilot、Windsurf', 12, '模板'],
+      ['对照表：擅长场景 + 网络要求', 15, '模板'],
+      ['决策树：零基础先国产 → 有需要再装外国', 15, '步骤'],
+      ['用外国 CLI 时：CC Switch 配国内中转 Key', 12, '图文'],
     ],
   ),
   course(
     {
       id: 'install-trae',
       title: 'Trae 国内版安装：不翻墙的 AI 编程 IDE',
-      hook: '国内首选：trae.cn 直连下载，豆包/DeepSeek，手机号就能登',
+      hook: '国产首选：trae.cn 直连下载，豆包/DeepSeek，手机号就能登',
       outcome: '从 trae.cn 装好并登录，不用翻墙完成第一次 AI 改文件',
-      category: '工具安装',
+      category: '国产软件',
       level: '工具',
       desc: '务必下国内版 trae.cn（不是 trae.ai）；登录；内置国产模型；可选自定义 API。',
       source: '自有资料',
@@ -346,7 +349,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: '通义灵码安装：VS Code 国内插件',
       hook: '已有 VS Code？装通义灵码，阿里云登录，国内直连补全',
       outcome: 'VS Code 装好通义灵码并登录阿里云，补全/对话可用',
-      category: '工具安装',
+      category: '国产软件',
       level: '工具',
       desc: 'lingma.aliyun.com；扩展市场装插件；阿里云账号登录；国内模型。',
       source: '自有资料',
@@ -368,9 +371,9 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'CC Switch 安装：国内中转 API Key 一键切换',
       hook: '要用 Claude Code/Codex 但不直连官方？用 CC Switch 填国内供应商 Key',
       outcome: '装好 CC Switch，会添加国内/合规供应商的 Base URL + API Key 并启用',
-      category: '工具安装',
+      category: '国产软件',
       level: '工具',
-      desc: '先装好 CLI；再装 CC Switch；优先配可直连的国内 API 供应商，避免依赖翻墙。',
+      desc: '国产配套面板：给外国 CLI 配可直连的国内 API，避免依赖翻墙官方站。',
       source: '自有资料',
       hot: true,
       new: true,
@@ -383,13 +386,14 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       ['安全：只信官方下载，Key 不外传', 10, '清单'],
     ],
   ),
+  // ——— 外国软件 ———
   course(
     {
       id: 'cursor-install',
-      title: 'Cursor 安装（可选·常需海外网络）',
-      hook: '可选：Cursor 能力强，但国内常要稳定海外网络，不翻墙请先用 Trae',
+      title: 'Cursor 安装（外国·常需海外网络）',
+      hook: '外国软件：Cursor 能力强，国内常要稳定海外网络；不翻墙请先用 Trae',
       outcome: '在网络可达时装好 Cursor；否则跳过改用 Trae 国内版',
-      category: '工具安装',
+      category: '外国软件',
       level: '工具',
       desc: '网络提示在前；官网下载；登录；API Key；第一次改文件。',
       source: '自有资料',
@@ -407,10 +411,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'install-claude-code',
-      title: 'Claude Code 安装（可选·配合国内中转）',
-      hook: '可选：终端强 Agent；官方登录常需海外网络，国内用 CC Switch + 中转 Key',
+      title: 'Claude Code 安装（外国·配合国产中转）',
+      hook: '外国软件：终端强 Agent；官方登录常需海外网络，国内用 CC Switch + 中转 Key',
       outcome: '能安装 claude；用 CC Switch 配可直连供应商，不依赖翻墙官方站',
-      category: '工具安装',
+      category: '外国软件',
       level: '工具',
       desc: '网络说明；安装命令；国内路径用 CC Switch 填中转 API，少走官方 OAuth。',
       source: '自有资料',
@@ -427,10 +431,10 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'install-codex',
-      title: 'OpenAI Codex 安装（可选·配合国内中转）',
-      hook: '可选：OpenAI 系 CLI；官方站点常需海外网络，国内用中转 Key',
+      title: 'OpenAI Codex 安装（外国·配合国产中转）',
+      hook: '外国软件：OpenAI 系 CLI；官方站点常需海外网络，国内用中转 Key',
       outcome: '能安装 codex；用 CC Switch 配可直连 OpenAI 兼容接口',
-      category: '工具安装',
+      category: '外国软件',
       level: '工具',
       desc: '网络说明；安装；国内用兼容 Base URL + Key，不强调官方 ChatGPT 登录。',
       source: '自有资料',
@@ -446,12 +450,12 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'install-copilot',
-      title: 'GitHub Copilot 安装（可选·常需海外网络）',
-      hook: '可选：GitHub 补全；国内登录/订阅常不稳，优先通义灵码',
+      title: 'GitHub Copilot 安装（外国·常需海外网络）',
+      hook: '外国软件：GitHub 补全；国内登录/订阅常不稳，优先通义灵码',
       outcome: '网络可达时完成安装；否则改用通义灵码',
-      category: '工具安装',
+      category: '外国软件',
       level: '工具',
-      desc: '网络提示；VS Code 扩展；国内替代指向通义灵码。',
+      desc: '网络提示；VS Code 扩展；国产替代指向通义灵码。',
       source: '自有资料',
     },
     [
@@ -463,12 +467,12 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
   course(
     {
       id: 'install-windsurf',
-      title: 'Windsurf 安装（可选·常需海外网络）',
-      hook: '可选：Cascade 很强，但国内网络不稳时请先用 Trae.cn',
+      title: 'Windsurf 安装（外国·常需海外网络）',
+      hook: '外国软件：Cascade 很强，国内网络不稳时请先用 Trae.cn',
       outcome: '网络可达再装；否则跳过',
-      category: '工具安装',
+      category: '外国软件',
       level: '工具',
-      desc: '网络提示在前；安装登录简述；国内替代 Trae。',
+      desc: '网络提示在前；安装登录简述；国产替代 Trae。',
       source: '自有资料',
     },
     [
@@ -485,7 +489,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Cursor 用法：从 Chat 到 Agent 改项目',
       hook: 'Cursor 已装好？这篇专讲用法，不再重复安装步骤',
       outcome: '独立用 Cursor 完成多文件改码、Rules 配置与 Agent 任务拆解',
-      category: '工具用法',
+      category: '外国软件',
       level: '工具',
       desc: 'Chat、Inline、Composer、Agent、@文件、Rules、MCP、模型配置 — 逐步讲透。',
       source: '自有资料',
@@ -512,7 +516,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Cursor Rules 深度：.mdc 与项目规范落地',
       hook: '一套 Rules 让 AI 编程助手不再乱改你的项目',
       outcome: '写出可执行的 .mdc Rules，Agent 稳定守规矩',
-      category: '工具用法',
+      category: '外国软件',
       level: '工具',
       desc: 'Rules 语法、层级、与 System Prompt 分工。',
       source: '自有资料',
@@ -534,7 +538,7 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       title: 'Claude Code 用法：仓库级任务与安全边界',
       hook: 'Claude Code 已装好？这篇讲怎么下指令、怎么控权限',
       outcome: '会写仓库级指令，知道何时批准危险操作',
-      category: '工具用法',
+      category: '外国软件',
       level: '工具',
       desc: '安装见「Claude Code 安装」专篇；本篇专注用法与安全。',
     },
@@ -979,17 +983,17 @@ export const LEARNING_PATHS: LearningPath[] = [
   },
   {
     id: 'path-tools',
-    title: '工具：装智能体 + 学用法',
-    desc: '先装 Trae/灵码（不翻墙），海外工具可选；再学 Cursor 用法',
+    title: '工具：国产软件 + 外国软件',
+    desc: '先国产（Trae/灵码），再外国（Cursor/Claude Code/Codex），最后学用法与汉化',
     count: 0,
     courseIds: [
       'tool-pick-compare',
       'install-trae',
       'install-lingma',
       'install-cc-switch',
-      'cursor-install',
       'install-claude-code',
       'install-codex',
+      'cursor-install',
       'install-copilot',
       'install-windsurf',
       'cursor',

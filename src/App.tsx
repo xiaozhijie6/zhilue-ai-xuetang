@@ -405,7 +405,10 @@ export default function App() {
       lessons,
       terms: GLOSSARY.length,
       tools: KNOWLEDGE_LIBRARY.filter(
-        (c) => c.category === '工具安装' || c.category === '工具用法',
+        (c) =>
+          c.category === '国产软件' ||
+          c.category === '外国软件' ||
+          c.category === '工具用法',
       ).length,
     }
   }, [])

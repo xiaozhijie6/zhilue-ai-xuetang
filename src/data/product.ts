@@ -15,7 +15,7 @@ export const FLAGSHIP = {
     '1 份已上线或可上线的业务自动化方案（含流程图）',
     '1 套岗位提示词库 + 质量评审表',
     '团队 AI 使用规范初稿（含安全红线）',
-    '工具安装与实战礼包（Cursor / Claude Code 等，对接自有资料）',
+    '国产 / 外国软件安装与实战礼包（Trae、灵码、Cursor、Claude Code 等）',
     '结营汇报材料，方便向管理层展示 ROI',
   ],
   weeks: [

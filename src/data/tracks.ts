@@ -37,18 +37,20 @@ export const TRACKS: TrackDef[] = [
         courseIds: ['ai-what-is', 'ai-first-chat', 'newbie-first-week'],
       },
       {
-        title: '登录聊天 + 装编程工具',
-        result: '先跑通国内网页聊天；再按需装 Trae / 灵码，或 Claude Code、Codex、Cursor',
+        title: '国产软件：登录聊天 + Trae / 灵码',
+        result: '网页能聊；Trae、通义灵码、CC Switch 按需装通',
         courseIds: [
           'ai-account-setup',
           'ai-download-guide',
           'install-trae',
           'install-lingma',
           'install-cc-switch',
-          'install-claude-code',
-          'install-codex',
-          'cursor-install',
         ],
+      },
+      {
+        title: '外国软件：Claude Code / Codex / Cursor（可选）',
+        result: '有需要再装；国内常用 CC Switch 配中转 Key',
+        courseIds: ['install-claude-code', 'install-codex', 'cursor-install'],
       },
       {
         title: '会提问、能办公',
@@ -65,25 +67,25 @@ export const TRACKS: TrackDef[] = [
   {
     id: '工具',
     badge: '02 工具',
-    title: 'AI 编程工具装与用',
-    hook: '国内直连优先：先 Trae / 灵码，不必翻墙',
-    promise: '选得准 · 装得上 · 改得动 · 用得熟',
+    title: '国产软件与外国软件',
+    hook: '先分清国产 / 外国，再决定装哪几个',
+    promise: '分得清 · 装得上 · 改得动 · 用得熟',
     days: '建议 3–7 天',
     color: '#e8891c',
     steps: [
       {
-        title: '选型：默认不翻墙',
-        result: '看清国内直连与海外可选，选定主工具',
+        title: '先分类：国产 vs 外国',
+        result: '对照清单选定主工具，默认先国产',
         courseIds: ['tool-pick-compare'],
       },
       {
-        title: '国内直连再巩固（优先）',
-        result: 'Trae / 灵码 / CC Switch 装稳；入门第二步没跟完的在这里补',
+        title: '国产软件安装',
+        result: 'Trae.cn、通义灵码、CC Switch 装稳',
         courseIds: ['install-trae', 'install-lingma', 'install-cc-switch'],
       },
       {
-        title: 'Claude Code / Codex / Cursor（可选）',
-        result: '按官方或中转 Key 装通；Copilot、Windsurf 按需',
+        title: '外国软件安装',
+        result: 'Claude Code、Codex、Cursor；可选 Copilot、Windsurf',
         courseIds: [
           'install-claude-code',
           'install-codex',
@@ -93,8 +95,8 @@ export const TRACKS: TrackDef[] = [
         ],
       },
       {
-        title: '装好后学用法',
-        result: 'Cursor、Rules、Claude Code 指令与汉化按需深入',
+        title: '外国软件用法 + 界面汉化',
+        result: 'Cursor / Claude Code 会用；菜单中文按需设置',
         courseIds: ['cursor', 'cursor-rules', 'claude-code', 'tool-localize'],
       },
     ],
