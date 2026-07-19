@@ -546,6 +546,32 @@ export const KNOWLEDGE_LIBRARY: KnowledgeItem[] = [
       ['危险操作防护与权限确认', 12, '清单'],
     ],
   ),
+  course(
+    {
+      id: 'tool-localize',
+      title: 'AI 软件汉化：Cursor / VS Code / Trae 等界面中文',
+      hook: '菜单全是英文看不懂？这篇把常见 AI 工具汉化方法一次写清',
+      outcome: '能按工具选对汉化路径：官方语言包优先，社区方案知风险',
+      category: '工具用法',
+      level: '工具',
+      desc: '覆盖 Cursor、VS Code、Trae、Windsurf、Copilot、JetBrains、Claude Code 等界面中文与注意点。',
+      source: '自有资料',
+      hot: true,
+      new: true,
+    },
+    [
+      ['先分清：官方语言包 vs 社区补丁', 12, '图文'],
+      ['VS Code / 通义灵码：装简体中文语言包', 15, '步骤'],
+      ['Cursor：语言包能翻多少、专属界面怎么办', 20, '步骤'],
+      ['Trae / Windsurf：VS Code 系怎么切中文', 15, '步骤'],
+      ['GitHub Copilot：跟编辑器语言走', 10, '图文'],
+      ['Claude Code / Codex：终端工具几乎不汉化', 12, '图文'],
+      ['聊天客户端与网页：ChatGPT / Claude / 国内产品', 12, '图文'],
+      ['JetBrains + AI 插件界面语言', 12, '步骤'],
+      ['安全红线：别下不明汉化包、更新后失效', 15, '清单'],
+      ['按工具对照表快速选型', 10, '模板'],
+    ],
+  ),
 
   // ——— 工具：API 与 MCP ———
   course(
@@ -909,6 +935,7 @@ export function getItem(id: string) {
 
 export const FEATURED_IDS = [
   'tool-pick-compare',
+  'tool-localize',
   'install-trae',
   'install-lingma',
   'install-cc-switch',
@@ -963,6 +990,7 @@ export const LEARNING_PATHS: LearningPath[] = [
       'cursor',
       'cursor-rules',
       'claude-code',
+      'tool-localize',
     ],
   },
   {

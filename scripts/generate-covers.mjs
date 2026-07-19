@@ -46,6 +46,7 @@ const COURSES = [
   { id: 'cursor', title: 'Cursor 用法', hook: 'Chat Agent Rules', theme: '分屏改代码工作台' },
   { id: 'cursor-rules', title: 'Cursor Rules', hook: '项目规则写稳', theme: '规则书卷与齿轮' },
   { id: 'claude-code', title: 'Claude Code 用法', hook: '终端 Agent 工作流', theme: '终端光标与任务清单' },
+  { id: 'tool-localize', title: 'AI 软件汉化', hook: '界面中文对照表', theme: '中英切换开关与编辑器菜单' },
   { id: 'api-openai', title: 'OpenAI API', hook: '密钥与请求示例', theme: '绿色结与 JSON 代码块' },
   { id: 'api-compatible', title: '兼容网关', hook: 'Base URL 对照', theme: '网关桥梁与 API 路径' },
   { id: 'domain-api-cheatsheet', title: '域名速查', hook: 'Base URL 复制即用', theme: '地球域名与清单卡片' },

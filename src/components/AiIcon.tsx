@@ -207,6 +207,7 @@ export function resolveIconKey(id: string, category?: string): IconKey {
   if (s.includes('prompt')) return 'prompt'
   if (s.includes('sec') || s.includes('keys') || s.includes('cost')) return 'security'
   if (s.includes('office') || s.includes('daily')) return 'office'
+  if (s.includes('localize') || s.includes('hanhua') || s.includes('chinese-ui')) return 'vscode'
   if (s.startsWith('api-')) return 'openai'
   if (category === '入门起步') return 'download'
   if (category === '工具安装') return 'cursor'

@@ -29,6 +29,7 @@ const COVER_GLYPHS: Record<string, string> = {
   cursor: 'Cursor 用法',
   'cursor-rules': 'Cursor Rules',
   'claude-code': 'Claude Code 用法',
+  'tool-localize': '软件汉化',
   'api-openai': 'OpenAI API',
   'api-compatible': '兼容网关',
   'domain-api-cheatsheet': '域名速查',

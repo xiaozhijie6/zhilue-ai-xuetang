@@ -2903,6 +2903,180 @@ export const TUTORIAL_BODIES: Record<string, TutorialBody> = {
     ],
     checklist: ['Usage 页会看', '已设预算或告警', '有小模型默认策略'],
   },
+
+  'tool-localize': {
+    intro: [
+      '「汉化」在这里指：把软件界面（菜单、设置、按钮）改成简体中文，方便阅读。不等于把 AI 模型本身变成「只讲中文」——你用中文提问，模型本来就会用中文答。',
+      '原则很简单：能走官方语言包就别下第三方补丁；社区汉化能补 Cursor 专属界面，但更新后可能失效，且有改安装文件的风险。',
+    ],
+    sections: [
+      {
+        title: '先分清两条路',
+        paragraphs: [
+          '官方 / 半官方：安装语言包（Language Pack），或在设置里切 Display Language。安全、可逆，覆盖菜单与通用设置。',
+          '社区补丁：改 Cursor 安装目录里的前端资源，或注入翻译脚本，才能翻 Agent、Cursor Settings 等专属英文。覆盖更全，但非官方、版本一更新常要重做。',
+          '终端 CLI（Claude Code、Codex）：基本没有完整中文界面，重点是终端编码与中文提示词，别指望菜单汉化。',
+        ],
+        tip: '优先目标：把「看不懂的菜单」变中文；别为了 100% 汉化去装来路不明的一键包。',
+      },
+      {
+        title: 'VS Code / 通义灵码：最稳的官方路径',
+        paragraphs: [
+          'VS Code 与多数「VS Code 魔改 IDE」共用同一套语言扩展体系。通义灵码装在 VS Code 里时，界面语言跟 VS Code 走。',
+        ],
+        steps: [
+          '打开 VS Code（或已装灵码的 VS Code）。',
+          '左侧扩展（Extensions）搜索：Chinese (Simplified) Language Pack。',
+          '安装 Microsoft 出品的「中文（简体）语言包」。',
+          '按 Ctrl+Shift+P（Mac：Cmd+Shift+P）打开命令面板。',
+          '输入并选择：Configure Display Language（配置显示语言）。',
+          '选 zh-cn，按提示重启编辑器。',
+          '成功标志：顶部菜单变成「文件 / 编辑 / 查看…」，设置项多为中文。',
+        ],
+        tip: '若列表没有 zh-cn：先确认语言包已启用，或重启后再打开 Configure Display Language。',
+        links: [
+          {
+            label: 'VS Code 简体中文语言包（市场）',
+            url: 'https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hans',
+          },
+        ],
+      },
+      {
+        title: 'Cursor：语言包 + 专属界面说明',
+        paragraphs: [
+          'Cursor 基于 VS Code，可装同一套简体中文语言包，菜单、资源管理器、部分通用设置会变中文。',
+          '但 Agent 侧栏、Cursor Settings（模型、Rules、MCP、账户）、部分弹窗仍是英文——这是官方尚未完整多语言，不是你没装对。',
+          '社区有「注入脚本 / 改 workbench」类汉化工具，能翻更多 Cursor 专属文案；请只从可信仓库获取，并看清是否支持你的 Cursor 版本、能否一键还原。',
+        ],
+        steps: [
+          'Cursor 扩展市场搜索 Chinese，安装 Chinese (Simplified) Language Pack。',
+          'Ctrl+Shift+P → Configure Display Language → zh-cn → 重启。',
+          '验收：菜单是否中文；再打开 Cursor Settings，记下仍为英文的页面（属正常）。',
+          '若仍需专属界面中文：自行评估社区方案；装前备份，装后若提示安装损坏，按该工具文档恢复。',
+          'Cursor 大版本更新后：语言包通常还在，社区补丁往往要重跑一次。',
+        ],
+        tip: '不会英文也能用：记住 Settings → Models / Rules / MCP 几个词，或让 AI 用中文解释当前设置页截图。',
+      },
+      {
+        title: 'Trae / Windsurf：VS Code 系切中文',
+        paragraphs: [
+          'Trae、Windsurf 同属 VS Code 内核系，汉化步骤与 VS Code / Cursor 类似：装简体中文语言包 → Configure Display Language → zh-cn → 重启。',
+          'Trae 国内版本身对中文用户更友好，部分文案可能已是中文或中英混合；仍缺中文时再补语言包。',
+          'Windsurf 的 Cascade 等产品专属面板，可能像 Cursor 一样残留英文，属产品侧未完全本地化。',
+        ],
+        steps: [
+          '打开 Trae 或 Windsurf 的扩展面板。',
+          '搜索并安装 Chinese (Simplified) Language Pack。',
+          '命令面板执行 Configure Display Language，选 zh-cn 后重启。',
+          '若扩展市场打不开：检查网络；Trae 国内版优先用其官方扩展源说明。',
+        ],
+      },
+      {
+        title: 'GitHub Copilot：跟宿主编辑器走',
+        paragraphs: [
+          'Copilot 是插件，没有独立「Copilot 中文版」。VS Code / JetBrains 界面语言切成中文后，大部分宿主菜单会中文；Copilot 聊天与部分提示仍可能是英文。',
+          '在 VS Code：先完成上一节语言包；再确认 GitHub Copilot / Copilot Chat 扩展已启用。',
+          '对话内容语言：在 Chat 里用中文提问即可，模型会中文回复；这与界面汉化是两件事。',
+        ],
+        steps: [
+          '先把 VS Code（或 JetBrains）显示语言设为 zh-cn。',
+          '打开 Copilot Chat，用中文发一条：「用中文解释当前文件在做什么」。',
+          '若补全注释想要中文：在提示或项目 Rules 里写「注释与文档用简体中文」。',
+        ],
+      },
+      {
+        title: 'Claude Code / Codex / 其他 CLI',
+        paragraphs: [
+          'Claude Code、OpenAI Codex CLI、多数终端 Agent：界面就是英文命令与日志，一般没有「一键汉化包」。',
+          '你真正需要的是：终端能正确显示中文、你用中文下指令、输出文件用 UTF-8。',
+        ],
+        steps: [
+          'Windows Terminal / PowerShell：设置字体为 Cascadia Code、Sarasa Gothic 等支持中文的字体。',
+          '确认项目与终端编码为 UTF-8（避免中文路径、中文日志乱码）。',
+          '对 Claude Code / Codex 直接写中文任务：「只改 src/…，用中文写 commit message」。',
+          '需要中文帮助时：把英文报错贴给网页版 AI 或 Cursor Chat 翻译，不必强行汉化 CLI。',
+        ],
+        tip: 'CLI 工具盯住「会不会用」比「菜单是不是中文」更重要。',
+      },
+      {
+        title: '聊天客户端与网页：ChatGPT / Claude / 国内产品',
+        paragraphs: [
+          'ChatGPT、Claude 网页与官方桌面端：界面语言常跟随账号或系统语言，设置里找 Language / 语言；没有统一「汉化包」概念。',
+          '国内产品（豆包、Kimi、通义、文心等）：默认就是中文界面，一般无需汉化。',
+          '浏览器扩展类 AI：界面语言看扩展自身设置；宿主浏览器语言有时会影响，但不保证。',
+        ],
+        steps: [
+          'ChatGPT：打开设置（头像或齿轮）→ 找 Language / 语言 → 选简体中文（若有）。',
+          'Claude：Settings 中查找语言相关项；没有则界面可能固定英文，对话仍可用中文。',
+          '国内 App：直接使用；若混入英文，多半是模型名或功能代号，不影响操作。',
+        ],
+      },
+      {
+        title: 'JetBrains（IDEA / PyCharm 等）+ AI 插件',
+        paragraphs: [
+          'JetBrains 系用官方中文语言包插件，与 VS Code 不是同一套。',
+          '通义灵码、GitHub Copilot 等装在 IDEA 里时，宿主变中文后，插件部分文案仍可能英文。',
+        ],
+        steps: [
+          'Settings（设置）→ Plugins → Marketplace，搜索 Chinese 或「中文语言包」。',
+          '安装 JetBrains 官方 Chinese Language Pack / 中文语言包。',
+          '重启 IDE，确认菜单为中文。',
+          '再打开 AI 插件设置页，用中文备注自己的常用项（模型、代理、快捷键）。',
+        ],
+        links: [
+          {
+            label: 'JetBrains 中文语言包说明',
+            url: 'https://plugins.jetbrains.com/plugin/13710-chinese-simplified-language-pack----',
+          },
+        ],
+      },
+      {
+        title: '安全红线（必读）',
+        paragraphs: [
+          '不要从网盘、陌生群、不明网站下载「Cursor 一键完美汉化.exe」。改编辑器文件 = 接近系统级权限，存在后门风险。',
+          '社区开源汉化：核对 GitHub 星标、最近提交、Issue 是否活跃；优先选「可还原 / 有备份」的方案。',
+          '公司电脑：先问 IT 是否允许修改编辑器安装目录；不允许就只用官方语言包。',
+          '汉化失败或提示损坏：用官方安装包重装，或按汉化工具的「恢复英文」步骤回退。',
+        ],
+        tip: '界面英文不耽误干活：截图丢给 AI 问「这个按钮是干什么的」往往比折腾补丁更快。',
+      },
+      {
+        title: '按工具对照表（速查）',
+        paragraphs: [
+          'VS Code / 通义灵码：语言包 → zh-cn（推荐，稳）。',
+          'Cursor：语言包（菜单中文）+ 专属界面可选社区补丁（自担风险）。',
+          'Trae / Windsurf：同 VS Code 系语言包。',
+          'GitHub Copilot：跟 VS Code / JetBrains 显示语言；对话用中文即可。',
+          'Claude Code / Codex：不追求界面汉化；终端 UTF-8 + 中文指令。',
+          'ChatGPT / Claude 网页：设置里找 Language；国内产品默认中文。',
+          'JetBrains：装官方中文语言包插件。',
+        ],
+        steps: [
+          '列出你本机正在用的 AI 工具（IDE / CLI / 网页）。',
+          '对每一项在上表选一条路径，先做官方方案。',
+          '只有 Cursor 专属英文仍严重挡路时，再评估社区汉化。',
+          '记在备忘录：哪天更新了 Cursor，要检查语言是否还在。',
+        ],
+      },
+    ],
+    checklist: [
+      '知道官方语言包与社区补丁的区别',
+      '至少有一个编辑器已切到 zh-cn',
+      '清楚 Cursor 专属设置可能仍是英文',
+      '不会从不信任来源下载汉化 exe',
+      'CLI 工具已确认中文显示与提问没问题',
+    ],
+    refs: [
+      {
+        label: 'VS Code 显示语言文档',
+        url: 'https://code.visualstudio.com/docs/getstarted/locale',
+      },
+      {
+        label: 'Cursor 论坛：中文界面需求讨论',
+        url: 'https://forum.cursor.com/t/request-cursor-official-to-add-a-chinese-language-option-in-cursor-settings-to-facilitate-chinese-users/67155',
+      },
+    ],
+  },
 }
 
 export function getTutorialBody(id: string): TutorialBody | undefined {

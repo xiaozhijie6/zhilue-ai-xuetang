@@ -86,7 +86,7 @@ export const TRACKS: TrackDef[] = [
       {
         title: '装好后学用法',
         result: 'Cursor、Rules、Agent 按需深入',
-        courseIds: ['cursor', 'cursor-rules', 'claude-code'],
+        courseIds: ['cursor', 'cursor-rules', 'claude-code', 'tool-localize'],
       },
     ],
   },
