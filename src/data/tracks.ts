@@ -32,23 +32,23 @@ export const TRACKS: TrackDef[] = [
     color: '#0f766e',
     steps: [
       {
-        title: '先搞懂 AI 能帮你干什么',
-        result: '知道对话、写文、改代码、生图各走哪条路',
-        courseIds: ['ai-what-is', 'ai-first-chat'],
+        title: '先建立正确预期',
+        result: '懂心智模型、选对国内主力工具、会第一次有效对话',
+        courseIds: ['ai-what-is', 'ai-first-chat', 'newbie-first-week'],
       },
       {
-        title: '按系统下载与安装',
-        result: 'Windows / Mac 装好客户端，账号注册跑通',
+        title: '登录与安装跑通',
+        result: '官网登录稳定；知道编程去 Trae / 灵码',
         courseIds: ['ai-download-guide', 'ai-account-setup'],
       },
       {
-        title: '第一次有效提问',
-        result: '用四段式提示词，让回答能直接用',
+        title: '会提问、能办公',
+        result: '四段式提示词 + 邮件纪要可交付',
         courseIds: ['prompt-basics', 'ai-daily-office'],
       },
       {
         title: '守住安全底线',
-        result: '密钥不乱贴、隐私不乱传',
+        result: '懂 API Key 是什么；敏感信息不上传、密钥不乱贴',
         courseIds: ['api-keys-security'],
       },
     ],

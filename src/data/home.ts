@@ -63,7 +63,13 @@ export const MEGA_COLUMNS: MegaColumn[] = [
     id: '入门',
     badge: '01 入门',
     tagline: '装稳',
-    courseIds: ['ai-what-is', 'ai-download-guide', 'ai-first-chat', 'newbie-first-week'],
+    courseIds: [
+      'ai-what-is',
+      'ai-first-chat',
+      'ai-download-guide',
+      'prompt-basics',
+      'api-keys-security',
+    ],
   },
   {
     id: '工具',
@@ -81,14 +87,14 @@ export const MEGA_COLUMNS: MegaColumn[] = [
     id: '精通',
     badge: '04 精通',
     tagline: '接得住',
-    courseIds: ['prompt-basics', 'api-keys-security', 'mcp-intro', 'rag-basics'],
+    courseIds: ['api-openai', 'mcp-intro', 'rag-basics', 'agent-tools'],
   },
 ]
 
-/** 术语悬停：3 列 × 3 条精华 */
+/** 术语悬停：入门先懂模型基础，再扩 Agent / API */
 export const MEGA_GLOSSARY = [
-  { category: '模型基础', termIds: ['llm', 'token', 'context-window'] },
-  { category: 'Agent与工具', termIds: ['agent', 'mcp', 'function-calling'] },
+  { category: '模型基础', termIds: ['llm', 'token', 'hallucination'] },
+  { category: '提示与安全', termIds: ['prompt-engineering', 'system-prompt', 'prompt-injection'] },
   { category: '工程与API', termIds: ['api-key', 'base-url', 'rate-limit'] },
 ] as const
 
